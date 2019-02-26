@@ -8,18 +8,19 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: igcproxy-service
+    app.kubernetes.io/component: ui-service
 
-  name: {{ include "myapp.fullname" . }}-igcproxy-service
+  name: {{ include "myapp.fullname" . }}-ui-service
 
 spec:
   type: {{ .Values.service.type }}
   ports:
-  - port: 8080
-    targetPort: 8080
-    nodePort: {{ .Values.service.nodeport.igcproxy }}
+  - name: "ui"
+    port: 8443
+    nodePort: {{ .Values.service.nodeport.ui }}
+    targetPort: 8443
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: igcproxy-service
+    app.kubernetes.io/component: ui-service
