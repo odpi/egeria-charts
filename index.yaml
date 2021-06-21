@@ -2,6 +2,27 @@ apiVersion: v1
 entries:
   egeria-base:
   - apiVersion: v2
+    created: "2021-06-21T12:21:47.526325728Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.5.0
+    description: Egeria simple deployment to Kubernetes
+    digest: 7932e9863730974ded158b6758718c770edd1778d50ebbc4311b0a25409fd915
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, base, simple
+    maintainers:
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: egeria-base
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/planetf1/egeria-charts/releases/download/egeria-base-1.0.1-pre2/egeria-base-1.0.1-pre2.tgz
+    version: 1.0.1-pre2
+  - apiVersion: v2
     created: "2021-06-21T12:18:44.015427226Z"
     dependencies:
     - name: kafka
@@ -44,6 +65,29 @@ entries:
     - https://github.com/planetf1/egeria-charts/releases/download/egeria-base-1.0.0/egeria-base-1.0.0.tgz
     version: 1.0.0
   odpi-egeria-lab:
+  - apiVersion: v1
+    created: "2021-06-21T12:21:47.7738852Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.4.0
+    description: Egeria lab environment
+    digest: 06ee5ba47d06b556e2d53f269cc3814a461fe7d2b4c4c6b20692039d2abfeaff
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, lab, jupyter, notebook
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: odpi-egeria-lab
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/planetf1/egeria-charts/releases/download/odpi-egeria-lab-1.0.1-pre2/odpi-egeria-lab-1.0.1-pre2.tgz
+    version: 1.0.1-pre2
   - apiVersion: v1
     created: "2021-06-21T12:18:44.15934147Z"
     dependencies:
@@ -90,4 +134,4 @@ entries:
     urls:
     - https://github.com/planetf1/egeria-charts/releases/download/odpi-egeria-lab-1.0.0/odpi-egeria-lab-1.0.0.tgz
     version: 1.0.0
-generated: "2021-06-21T12:18:44.15935417Z"
+generated: "2021-06-21T12:21:47.773920301Z"
