@@ -24,6 +24,12 @@ egeria:
   # Default to 8GB
   storageSize: 8Gi
 
+# --- Additional environment variables - inserted directly into configmap. Can use helm template directives
+#extraEnv: |
+#  VAR1: value1
+#  VAR2: value2
+
+
 # --- Exposing/setup of network services ---
 service:
   # Change this to 'NodePort' if you want externalized addresses for our services via a k8s NodePort.

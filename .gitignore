@@ -9,6 +9,7 @@
 # to check these into git as they are not owned by this project and helm will automatically
 # retrieve from the authoritative source
 **/charts/**/charts/**
+Chart.lock
 
 # vscode editor
 **/.vscode*/**
@@ -16,19 +17,19 @@
 **/**.code-workspace
 
 # IntelliJ
- *.iml
- **.iml
- *.ipr
- *.iws
- .idea
- venv
+*.iml
+**.iml
+*.ipr
+*.iws
+.idea
+venv
 
- # Eclipse
- .cache
- .classpath
- .project
- .checkstyle
- .settings
+# Eclipse
+.cache
+.classpath
+.project
+.checkstyle
+.settings
 
 THIRD_PARTY*.txt
 
