@@ -18,14 +18,14 @@ spec:
     - name: https
       port: 9443
       targetPort: 9443
-      {{- if ( eq  .Values.service.type "NodePort" ) -}}
+      {{- if ( eq  .Values.service.type "NodePort" ) }}
       nodePort: {{ .Values.service.nodeport.factory }}
       {{- end }}
     {{ if .Values.debug.egeriaJVM }}
     - name: debug
       port: 5005
       targetPort: 5005
-      {{- if ( eq  .Values.service.type "NodePort" ) -}}
+      {{- if ( eq  .Values.service.type "NodePort" ) }}
       nodePort: {{ .Values.service.nodeport.debug.factory }}
       {{- end }}
   {{ end }}

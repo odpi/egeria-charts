@@ -17,7 +17,7 @@ spec:
   ports:
     - port: 8888
       targetPort: 8888
-      {{- if ( eq  .Values.service.type "NodePort" ) -}}
+      {{- if ( eq  .Values.service.type "NodePort" ) }}
       nodePort: {{ .Values.service.nodeport.jupyter }}
       {{- end }}
   selector:
