@@ -86,13 +86,13 @@ spec:
           resources: {}
           env:
             - name: "OMAS_SERVER_NAME"
-              value: "cocoMDS4"
+              value: "cocoMDS2"
             - name: "OMAS_SERVER_URL"
-              value: "https://{{ .Release.Name }}-datalake:9443"
+              value: "https://{{ .Release.Name }}-core:9443"
             - name: "OPEN_LINEAGE_SERVER_URL"
-              value: "https://{{ .Release.Name }}-datalake:9443"
+              value: "https://{{ .Release.Name }}-core:9443"
             - name: "OPEN_LINEAGE_SERVER_NAME"
-              value: "open-lineage"
+              value: "ols"
             - name: "OPEN_LINEAGE_GRAPH_SOURCE"
               value: "MAIN"
             {{ if .Values.debug.egeriaJVM }}
