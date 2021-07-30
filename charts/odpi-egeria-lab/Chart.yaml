@@ -4,7 +4,7 @@
 name: odpi-egeria-lab
 description: Egeria lab environment
 apiVersion: v1
-version: 1.0.2
+version: 3.0.0-prerelease.0
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
   - odpi, egeria, lab, jupyter, notebook
@@ -16,3 +16,7 @@ maintainers:
     email: chris@thegrotes.net
   - name: Nigel Jones
     email: nigel.l.jones+git@gmail.com
+dependencies:
+  - name: kafka
+    version: 13.1.4
+    repository: https://charts.bitnami.com/bitnami
