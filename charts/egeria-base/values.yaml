@@ -88,13 +88,13 @@ imageDefaults:
 image:
   egeria:
     name: egeria
-    tag: 3.0
+    tag: "3.0"
   presentation:
     name: egeria-react-ui
-    tag: 3.0.0
+    tag: "3.0.0"
   configure:
     name: egeria-configure
-    tag: 3.0
+    tag: "3.0"
 
 # --- Kafka Configuration ---
 
