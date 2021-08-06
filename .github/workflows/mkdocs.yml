@@ -20,7 +20,7 @@ jobs:
       # Ensure we have the latest version of ghp_import 
       - run: pip install mkdocs-material ghp_import
       # Manually run the mkdocs build (config is set to use 'site' to publish to)
-      - run: mkdocs build
+      - run: mkdocs -v build
         working-directory: ./site
       # mkdocs doesn't allow a subdir to be published to, so run ghp-import directly
       # All content will go to 'site' and will leave root content untouched
