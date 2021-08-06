@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          # We need all history - we we can later switch to gh-pages
+          fetch-depth: 0
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
