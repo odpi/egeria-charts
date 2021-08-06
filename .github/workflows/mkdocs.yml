@@ -18,7 +18,7 @@ jobs:
       - run: pip install mkdocs-material ghp_import
       # Update our local branch to ensure we have an accurate repo & history to cater for
       # other files added by different actions
-      - run: git branch -D gh_pages && git checkout gh-pages && git pull --rebase && git checkout master
+      - run: git checkout gh-pages && git pull --rebase && git checkout master
       # Manually run the mkdocs build (config is set to use 'site' to publish to)
       - run: mkdocs build
       # mkdocs doesn't allow a subdir to be published to, so run ghp-import directly
