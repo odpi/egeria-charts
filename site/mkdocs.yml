@@ -3,6 +3,7 @@
 site_name: Egeria Kubernetes Helm Charts
 docs_dir: docs
 site_dir: site
+strict: true
 
 site_description: Helm charts for deploying Egeria to Kubernetes
 copyright: "License: <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a>, &copy; 2018-2021 contributors to the Egeria project."
