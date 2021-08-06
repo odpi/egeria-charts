@@ -3,7 +3,7 @@
 name: "MkDocs PR Verify"
 
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:
