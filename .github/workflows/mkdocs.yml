@@ -16,5 +16,5 @@ jobs:
           python-version: 3.x
       - run: pip install mkdocs-material ghp_import
       - run: mkdocs build
-      - run: gh-import site -m 'Updated mkdocs' -p -x site -n
+      - run: ghp-import site -m 'Updated mkdocs' -p -x site -n
 
