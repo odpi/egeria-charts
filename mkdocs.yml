@@ -1,1 +1,3 @@
-site_name: My Docs
+site_name: Egeria Kubernetes Helm Charts
+docs_dir: docs
+site_dir: site
