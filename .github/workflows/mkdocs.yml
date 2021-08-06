@@ -14,6 +14,13 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
+      # Ensure we have the latest version of ghp_import 
       - run: pip install mkdocs-material ghp_import
+      # Update our local branch to ensure we have an accurate repo & history to cater for
+      # other files added by different actions
+      - run: git branch -D gh_pages && git checkout gh-pages && git pull --rebase && git checkout master
+      # Manually run the mkdocs build (config is set to use 'site' to publish to)
       - run: mkdocs build
+      # mkdocs doesn't allow a subdir to be published to, so run ghp-import directly
+      # All content will go to 'site' and will leave root content untouched
       - run: ghp-import site -m 'Updated mkdocs' -p -x site -n
