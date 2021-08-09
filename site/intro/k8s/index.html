@@ -21,7 +21,7 @@
     
     
       
-        <title>K8s - Egeria Kubernetes Helm Charts</title>
+        <title>What is Kubernetes? - Egeria Kubernetes Helm Charts</title>
       
     
     
@@ -72,6 +72,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#what-is-kubernetes" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -148,7 +153,7 @@
                     <span class="md-ellipsis">
                         <a href="https://odpi.github.io/egeria-charts/site/">Egeria Kubernetes Helm Charts</a> /
                         
-                            K8s
+                            What is Kubernetes?
                         
                     </span>
                 </div>
@@ -457,9 +462,11 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        K8s
+        What is Kubernetes?
       </a>
       
     </li>
@@ -629,15 +636,86 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
                 
-                  <h1>K8s</h1>
-                
-                
+                <h1 id="what-is-kubernetes">What is Kubernetes?<a class="headerlink" href="#what-is-kubernetes" title="Permanent link">&para;</a></h1>
+<p><em>Kubernetes, also known as K8s, is an open-source system for automating deployment, scaling, and management of containerized applications.</em> - https://kubernetes.io</p>
+<p>This is how the <a href="https://kubernetes.io/">official website</a> <a href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/">describes</a> it. It's effectively a standardized way of deploying applications in a very scalable way - from everything such as development prototyping through to massive highly available enterprise solutions.</p>
+<p>In this document I'll give a very brief summary that should help those of you new to Kubernetes to make your first steps with Egeria.</p>
+<h1 id="what-are-the-key-concepts-in-kubernetes">What are the key concepts in Kubernetes?<a class="headerlink" href="#what-are-the-key-concepts-in-kubernetes" title="Permanent link">&para;</a></h1>
+<p>These are just some of the concepts that can help to understand what's going on. This isn't a complete list.</p>
+<h2 id="api">Api<a class="headerlink" href="#api" title="Permanent link">&para;</a></h2>
+<p>Kubernetes using a standard <a href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/">API</a> which is oriented around manipulating Objects. The commands are therefore very standard, it's all about the objects.</p>
+<h2 id="making-it-so">Making it so<a class="headerlink" href="#making-it-so" title="Permanent link">&para;</a></h2>
+<p>The system is always observing the state of the system through these objects, and where there are discrepancies, taking action to 'Make it So' as Captain Picard would say. The approach is imperitive. So we think of these <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/">objects</a> as describing the <em>desired state</em> of the system.</p>
+<h2 id="namespace">Namespace<a class="headerlink" href="#namespace" title="Permanent link">&para;</a></h2>
+<p>A <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/">namespace</a> provides a way of seperating out kubernetes resources by users or applications as a convenience. It keeps names more understandable, and avoids global duplicates.</p>
+<p>For example a developer working on a k8s cluster may have a namespace of their own to experiment in.</p>
+<h2 id="container">Container<a class="headerlink" href="#container" title="Permanent link">&para;</a></h2>
+<p>A <a href="https://kubernetes.io/docs/concepts/containers/">Container</a> is what runs stuff. It's similar to a Virtual Machine in some ways, but much more lightweight. Containers use code Images which may be custom built, or very standard off-the-shelf reusable items. Containers are typically very focussed on a single need or application. </p>
+<h2 id="pod">Pod<a class="headerlink" href="#pod" title="Permanent link">&para;</a></h2>
+<p>A <a href="https://kubernetes.io/docs/concepts/workloads/pods/">Pod</a> is a single group of one or more containers. Typically a single main container runs in a pod, but this may be supported by additional containers for log, audit, security, initialization etc. Think of this as an atomic unit that can run a workload.</p>
+<p>Pods are disposeable - they will come and go. Other objects are concerned with providing a reliable service.</p>
+<h2 id="service">Service<a class="headerlink" href="#service" title="Permanent link">&para;</a></h2>
+<p>A <a href="https://kubernetes.io/docs/concepts/services-networking/service/">service</a> provides network accessibility to one or more pods. The service name will be added into local Domain Name Service (DNS) for easy accessibility from other pods. Load can be shared across multiple pods</p>
+<h2 id="ingres">Ingres<a class="headerlink" href="#ingres" title="Permanent link">&para;</a></h2>
+<p>Think of <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a>  as the entry point to Kubernetes services from an external network perspective - so it is these addresses external users would be aware of.</p>
+<h2 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h2>
+<p>A <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">deployment</a> keeps a set of pods running - including replica copies, ie restarted if stopped, matching resource requirements, handling node failure .</p>
+<h2 id="stateful-set">Stateful Set<a class="headerlink" href="#stateful-set" title="Permanent link">&para;</a></h2>
+<p>A <a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/">stateful set</a> goes further than a deployment in that it keeps a well known identifier for each identical replica. This helps in allocating persistent storage &amp; network resources to a replica</p>
+<h2 id="configmap">ConfigMap<a class="headerlink" href="#configmap" title="Permanent link">&para;</a></h2>
+<h2 id="secret">Secret<a class="headerlink" href="#secret" title="Permanent link">&para;</a></h2>
+<h2 id="custom-objects">Custom Objects<a class="headerlink" href="#custom-objects" title="Permanent link">&para;</a></h2>
+<p>In addition to this list -- and many more covered in the official documentation -- Kubernetes also supports custom resources. These form a key part of Kubernetes <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator/">Operators</a>. </p>
+<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">&para;</a></h2>
+<p>Pods can request storage - which is known as a persistent volume claim (PVC), which are either manually or automatically resolved to a persistent volume.</p>
+<p>See the k8s docs <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent Volumes</a></p>
+<h1 id="why-are-we-using-kubernetes">Why are we using Kubernetes?<a class="headerlink" href="#why-are-we-using-kubernetes" title="Permanent link">&para;</a></h1>
+<p>All sizes of systems can run kubernetes applications - from a small raspberry pi through desktops and workstations through to huge cloud deployments. </p>
+<p>Whilst the details around storage, security, networking etc do vary by implementation, the core concepts, and configurations work across all.</p>
+<p>Some may be more concerned about an easy way to play with development code, try out new ideas, whilst at the far end of the spectrum enterprises want something super scalable and reliable, and easy to monitor.</p>
+<p>For egeria we want to achieve two main things
+* Provide easy to use demos and tutorials that show how Egeria can be used and worked with without requiring too much complex setup. 
+* Provide examples that show how Egeria can be deployed in k8s, and then adapted for the organization's needs.</p>
+<p>Other alternatives that might come to mind include
+ * Docker -- whilst simple, this is more geared around running a single container, and building complex environment means a lot of work combining application stacks together, often resulting in something that isn't usable. We do of course still have container images, which are essential to k8s, but these are simple &amp; self contained.
+ * docker-compose -- this builds on docker in allowing multiple containers and servers to be orchestrated, but it's much less flexible &amp; scalable than kubernetes.</p>
+<h1 id="how-do-i-get-access-to-kubernetes">How do I get access to Kubernetes?<a class="headerlink" href="#how-do-i-get-access-to-kubernetes" title="Permanent link">&para;</a></h1>
+<p><a href="https://kubernetes.io/docs/setup/">Getting Started</a> provides links to setting up Kubernetes in many environments. Below we'll take a quick look at some of the simpler examples, especially for new users.</p>
+<h2 id="microk8s-linux-windows-macos">microk8s (Linux, Windows, macOS)<a class="headerlink" href="#microk8s-linux-windows-macos" title="Permanent link">&para;</a></h2>
+<p><a href="https://microk8s.io">microk8s</a></p>
+<h2 id="docker-desktop-windows-macos">Docker Desktop (Windows, macOS)<a class="headerlink" href="#docker-desktop-windows-macos" title="Permanent link">&para;</a></h2>
+<h2 id="cloud">Cloud<a class="headerlink" href="#cloud" title="Permanent link">&para;</a></h2>
+<p>Many cloud providers offer Kubernetes deployments which can be used for experimentation or production. This include</p>
+<ul>
+<li><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it">Redhat OpenShift</a> on multiple cloud providers including on <a href="https://www.ibm.com/uk-en/cloud/openshift">IBMCloud</a></li>
+<li><a href="https://www.ibm.com/cloud/kubernetes-service?p1=Search&amp;p4=43700058232060428&amp;p5=e&amp;gclid=*&amp;gclsrc=aw.ds">Kubernetes on IBMCloud</a></li>
+<li><a href="https://azure.microsoft.com/en-us/services/kubernetes-service/">Azure Kubernetes Service</a></li>
+<li><a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine</a> (GKE)</li>
+</ul>
+<p>Note that in the team's testing we mostly are running Redhat OpenShift on IBMCloud as a managed service. We welcome feedback of running our examples on other environments, especially as some of the specifics around ingress rules, storage, security can vary.</p>
                 
               
               
