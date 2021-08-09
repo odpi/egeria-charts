@@ -54,7 +54,11 @@ A [stateful set](https://kubernetes.io/docs/concepts/workloads/controllers/state
 
 ## ConfigMap
 
+A [config map](https://kubernetes.io/docs/concepts/configuration/configmap/) is a way of keeping configuration (exposed as files or environment variables) seperate to an application.
+
 ## Secret
+
+A [secret](https://kubernetes.io/docs/concepts/configuration/secret/) is used to keep information secret, as the name might suggest ... This might be a password or an API key & the data is encrypted
 
 ## Custom Objects
 
@@ -89,9 +93,44 @@ Other alternatives that might come to mind include
 
 ## microk8s (Linux, Windows, macOS)
 
-[microk8s](https://microk8s.io)
+**[Official microk8s site](https://microk8s.io)**
+
+4GB is recommended as a minimum memory requirement.
+
+### MacOS
+The [macos install](https://microk8s.io/#tab-three__content) docs cover the steps needed to install microk8s.
+
+Most of the Egeria development team use MacOS, so the instructions are elaborated and qualified here:
+
+* The recommended approach uses [HomeBrew](https://brew.sh). This offers a suite of tools often found on linux which are easy to setup on macOS. See [install docs](https://docs.brew.sh/Installation)
+* IMPORTANT: Before installing, go into System Preferences->Security & Privacy. Click the lock to get into Admin mode. Then ensure Firewall Options->Enable Stealth Mode is NOT enabled (no tick). **If it is, microk8s will not work properly**. [More](https://github.com/ubuntu/microk8s/issues/2509)
+* If you are concerned over the firewall change, or homebrew requirement, refer back to the official k8s documentation & choose another k8s implementation that works for you.
+* Ensure you turn on the following services: storage, dns, helm3 . 
+* dashboard is also useful to understand more about k8s and what is running. However it is currently failing as described in [issue 2507](https://github.com/ubuntu/microk8s/issues/2507)
+
+As an example, the following commands should get you set up, but always check the official docs for current details
+
+```shell
+brew install ubuntu/microk8s/microk8s
+microk8s install
+microk8s status --wait-ready
+microk8s enable dns storage helm3
+microk8s kubectl get all --all-namespaces
+```
+Kubernetes is now running.
+### Windows
+
+Follow the [official instructions](https://microk8s.io/#tab-two__content) (untested)
+
+### Linux
+
+Follow the [official instructions](https://microk8s.io/#tab-one__content) (untested)
 
 ## Docker Desktop (Windows, macOS)
+
+[Docker Desktop](https://www.docker.com/products/docker-desktop) supports Kubernetes
+
+After installing, go into Docker Desktop 'settings and select 'Kubernetes'. Make sure 'Enable Kubernetes' is checked. Also under resources ensure at least 4GB is allocated to Docker
 
 ## Cloud
 
@@ -103,3 +142,4 @@ Many cloud providers offer Kubernetes deployments which can be used for experime
 * [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) (GKE)
 
 Note that in the team's testing we mostly are running Redhat OpenShift on IBMCloud as a managed service. We welcome feedback of running our examples on other environments, especially as some of the specifics around ingress rules, storage, security can vary.
+
