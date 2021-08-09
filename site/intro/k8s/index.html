@@ -686,7 +686,9 @@
 <h2 id="stateful-set">Stateful Set<a class="headerlink" href="#stateful-set" title="Permanent link">&para;</a></h2>
 <p>A <a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/">stateful set</a> goes further than a deployment in that it keeps a well known identifier for each identical replica. This helps in allocating persistent storage &amp; network resources to a replica</p>
 <h2 id="configmap">ConfigMap<a class="headerlink" href="#configmap" title="Permanent link">&para;</a></h2>
+<p>A <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">config map</a> is a way of keeping configuration (exposed as files or environment variables) seperate to an application.</p>
 <h2 id="secret">Secret<a class="headerlink" href="#secret" title="Permanent link">&para;</a></h2>
+<p>A <a href="https://kubernetes.io/docs/concepts/configuration/secret/">secret</a> is used to keep information secret, as the name might suggest ... This might be a password or an API key &amp; the data is encrypted</p>
 <h2 id="custom-objects">Custom Objects<a class="headerlink" href="#custom-objects" title="Permanent link">&para;</a></h2>
 <p>In addition to this list -- and many more covered in the official documentation -- Kubernetes also supports custom resources. These form a key part of Kubernetes <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator/">Operators</a>. </p>
 <h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">&para;</a></h2>
@@ -705,8 +707,33 @@
 <h1 id="how-do-i-get-access-to-kubernetes">How do I get access to Kubernetes?<a class="headerlink" href="#how-do-i-get-access-to-kubernetes" title="Permanent link">&para;</a></h1>
 <p><a href="https://kubernetes.io/docs/setup/">Getting Started</a> provides links to setting up Kubernetes in many environments. Below we'll take a quick look at some of the simpler examples, especially for new users.</p>
 <h2 id="microk8s-linux-windows-macos">microk8s (Linux, Windows, macOS)<a class="headerlink" href="#microk8s-linux-windows-macos" title="Permanent link">&para;</a></h2>
-<p><a href="https://microk8s.io">microk8s</a></p>
+<p><strong><a href="https://microk8s.io">Official microk8s site</a></strong></p>
+<p>4GB is recommended as a minimum memory requirement.</p>
+<h3 id="macos">MacOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://microk8s.io/#tab-three__content">macos install</a> docs cover the steps needed to install microk8s.</p>
+<p>Most of the Egeria development team use MacOS, so the instructions are elaborated and qualified here:</p>
+<ul>
+<li>The recommended approach uses <a href="https://brew.sh">HomeBrew</a>. This offers a suite of tools often found on linux which are easy to setup on macOS. See <a href="https://docs.brew.sh/Installation">install docs</a></li>
+<li>IMPORTANT: Before installing, go into System Preferences-&gt;Security &amp; Privacy. Click the lock to get into Admin mode. Then ensure Firewall Options-&gt;Enable Stealth Mode is NOT enabled (no tick). <strong>If it is, microk8s will not work properly</strong>. <a href="https://github.com/ubuntu/microk8s/issues/2509">More</a></li>
+<li>If you are concerned over the firewall change, or homebrew requirement, refer back to the official k8s documentation &amp; choose another k8s implementation that works for you.</li>
+<li>Ensure you turn on the following services: storage, dns, helm3 . </li>
+<li>dashboard is also useful to understand more about k8s and what is running. However it is currently failing as described in <a href="https://github.com/ubuntu/microk8s/issues/2507">issue 2507</a></li>
+</ul>
+<p>As an example, the following commands should get you set up, but always check the official docs for current details</p>
+<p><div class="highlight"><pre><span></span><code>brew install ubuntu/microk8s/microk8s
+microk8s install
+microk8s status --wait-ready
+microk8s <span class="nb">enable</span> dns storage helm3
+microk8s kubectl get all --all-namespaces
+</code></pre></div>
+Kubernetes is now running.</p>
+<h3 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">&para;</a></h3>
+<p>Follow the <a href="https://microk8s.io/#tab-two__content">official instructions</a> (untested)</p>
+<h3 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h3>
+<p>Follow the <a href="https://microk8s.io/#tab-one__content">official instructions</a> (untested)</p>
 <h2 id="docker-desktop-windows-macos">Docker Desktop (Windows, macOS)<a class="headerlink" href="#docker-desktop-windows-macos" title="Permanent link">&para;</a></h2>
+<p><a href="https://www.docker.com/products/docker-desktop">Docker Desktop</a> supports Kubernetes</p>
+<p>After installing, go into Docker Desktop 'settings and select 'Kubernetes'. Make sure 'Enable Kubernetes' is checked. Also under resources ensure at least 4GB is allocated to Docker</p>
 <h2 id="cloud">Cloud<a class="headerlink" href="#cloud" title="Permanent link">&para;</a></h2>
 <p>Many cloud providers offer Kubernetes deployments which can be used for experimentation or production. This include</p>
 <ul>
