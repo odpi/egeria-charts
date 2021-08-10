@@ -132,6 +132,7 @@ microk8s enable dns storage helm3
 microk8s kubectl get all --all-namespaces
 ```
 Kubernetes is now running.
+
 ### Windows
 
 Follow the [official instructions](https://microk8s.io/#tab-two__content) (untested)
@@ -139,6 +140,13 @@ Follow the [official instructions](https://microk8s.io/#tab-two__content) (untes
 ### Linux
 
 Follow the [official instructions](https://microk8s.io/#tab-one__content) (untested)
+
+### kubectl command under microk8s
+
+microk8s qualifies the core k8s command `kubectl` in that you need to use `microk8s kubectl` so either
+* When docs refer you to type `kubectl` then just use `microk8s kubectl`
+* add a shell alias ie `alias kubectl='microk8s kubectl'` into ~/.zshrc or equivilent shell startup script
+
 
 ## Docker Desktop (Windows, macOS)
 

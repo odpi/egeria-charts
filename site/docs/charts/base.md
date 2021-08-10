@@ -150,7 +150,7 @@ types and instances. Also `egeria-platform` is the service for egeria itself. In
 
 How these are exposed can be somewhat dependent on the specific kubernetes environment you are using.
 
-As an example, when running RedHat OpenShift in IBM Cloud, you can expose these services via a LoadBalancer using
+In the [lab chart](lab.md) we provided an example of using `kubectl port-forward`. Here we use RedHat OpenShift in IBM Cloud, where you can expose these services via a LoadBalancer using
 
 ```
 kubectl expose service/egeria-presentation --type=LoadBalancer --port=8091 --target-port=8091 --name pres  
@@ -193,14 +193,6 @@ kubectl delete pvc <id>
 ```
 
 See the section on Configuration for more details
-
-## Feedback & Future
-
-See Egeria on [GitHub](https://github.com/odpi/egeria) for more reference material, our Egeria mailing lists on [lists.lfaidata](https://lists.lfaidata.foundation/groups), or our slack channels by joining/singing up at https://slack.lfai.foundation . We'd very much like to help & discuss how we can improve, and ideally how you can help!
-
-This helm chart offers a basic configuration only - we have also started work at https://github.com/odpi/egeria-k8s-operator & would be delighted if you would
-like to join there too :-)
-
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

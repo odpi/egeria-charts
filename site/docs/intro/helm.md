@@ -27,6 +27,14 @@ Helm is basically focussed on creating yaml documents that are submitted to Kube
 * upgrade
 * rollback
 
+## helm under microk8s
+
+microk8s qualifies the Helm command `helm` in that you need to use `microk8s helm3` so either
+* When docs refer you to type `helm` then just use `microk8s helm3`
+* add a shell alias ie `alias helm='microk8s helm3'` into ~/.zshrc or equivilent shell startup script - if this doesn't clash with your other usage of k8s.
+
+If using this approach you not need to explicitly install Helm.
+
 ## Installing Helm
 
 Some Kubernetes environments may install helm as part of their client tooling, refer to the docs to see if this is the case, and run `helm version` to check - expect to use v3 or above. If so, install can be skipped.
@@ -45,8 +53,6 @@ See the [Installation Guide](https://helm.sh/docs/intro/install/) for more ways 
 ## Accessing the egeria charts repository
 
 Our helm charts for Egeria are stored in a repository hosted on GitHub. The source for these is at https://github.com/odpi/egeria-charts , and as charts are updated they are automatically published to a GitHub pages Website (in fact this one!)
-
-Note that if using microk8s, the helm (version 3) command is actually 'microk8s helm3' and similarly kubectl is 'microk8s kubectl'.
 
 Run the following to add this repository
 ```shell
