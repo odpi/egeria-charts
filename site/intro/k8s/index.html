@@ -739,6 +739,10 @@ Kubernetes is now running.</p>
 <p>Follow the <a href="https://microk8s.io/#tab-two__content">official instructions</a> (untested)</p>
 <h3 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h3>
 <p>Follow the <a href="https://microk8s.io/#tab-one__content">official instructions</a> (untested)</p>
+<h3 id="kubectl-command-under-microk8s">kubectl command under microk8s<a class="headerlink" href="#kubectl-command-under-microk8s" title="Permanent link">&para;</a></h3>
+<p>microk8s qualifies the core k8s command <code>kubectl</code> in that you need to use <code>microk8s kubectl</code> so either
+* When docs refer you to type <code>kubectl</code> then just use <code>microk8s kubectl</code>
+* add a shell alias ie <code>alias kubectl='microk8s kubectl'</code> into ~/.zshrc or equivilent shell startup script</p>
 <h2 id="docker-desktop-windows-macos">Docker Desktop (Windows, macOS)<a class="headerlink" href="#docker-desktop-windows-macos" title="Permanent link">&para;</a></h2>
 <p><a href="https://www.docker.com/products/docker-desktop">Docker Desktop</a> supports Kubernetes</p>
 <p>After installing, go into Docker Desktop 'settings and select 'Kubernetes'. Make sure 'Enable Kubernetes' is checked. Also under resources ensure at least 4GB is allocated to Docker</p>

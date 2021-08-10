@@ -515,6 +515,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#helm-under-microk8s" class="md-nav__link">
+    helm under microk8s
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#installing-helm" class="md-nav__link">
     Installing Helm
   </a>
@@ -740,6 +747,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#helm-under-microk8s" class="md-nav__link">
+    helm under microk8s
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#installing-helm" class="md-nav__link">
     Installing Helm
   </a>
@@ -805,6 +819,11 @@
 * search
 * upgrade
 * rollback</p>
+<h2 id="helm-under-microk8s">helm under microk8s<a class="headerlink" href="#helm-under-microk8s" title="Permanent link">&para;</a></h2>
+<p>microk8s qualifies the Helm command <code>helm</code> in that you need to use <code>microk8s helm3</code> so either
+* When docs refer you to type <code>helm</code> then just use <code>microk8s helm3</code>
+* add a shell alias ie <code>alias helm='microk8s helm3'</code> into ~/.zshrc or equivilent shell startup script - if this doesn't clash with your other usage of k8s.</p>
+<p>If using this approach you not need to explicitly install Helm.</p>
 <h2 id="installing-helm">Installing Helm<a class="headerlink" href="#installing-helm" title="Permanent link">&para;</a></h2>
 <p>Some Kubernetes environments may install helm as part of their client tooling, refer to the docs to see if this is the case, and run <code>helm version</code> to check - expect to use v3 or above. If so, install can be skipped.</p>
 <h3 id="macos">MacOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
@@ -815,7 +834,6 @@
 <p>See the <a href="https://helm.sh/docs/intro/install/">Installation Guide</a> for more ways to install Helm</p>
 <h2 id="accessing-the-egeria-charts-repository">Accessing the egeria charts repository<a class="headerlink" href="#accessing-the-egeria-charts-repository" title="Permanent link">&para;</a></h2>
 <p>Our helm charts for Egeria are stored in a repository hosted on GitHub. The source for these is at https://github.com/odpi/egeria-charts , and as charts are updated they are automatically published to a GitHub pages Website (in fact this one!)</p>
-<p>Note that if using microk8s, the helm (version 3) command is actually 'microk8s helm3' and similarly kubectl is 'microk8s kubectl'.</p>
 <p>Run the following to add this repository
 <div class="highlight"><pre><span></span><code>helm repo add egeria https://odpi.github.io/egeria-charts
 </code></pre></div></p>

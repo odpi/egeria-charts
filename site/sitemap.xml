@@ -21,6 +21,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://odpi.github.io/egeria-charts/site/contribute/feedback/</loc>
+         <lastmod>2021-08-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://odpi.github.io/egeria-charts/site/intro/helm/</loc>
          <lastmod>2021-08-10</lastmod>
          <changefreq>daily</changefreq>

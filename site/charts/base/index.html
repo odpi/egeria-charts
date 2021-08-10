@@ -602,13 +602,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#feedback-future" class="md-nav__link">
-    Feedback &amp; Future
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -780,13 +773,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#feedback-future" class="md-nav__link">
-    Feedback &amp; Future
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -909,7 +895,7 @@ egeria-zookeeper-headless   ClusterIP      None             &lt;none&gt;        
 <p>The <code>egeria-presentation</code> service is very useful to expose as this provides a useful UI where you can explore
 types and instances. Also <code>egeria-platform</code> is the service for egeria itself. In production you might want this only exposed very carefully to other systems - and not other users or the internet, but for experimenting with egeria let's assume you do.</p>
 <p>How these are exposed can be somewhat dependent on the specific kubernetes environment you are using.</p>
-<p>As an example, when running RedHat OpenShift in IBM Cloud, you can expose these services via a LoadBalancer using</p>
+<p>In the <a href="../lab/">lab chart</a> we provided an example of using <code>kubectl port-forward</code>. Here we use RedHat OpenShift in IBM Cloud, where you can expose these services via a LoadBalancer using</p>
 <div class="highlight"><pre><span></span><code>kubectl expose service/egeria-presentation --type=LoadBalancer --port=8091 --target-port=8091 --name pres  
 kubectl expose service/egeria-platform --type=LoadBalancer --port=9443 --target-port=9443 --name platform   
 </code></pre></div>
@@ -937,10 +923,6 @@ Identify those associated with egeria - which should be obvious from the name an
 <div class="highlight"><pre><span></span><code>kubectl delete pvc &lt;id&gt;
 </code></pre></div></p>
 <p>See the section on Configuration for more details</p>
-<h2 id="feedback-future">Feedback &amp; Future<a class="headerlink" href="#feedback-future" title="Permanent link">&para;</a></h2>
-<p>See Egeria on <a href="https://github.com/odpi/egeria">GitHub</a> for more reference material, our Egeria mailing lists on <a href="https://lists.lfaidata.foundation/groups">lists.lfaidata</a>, or our slack channels by joining/singing up at https://slack.lfai.foundation . We'd very much like to help &amp; discuss how we can improve, and ideally how you can help!</p>
-<p>This helm chart offers a basic configuration only - we have also started work at https://github.com/odpi/egeria-k8s-operator &amp; would be delighted if you would
-like to join there too :-)</p>
 <hr />
 <p>License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>,
 Copyright Contributors to the ODPi Egeria project.</p>

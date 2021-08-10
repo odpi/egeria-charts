@@ -801,8 +801,8 @@ and repeatably:</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>helm install lab egeria/odpi-egeria-lab
 </code></pre></div>
-<p>In the following examples we're using microk8s. This defaults to use <code>microk8s helm3</code> to execute helm commands, and <code>microk8s kubectl</code> for kubernetes, to avoid command name clashes. We'll do this throughout the example. If you are using a regular k8s environment just use <code>helm</code> or <code>kubectl</code> instead.</p>
-<p><div class="highlight"><pre><span></span><code>$ microk8s helm3 install lab egeria/odpi-egeria-lab                                                                            <span class="o">[</span><span class="m">11</span>:47:04<span class="o">]</span>
+<p>In the following examples we're using microk8s.</p>
+<p><div class="highlight"><pre><span></span><code>$ helm install lab egeria/odpi-egeria-lab                                                                            <span class="o">[</span><span class="m">11</span>:47:04<span class="o">]</span>
 WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /var/snap/microk8s/2346/credentials/client.config
 NAME: lab
 LAST DEPLOYED: Tue Aug <span class="m">10</span> <span class="m">11</span>:47:19 <span class="m">2021</span>
@@ -817,7 +817,7 @@ ODPi Egeria lab tutorial
 Some additional help text is also output, which is truncated for brevity.</p>
 <p>It can take a few seconds for the various components to all spin-up. You can monitor
 the readiness by running <code>kubectl get all</code> -- when ready, you should see output like the following:</p>
-<p><div class="highlight"><pre><span></span><code>$ microk8s kubectl get all                                                                                                     <span class="o">[</span><span class="m">13</span>:53:43<span class="o">]</span>
+<p><div class="highlight"><pre><span></span><code>$ kubectl get all                                                                                                     <span class="o">[</span><span class="m">13</span>:53:43<span class="o">]</span>
 NAME                                                   READY   STATUS    RESTARTS   AGE
 pod/lab-odpi-egeria-lab-ui-74cc464575-cf8rm            <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
 pod/lab-odpi-egeria-lab-datalake-0                     <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
@@ -880,7 +880,7 @@ We now need to get connectivity to the interesting pods, such as that running th
 
 <span class="s1">If you look in the list of services above (`kubectl get services`) we have one named &#39;</span>service/lab-jupyter<span class="s1">&#39; so let&#39;</span>s try that <span class="o">(</span>with microk8s<span class="o">)</span>:
 <span class="sb">```</span>shell
-$ microk8s kubectl port-forward service/lab-jupyter <span class="m">8888</span>:8888                                                                  <span class="o">[</span><span class="m">13</span>:53:52<span class="o">]</span>
+$ kubectl port-forward service/lab-jupyter <span class="m">8888</span>:8888                                                                  <span class="o">[</span><span class="m">13</span>:53:52<span class="o">]</span>
 Forwarding from <span class="m">127</span>.0.0.1:8888 -&gt; <span class="m">8888</span>
 Forwarding from <span class="o">[</span>::1<span class="o">]</span>:8888 -&gt; <span class="m">8888</span>
 </code></pre></div>
@@ -888,7 +888,7 @@ This command will not return - the port forwarding is active whilst it's running
 <p>At this point you should be able to access your notebooks by going to this forwarded port ie 'http://localhost:8888'</p>
 <h2 id="accessing-the-react-ui">Accessing the React UI<a class="headerlink" href="#accessing-the-react-ui" title="Permanent link">&para;</a></h2>
 <p>We repeat the port forwarding above, this time for another service
-<div class="highlight"><pre><span></span><code>$ microk8s kubectl port-forward service/lab-presentation <span class="m">8091</span>:8091                                                             <span class="o">[</span><span class="m">14</span>:15:37<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>$ kubectl port-forward service/lab-presentation <span class="m">8091</span>:8091                                                             <span class="o">[</span><span class="m">14</span>:15:37<span class="o">]</span>
 Forwarding from <span class="m">127</span>.0.0.1:8091 -&gt; <span class="m">8091</span>
 Forwarding from <span class="o">[</span>::1<span class="o">]</span>:8091 -&gt; <span class="m">8091</span>
 </code></pre></div>
