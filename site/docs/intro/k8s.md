@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 # What is Kubernetes?
 
 _Kubernetes, also known as K8s, is an open-source system for automating deployment, scaling, and management of containerized applications._ - https://kubernetes.io
@@ -6,6 +8,7 @@ This is how the [official website](https://kubernetes.io/) [describes](https://k
 
 
 In this document I'll give a very brief summary that should help those of you new to Kubernetes to make your first steps with Egeria.
+
 
 # What are the key concepts in Kubernetes?
 
@@ -97,6 +100,10 @@ Other alternatives that might come to mind include
 
 4GB is recommended as a minimum memory requirement.
 
+As with most k8s implementations, when running some ongoing cpu will be used, so if running on your laptop/low power device it's recommended to refer to the relevant docs & stop k8s when not in use.
+
+When running on a separate server or a cloud service this isn't a concern.
+
 ### MacOS
 The [macos install](https://microk8s.io/#tab-three__content) docs cover the steps needed to install microk8s.
 
@@ -141,5 +148,9 @@ Many cloud providers offer Kubernetes deployments which can be used for experime
 * [Azure Kubernetes Service](https://azure.microsoft.com/en-us/services/kubernetes-service/)
 * [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) (GKE)
 
-Note that in the team's testing we mostly are running Redhat OpenShift on IBMCloud as a managed service. We welcome feedback of running our examples on other environments, especially as some of the specifics around ingress rules, storage, security can vary.
+In addition to a cloud install, ensure you have installed the relevant cloud provider's tooling to manage their k8s environment, including having access to the standard kubernetes command `kubectl`.
 
+Note that in the team's testing we mostly are running Redhat OpenShift on IBMCloud as a managed service. We welcome feedback of running our examples on other environments, especially as some of the specifics around ingress rules, storage, security can vary.
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
