@@ -17,7 +17,7 @@
         <link rel="canonical" href="https://odpi.github.io/egeria-charts/site/charts/base/">
       
       <link rel="icon" href="../../assets/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.2">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.3">
     
     
       
@@ -25,10 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.1118c9be.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.f7f47774.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ba0d045b.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
         
       
     
@@ -72,6 +72,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#base-egeria-egeria-base" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -450,7 +455,7 @@
   
     <li class="md-nav__item">
       <a href="../../intro/k8s/" class="md-nav__link">
-        What is Kubernetes?
+        K8s
       </a>
     </li>
   
@@ -523,10 +528,90 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Base
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         Base
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#additional-install-configuration" class="md-nav__link">
+    Additional Install Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-additional-connectors" class="md-nav__link">
+    Using additional connectors
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-egeria" class="md-nav__link">
+    Accessing Egeria
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleaning-up-removing-egeria" class="md-nav__link">
+    Cleaning up / removing Egeria
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feedback-future" class="md-nav__link">
+    Feedback &amp; Future
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -629,15 +714,236 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#additional-install-configuration" class="md-nav__link">
+    Additional Install Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-additional-connectors" class="md-nav__link">
+    Using additional connectors
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-egeria" class="md-nav__link">
+    Accessing Egeria
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleaning-up-removing-egeria" class="md-nav__link">
+    Cleaning up / removing Egeria
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feedback-future" class="md-nav__link">
+    Feedback &amp; Future
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
                 
-                  <h1>Base</h1>
-                
-                
+                <!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+<h1 id="base-egeria-egeria-base">Base Egeria (egeria-base)<a class="headerlink" href="#base-egeria-egeria-base" title="Permanent link">&para;</a></h1>
+<p>This is a simple deployment of Egeria which will just deploy a basic Egeria environment
+which is ready for you to experiment with. Specifically it sets up</p>
+<ul>
+<li>A single egeria platform which hosts<ul>
+<li>An egeria metadata server with a persistent graph store</li>
+<li>A new server to support the UI</li>
+</ul>
+</li>
+<li>A UI to allow browsing of types, instances &amp; servers</li>
+<li>Apache Kafka &amp; Zookeeper</li>
+</ul>
+<p>It does not provide access to our lab notebooks, the Polymer based UI, nor is it preloaded with any data.</p>
+<p>This chart may also be useful to understand how to deploy Egeria within kubernetes. In future we anticipate providing
+an <a href="https://github.com/odpi/egeria-k8s-operator">operator</a> which will be more flexible</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>In order to use the labs, you'll first need to have the following installed:</p>
+<ul>
+<li>A Kubernetes cluster at 1.15 or above</li>
+<li>the <code>kubectl</code> tool in your path</li>
+<li><a href="https://github.com/helm/helm/releases">Helm</a> 3.0 or above</li>
+</ul>
+<p>No configuration of the chart is required to use defaults, but information is provided below</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>From one directory level above the location of this README, run the following:</p>
+<div class="highlight"><pre><span></span><code>helm dep update egeria-base
+helm install egeria egeria-base
+</code></pre></div>
+<p>THE INSTALL WILL TAKE SEVERAL MINUTES</p>
+<p>This is because it is not only creating the required
+objects in Kubernetes to run the platforms, but also is configuring egeria itself - which involves waiting
+for everything to startup before configuring Egeria via REST API calls.</p>
+<p>Once installed the configured server is set to start automatically, storage is persisted, and so if your pod gets moved/restarted, egeria should come back automatically with the same data as before.</p>
+<h3 id="additional-install-configuration">Additional Install Configuration<a class="headerlink" href="#additional-install-configuration" title="Permanent link">&para;</a></h3>
+<p>This section is optional - skip over if you're happy with defaults - a good idea to begin with.</p>
+<p>In a helm chart the configuration that has been externalised by the chart writer is specified in the <code>values.yaml</code> file which you can find in this directory. However rather than edit this file directly, it's recommended you create an additional file with the required overrides.</p>
+<p>As an example, in <code>values.yaml</code> we see a value 'serverName' which is set to mds1. If I want to override this I could do
+<div class="highlight"><pre><span></span><code>helm install --set-string egeria.serverName<span class="o">=</span>myserver
+</code></pre></div>
+However this can get tedious with multiple values to override, and you need to know the correct types to use.</p>
+<p>Instead it may be easier to create an additional file. For example let's create a file in my home directory <code>~/egeria.yaml</code> containing:
+<div class="highlight"><pre><span></span><code>egeria:
+  serverName: metadataserver
+  viewServerName: presentationview
+</code></pre></div>
+We can then install the chart with:
+<div class="highlight"><pre><span></span><code>helm install -f ~/egeria.yaml egeria egeria-base
+</code></pre></div></p>
+<p>Up to now the installation has been called <code>egeria</code> but we could call it something else ie <code>metadataserver</code>
+<div class="highlight"><pre><span></span><code>helm install -f ~/egeria.yaml metadataserver egeria-base
+</code></pre></div></p>
+<p>This is known as a <code>release</code> in Helm, and we can have multiple installed currently.</p>
+<p>To list these use
+<div class="highlight"><pre><span></span><code>helm list
+</code></pre></div>
+and to delete both names we've experimented with so far:
+<div class="highlight"><pre><span></span><code>helm delete metadataserver
+helm delete egeria
+</code></pre></div></p>
+<p>Refer to the comments in <code>values.yaml</code> for further information on what can be configured - this includes:
+- server, organization, cohort names
+- storage options - k8s storage class/size
+- Egeria version
+- Kubernetes service setup (see below also)
+- roles &amp; accounts
+- timeouts
+- names &amp; repositories for docker images used by the chart
+- Kafka specific configuration (setup in the Bitnami chart we use)</p>
+<h3 id="using-additional-connectors">Using additional connectors<a class="headerlink" href="#using-additional-connectors" title="Permanent link">&para;</a></h3>
+<p>If you have additional Egeria connectors that are needed in your deployment, you should soon be able to include the following when deploying the chart</p>
+<p><div class="highlight"><pre><span></span><code>helm install --include-dir <span class="nv">libs</span><span class="o">=</span>~/libs egeria egeria-base
+</code></pre></div>
+Where in this example ~/libs is the directory including the additional connectors you wish to use.</p>
+<p>However the support for this is awaiting a <a href="https://github.com/helm/helm/pull/8841">helm PR</a>, so in the meantime please copy files directly into a 'libs' directory within the chart instead.</p>
+<p>For example
+<div class="highlight"><pre><span></span><code>mkdir egeria-base/libs
+cp ~/libs/*jar egeria-base/libs
+</code></pre></div></p>
+<p>These files will be copied into a kubernetes config map, which is then made available as a mounted volume to the runtime image of egeria &amp; added to the class loading path as <code>/extlib</code>. You still need to configure the egeria server(s) appropriately</p>
+<h2 id="accessing-egeria">Accessing Egeria<a class="headerlink" href="#accessing-egeria" title="Permanent link">&para;</a></h2>
+<p>When this chart is installed, an initialization job is run to configure the egeria metadata server and UI.</p>
+<p>For example looking at kubernetes jobs will show something like:
+<div class="highlight"><pre><span></span><code>$ kubectl get pods                                                                                      <span class="o">[</span><span class="m">17</span>:27:11<span class="o">]</span>
+NAME                                        READY   STATUS    RESTARTS   AGE
+egeria-base-config-crhrv                    <span class="m">1</span>/1     Running   <span class="m">0</span>          4m16s
+egeria-base-platform-0                      <span class="m">1</span>/1     Running   <span class="m">0</span>          4m16s
+egeria-base-presentation-699669cfd4-9swjb   <span class="m">1</span>/1     Running   <span class="m">0</span>          4m16s
+egeria-kafka-0                              <span class="m">1</span>/1     Running   <span class="m">2</span>          4m16s
+egeria-zookeeper-0                          <span class="m">1</span>/1     Running   <span class="m">0</span>          4m16s
+</code></pre></div></p>
+<p>You should wait until that first 'egeria-base-config' job completes, it will then disappear from the list.
+This job issues REST calls against the egeria serves to configure them for this simple environment (see scripts directory).</p>
+<p>The script will not run again, since we will have now configured the servers with persistent storage, and for the platform
+to autostart our servers. So even if a pod is removed and restarted, the egeria platform and servers should return in the same state.</p>
+<p>We now have egeria running within a Kubernetes cluster, but by default no services are exposed externally - they are all of type <code>ClusterIP</code> - we can see these with</p>
+<div class="highlight"><pre><span></span><code>$ kubectl get services                                                                                                                                                                                                                                <span class="o">[</span><span class="m">12</span>:38:16<span class="o">]</span>
+NAME                        TYPE           CLUSTER-IP       EXTERNAL-IP                         PORT<span class="o">(</span>S<span class="o">)</span>                      AGE
+egeria-kafka                ClusterIP      <span class="m">172</span>.21.42.105    &lt;none&gt;                              <span class="m">9092</span>/TCP                     33m
+egeria-kafka-headless       ClusterIP      None             &lt;none&gt;                              <span class="m">9092</span>/TCP,9093/TCP            33m
+egeria-platform             ClusterIP      <span class="m">172</span>.21.40.79     &lt;none&gt;                              <span class="m">9443</span>/TCP                     33m
+egeria-presentation         ClusterIP      <span class="m">172</span>.21.107.242   &lt;none&gt;                              <span class="m">8091</span>/TCP                     33m
+egeria-zookeeper            ClusterIP      <span class="m">172</span>.21.126.56    &lt;none&gt;                              <span class="m">2181</span>/TCP,2888/TCP,3888/TCP   33m
+egeria-zookeeper-headless   ClusterIP      None             &lt;none&gt;                              <span class="m">2181</span>/TCP,2888/TCP,3888/TCP   33m
+</code></pre></div>
+<p>The <code>egeria-presentation</code> service is very useful to expose as this provides a useful UI where you can explore
+types and instances. Also <code>egeria-platform</code> is the service for egeria itself. In production you might want this only exposed very carefully to other systems - and not other users or the internet, but for experimenting with egeria let's assume you do.</p>
+<p>How these are exposed can be somewhat dependent on the specific kubernetes environment you are using.</p>
+<p>As an example, when running RedHat OpenShift in IBM Cloud, you can expose these services via a LoadBalancer using</p>
+<div class="highlight"><pre><span></span><code>kubectl expose service/egeria-presentation --type=LoadBalancer --port=8091 --target-port=8091 --name pres  
+kubectl expose service/egeria-platform --type=LoadBalancer --port=9443 --target-port=9443 --name platform   
+</code></pre></div>
+<p>If I run these, and then look again at my services I see I now have 2 additional entries (modified for obfuscation):
+<div class="highlight"><pre><span></span><code>platform                    LoadBalancer   172.21.218.241   3bc644c3-eu-gb.lb.appdomain.cloud   9443:30640/TCP               25h
+pres                        LoadBalancer   172.21.18.10     42b0c7f5-eu-gb.lb.appdomain.cloud   8091:30311/TCP               22h
+</code></pre></div></p>
+<p>So I can access them at their respective hosts. Note that where hosts are allocated dynamically, it can take up to an hour or more for DNS caches to refresh. Waiting up to 5 minutes then refreshing a local cache has proven sufficient for me, but your experience may differ.</p>
+<p>In the example above, the Egeria UI can be accessed at <code>https://42b0c7f5-eu-gb.lb.appdomain.cloud:8091/org/</code> . Replace the hostname accordingly, and also the <code>org</code> is the organization name from the <code>Values.yaml</code> file we referred to above</p>
+<p>Once logged in, you should be able to login using our demo userid/password of <code>garygeeke/admin</code> &amp; start browsing types and instances within Egeria.</p>
+<p>You can also issue REST API calls against egeria using a base URL for the platform of <code>https://3bc644c3-eu-gb.lb.appdomain.cloud</code> - Other material
+covers these REST API calls in more detail, but a simple api doc is available at <code>https://3bc644c3-eu-gb.lb.appdomain.cloud/swagger-ui.html</code></p>
+<h2 id="cleaning-up-removing-egeria">Cleaning up / removing Egeria<a class="headerlink" href="#cleaning-up-removing-egeria" title="Permanent link">&para;</a></h2>
+<p>To delete the deployment, simply run this for Helm3:</p>
+<div class="highlight"><pre><span></span><code>$ helm delete egeria
+</code></pre></div>
+<p>In addition, the egeria chart makes use of persistent storage. To remove these use
+<div class="highlight"><pre><span></span><code>$ kubectl get pvc
+NAME                                        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
+data-egeria-kafka-0                         Bound    pvc-d31e0012-8568-4e6f-ae5d-94832ebcd92d   10Gi       RWO            ibmc-vpc-block-10iops-tier   48m
+data-egeria-zookeeper-0                     Bound    pvc-90739fce-dce0-422b-8738-a38293d8fdfb   10Gi       RWO            ibmc-vpc-block-10iops-tier   48m
+egeria-egeria-data-egeria-base-platform-0   Bound    pvc-197ba47e-a6d5-4f35-a7d8-7b7ec1ed1df3   10Gi       RWO            ibmc-vpc-block-10iops-tier   48m
+</code></pre></div>
+Identify those associated with egeria - which should be obvious from the name and then delete with
+<div class="highlight"><pre><span></span><code>kubectl delete pvc &lt;id&gt;
+</code></pre></div></p>
+<p>See the section on Configuration for more details</p>
+<h2 id="feedback-future">Feedback &amp; Future<a class="headerlink" href="#feedback-future" title="Permanent link">&para;</a></h2>
+<p>See Egeria on <a href="https://github.com/odpi/egeria">GitHub</a> for more reference material, our Egeria mailing lists on <a href="https://lists.lfaidata.foundation/groups">lists.lfaidata</a>, or our slack channels by joining/singing up at https://slack.lfai.foundation . We'd very much like to help &amp; discuss how we can improve, and ideally how you can help!</p>
+<p>This helm chart offers a basic configuration only - we have also started work at https://github.com/odpi/egeria-k8s-operator &amp; would be delighted if you would
+like to join there too :-)</p>
+<hr />
+<p>License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>,
+Copyright Contributors to the ODPi Egeria project.</p>
                 
               
               
@@ -748,7 +1054,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.2b46852b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.29db7785.min.js"></script>
       
     
   </body>

@@ -17,18 +17,18 @@
         <link rel="canonical" href="https://odpi.github.io/egeria-charts/site/intro/k8s/">
       
       <link rel="icon" href="../../assets/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.2">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.3">
     
     
       
-        <title>What is Kubernetes? - Egeria Kubernetes Helm Charts</title>
+        <title>K8s - Egeria Kubernetes Helm Charts</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.1118c9be.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.f7f47774.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ba0d045b.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
         
       
     
@@ -153,7 +153,7 @@
                     <span class="md-ellipsis">
                         <a href="https://odpi.github.io/egeria-charts/site/">Egeria Kubernetes Helm Charts</a> /
                         
-                            What is Kubernetes?
+                            K8s
                         
                     </span>
                 </div>
@@ -466,7 +466,7 @@
       
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        What is Kubernetes?
+        K8s
       </a>
       
     </li>
@@ -659,7 +659,9 @@
               
                 
                 
-                <h1 id="what-is-kubernetes">What is Kubernetes?<a class="headerlink" href="#what-is-kubernetes" title="Permanent link">&para;</a></h1>
+                <!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+<h1 id="what-is-kubernetes">What is Kubernetes?<a class="headerlink" href="#what-is-kubernetes" title="Permanent link">&para;</a></h1>
 <p><em>Kubernetes, also known as K8s, is an open-source system for automating deployment, scaling, and management of containerized applications.</em> - https://kubernetes.io</p>
 <p>This is how the <a href="https://kubernetes.io/">official website</a> <a href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/">describes</a> it. It's effectively a standardized way of deploying applications in a very scalable way - from everything such as development prototyping through to massive highly available enterprise solutions.</p>
 <p>In this document I'll give a very brief summary that should help those of you new to Kubernetes to make your first steps with Egeria.</p>
@@ -709,6 +711,8 @@
 <h2 id="microk8s-linux-windows-macos">microk8s (Linux, Windows, macOS)<a class="headerlink" href="#microk8s-linux-windows-macos" title="Permanent link">&para;</a></h2>
 <p><strong><a href="https://microk8s.io">Official microk8s site</a></strong></p>
 <p>4GB is recommended as a minimum memory requirement.</p>
+<p>As with most k8s implementations, when running some ongoing cpu will be used, so if running on your laptop/low power device it's recommended to refer to the relevant docs &amp; stop k8s when not in use.</p>
+<p>When running on a separate server or a cloud service this isn't a concern.</p>
 <h3 id="macos">MacOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
 <p>The <a href="https://microk8s.io/#tab-three__content">macos install</a> docs cover the steps needed to install microk8s.</p>
 <p>Most of the Egeria development team use MacOS, so the instructions are elaborated and qualified here:</p>
@@ -742,7 +746,10 @@ Kubernetes is now running.</p>
 <li><a href="https://azure.microsoft.com/en-us/services/kubernetes-service/">Azure Kubernetes Service</a></li>
 <li><a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine</a> (GKE)</li>
 </ul>
-<p>Note that in the team's testing we mostly are running Redhat OpenShift on IBMCloud as a managed service. We welcome feedback of running our examples on other environments, especially as some of the specifics around ingress rules, storage, security can vary.</p>
+<p>In addition to a cloud install, ensure you have installed the relevant cloud provider's tooling to manage their k8s environment, including having access to the standard kubernetes command <code>kubectl</code>.</p>
+<h2 id="note-that-in-the-teams-testing-we-mostly-are-running-redhat-openshift-on-ibmcloud-as-a-managed-service-we-welcome-feedback-of-running-our-examples-on-other-environments-especially-as-some-of-the-specifics-around-ingress-rules-storage-security-can-vary">Note that in the team's testing we mostly are running Redhat OpenShift on IBMCloud as a managed service. We welcome feedback of running our examples on other environments, especially as some of the specifics around ingress rules, storage, security can vary.<a class="headerlink" href="#note-that-in-the-teams-testing-we-mostly-are-running-redhat-openshift-on-ibmcloud-as-a-managed-service-we-welcome-feedback-of-running-our-examples-on-other-environments-especially-as-some-of-the-specifics-around-ingress-rules-storage-security-can-vary" title="Permanent link">&para;</a></h2>
+<p>License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>,
+Copyright Contributors to the ODPi Egeria project.</p>
                 
               
               
@@ -853,7 +860,7 @@ Kubernetes is now running.</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.2b46852b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.29db7785.min.js"></script>
       
     
   </body>
