@@ -713,6 +713,10 @@
 <p>4GB is recommended as a minimum memory requirement.</p>
 <p>As with most k8s implementations, when running some ongoing cpu will be used, so if running on your laptop/low power device it's recommended to refer to the relevant docs &amp; stop k8s when not in use.</p>
 <p>When running on a separate server or a cloud service this isn't a concern.</p>
+<p>When using microk8s, note that the standard k8s commands are renamed to avoid clashes, so use the microk8s ones in the remainder of the Egeria documentation</p>
+<p>kubectl -&gt; microk8s kubectl
+helm -&gt; microk8s helm</p>
+<p>They can also be aliased on some platforms.</p>
 <h3 id="macos">MacOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
 <p>The <a href="https://microk8s.io/#tab-three__content">macos install</a> docs cover the steps needed to install microk8s.</p>
 <p>Most of the Egeria development team use MacOS, so the instructions are elaborated and qualified here:</p>
@@ -747,7 +751,18 @@ Kubernetes is now running.</p>
 <li><a href="https://cloud.google.com/kubernetes-engine">Google Kubernetes Engine</a> (GKE)</li>
 </ul>
 <p>In addition to a cloud install, ensure you have installed the relevant cloud provider's tooling to manage their k8s environment, including having access to the standard kubernetes command <code>kubectl</code>.</p>
-<h2 id="note-that-in-the-teams-testing-we-mostly-are-running-redhat-openshift-on-ibmcloud-as-a-managed-service-we-welcome-feedback-of-running-our-examples-on-other-environments-especially-as-some-of-the-specifics-around-ingress-rules-storage-security-can-vary">Note that in the team's testing we mostly are running Redhat OpenShift on IBMCloud as a managed service. We welcome feedback of running our examples on other environments, especially as some of the specifics around ingress rules, storage, security can vary.<a class="headerlink" href="#note-that-in-the-teams-testing-we-mostly-are-running-redhat-openshift-on-ibmcloud-as-a-managed-service-we-welcome-feedback-of-running-our-examples-on-other-environments-especially-as-some-of-the-specifics-around-ingress-rules-storage-security-can-vary" title="Permanent link">&para;</a></h2>
+<p>Note that in the team's testing we mostly are running Redhat OpenShift on IBMCloud as a managed service. We welcome feedback of running our examples on other environments, especially as some of the specifics around ingress rules, storage, security can vary.</p>
+<h2 id="accessing-applications-in-your-cluster">Accessing applications in your cluster<a class="headerlink" href="#accessing-applications-in-your-cluster" title="Permanent link">&para;</a></h2>
+<p>See also <a href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-services/">kubernetes docs</a></p>
+<h3 id="nodeport">NodePort<a class="headerlink" href="#nodeport" title="Permanent link">&para;</a></h3>
+<p>In the sample charts provided an option to use a <a href="https://kubernetes.io/docs/concepts/services-networking/service/#nodeport">NodePort</a> is usually provided.</p>
+<p>This is often easiest when running k8s locally, as any of the ip addressible worker nodes in your cluster can service a request on the port provided. This is why it's named a 'node port' ie a port on your node..</p>
+<h3 id="kubectl-port-forward">kubectl port-forward<a class="headerlink" href="#kubectl-port-forward" title="Permanent link">&para;</a></h3>
+<p>This can be run at a command line, and directly sets up forwarding from local ports into services running in your cluster. It requires no additional configuration beforehand, and lasts only as long as the port forwarding is running.</p>
+<p>See <a href="https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/">port forwarding</a> for more info</p>
+<h3 id="ingress">Ingress<a class="headerlink" href="#ingress" title="Permanent link">&para;</a></h3>
+<p>Ingress rules define how traffic directed at your k8s cluster is directed. Their definition tends to vary substantially between different k8s implementations but often is the easiest approach when running with a cloud service.</p>
+<h2 id="microk8s-ingress">* <a href="https://microk8s.io/docs/addon-ingress">microk8s ingress</a><a class="headerlink" href="#microk8s-ingress" title="Permanent link">&para;</a></h2>
 <p>License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>,
 Copyright Contributors to the ODPi Egeria project.</p>
                 

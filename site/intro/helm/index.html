@@ -815,6 +815,7 @@
 <p>See the <a href="https://helm.sh/docs/intro/install/">Installation Guide</a> for more ways to install Helm</p>
 <h2 id="accessing-the-egeria-charts-repository">Accessing the egeria charts repository<a class="headerlink" href="#accessing-the-egeria-charts-repository" title="Permanent link">&para;</a></h2>
 <p>Our helm charts for Egeria are stored in a repository hosted on GitHub. The source for these is at https://github.com/odpi/egeria-charts , and as charts are updated they are automatically published to a GitHub pages Website (in fact this one!)</p>
+<p>Note that if using microk8s, the helm (version 3) command is actually 'microk8s helm3' and similarly kubectl is 'microk8s kubectl'.</p>
 <p>Run the following to add this repository
 <div class="highlight"><pre><span></span><code>helm repo add egeria https://odpi.github.io/egeria-charts
 </code></pre></div></p>

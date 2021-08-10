@@ -557,6 +557,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#accessing-the-react-ui" class="md-nav__link">
+    Accessing the React UI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#starting-over" class="md-nav__link">
     Starting over
   </a>
@@ -564,8 +571,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#port-clashes" class="md-nav__link">
-    Port Clashes
+  <a href="#overriding-configuration" class="md-nav__link">
+    Overriding Configuration
   </a>
   
 </li>
@@ -573,13 +580,6 @@
         <li class="md-nav__item">
   <a href="#enabling-persistence" class="md-nav__link">
     Enabling persistence
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-the-environment-to-extend-notebooks-or-develop-new-ones" class="md-nav__link">
-    Using the environment to extend notebooks or develop new ones
   </a>
   
 </li>
@@ -734,6 +734,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#accessing-the-react-ui" class="md-nav__link">
+    Accessing the React UI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#starting-over" class="md-nav__link">
     Starting over
   </a>
@@ -741,8 +748,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#port-clashes" class="md-nav__link">
-    Port Clashes
+  <a href="#overriding-configuration" class="md-nav__link">
+    Overriding Configuration
   </a>
   
 </li>
@@ -750,13 +757,6 @@
         <li class="md-nav__item">
   <a href="#enabling-persistence" class="md-nav__link">
     Enabling persistence
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-the-environment-to-extend-notebooks-or-develop-new-ones" class="md-nav__link">
-    Using the environment to extend notebooks or develop new ones
   </a>
   
 </li>
@@ -778,149 +778,122 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 <h1 id="lab-coco-pharmaceuticals-odpi-egeria-lab">Lab - Coco Pharmaceuticals (odpi-egeria-lab)<a class="headerlink" href="#lab-coco-pharmaceuticals-odpi-egeria-lab" title="Permanent link">&para;</a></h1>
-<p>This Helm chart will deploy the following components, all in a self-contained environment,
-for use in the Egeria hands-on labs -- allowing you to explore Egeria and its concepts safely
+<p>This example is intended to replicate the metadata landscape of a hypothetical company, Coco Pharmaceuticals, and allow you to understand a little more about how Egeria can help, and how to use it. This forms our 'Hands on Lab'.</p>
+<p>The Helm chart will deploy the following components, all in a self-contained environment,
+ allowing you to explore Egeria and its concepts safely
 and repeatably:</p>
 <ul>
 <li>Multiple Egeria servers</li>
 <li>Apache Kafka (and its Zookeeper dependency)</li>
-<li>Jupyter Notebooks</li>
+<li>Example Jupyter Notebooks</li>
+<li>Jupyter runtime</li>
+<li>Egeria's React based UI</li>
 </ul>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <p>In order to use the labs, you'll first need to have the following installed:</p>
 <ul>
 <li>Kubernetes 1.15 or above</li>
 <li>Helm 3.0 or above</li>
+<li>Egeria chart repository configured &amp; updated</li>
 </ul>
-<p>The minimum tested configurations for Kubernetes are
-- Cloud/remote service - 3 nodes, 2GB ram per node
-- Local docker for mac/windows - 1 node, 6Gb ram dedicated to docker</p>
-<p>You could use the Docker-embedded Kubernetes for this on eg. Docker Desktop,
-or a public cloud service that provides Kubernetes</p>
-<p>If you need to install helm3, please obtain from https://github.com/helm/helm/releases before starting and
-ensure the 'helm' executable is in your PATH. The
-instructions and examples that follow assume use of this version</p>
-<p>If you can't meet these requirements, or would like to start with a simpler approach,
-an alternative environment for running the tutorials has been implemented using docker-compose &amp; can be found at https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials .</p>
+<p>6GB RAM minimum is recommended for your k8s environment.</p>
+<p>You no longer need a git clone of this repository to install the chart.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<p>From one directory level above the location of this README, run the following:</p>
-<div class="highlight"><pre><span></span><code>helm dep update odpi-egeria-lab
-helm install lab odpi-egeria-lab
+<div class="highlight"><pre><span></span><code>helm install lab egeria/odpi-egeria-lab
 </code></pre></div>
-<p>Example transcript:</p>
-<div class="highlight"><pre><span></span><code>$ export PATH=~/bin:$PATH
-$ pwd
-/home/jonesn/egeria/open-metadata-resources/open-metadata-deployment/charts
-$ helm version
-version.BuildInfo{Version:&quot;v3.5.3&quot;, GitCommit:&quot;041ce5a2c17a58be0fcd5f5e16fb3e7e95fea622&quot;, GitTreeState:&quot;dirty&quot;, GoVersion:&quot;go1.16&quot;}
-$ helm dep update odpi-egeria-lab
-Getting updates for unmanaged Helm repositories...
-...Successfully got an update from the &quot;https://charts.bitnami.com/bitnami&quot; chart repository
-Saving 1 charts
-Downloading kafka from repo https://charts.bitnami.com/bitnami
-Deleting outdated charts
-</code></pre></div>
-<p>Now we can actually do the deployment with</p>
-<div class="highlight"><pre><span></span><code>helm install lab odpi-egeria-lab
-</code></pre></div>
-<p>which will look like:</p>
-<div class="highlight"><pre><span></span><code>$ helm install lab odpi-egeria-lab                                      [16:52:10]
+<p>In the following examples we're using microk8s. This defaults to use <code>microk8s helm3</code> to execute helm commands, and <code>microk8s kubectl</code> for kubernetes, to avoid command name clashes. We'll do this throughout the example. If you are using a regular k8s environment just use <code>helm</code> or <code>kubectl</code> instead.</p>
+<p><div class="highlight"><pre><span></span><code>$ microk8s helm3 install lab egeria/odpi-egeria-lab                                                                            <span class="o">[</span><span class="m">11</span>:47:04<span class="o">]</span>
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /var/snap/microk8s/2346/credentials/client.config
 NAME: lab
-LAST DEPLOYED: Tue Apr  6 16:52:17 2021
-NAMESPACE: egeria-release
+LAST DEPLOYED: Tue Aug <span class="m">10</span> <span class="m">11</span>:47:19 <span class="m">2021</span>
+NAMESPACE: default
 STATUS: deployed
-REVISION: 1
+REVISION: <span class="m">1</span>
 TEST SUITE: None
 NOTES:
 ODPi Egeria lab tutorial
 ---
-
-The Egeria tutorials have now been deployed to Kubernetes.
-It may take a minute or so for everything to start up.
-
-Open your web browser and go to addressofmycluster:30888 to
-get started
-
-You may need to contact your cluster admin, or read your cloud provider helptext to understand
-the correct &#39;addressofmycluster&#39; to use.
-
-If you experience problems, check memory consumption on your nodes. A minimum of
-a 3 node cluster, 2GB per node; or a desktop environment with 6GB dedicated is recommended.
-
-Please provide any feeback via a github issue at https://github.com/odpi/egeria or
-join us on slack via https://http://slack.lfai.foundation
-
-- The ODPi Egeria team
 </code></pre></div>
-<p>Note that it can take a few seconds for the various components to all spin-up. You can monitor
+Some additional help text is also output, which is truncated for brevity.</p>
+<p>It can take a few seconds for the various components to all spin-up. You can monitor
 the readiness by running <code>kubectl get all</code> -- when ready, you should see output like the following:</p>
-<div class="highlight"><pre><span></span><code>$ kubectl get all                                                       [16:52:24]
-NAME                                                    READY   STATUS    RESTARTS   AGE
-pod/lab-odpi-egeria-lab-core-0                          0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-datalake-0                      0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-dev-0                           0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-factory-0                       0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-jupyter-bb7cf5f47-k6w2p         1/1     Running   0          34s
-pod/lab-odpi-egeria-lab-nginx-69f7cfc67b-nptz5          1/1     Running   0          34s
-pod/lab-odpi-egeria-lab-presentation-66574b9796-7t4rc   1/1     Running   0          34s
-pod/lab-odpi-egeria-lab-ui-6b4874b5d-6kr74              0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-uistatic-6694896d7b-7qj2w       1/1     Running   0          34s
-pod/lab-zookeeper-0                                     1/1     Running   0          34s
+<p><div class="highlight"><pre><span></span><code>$ microk8s kubectl get all                                                                                                     <span class="o">[</span><span class="m">13</span>:53:43<span class="o">]</span>
+NAME                                                   READY   STATUS    RESTARTS   AGE
+pod/lab-odpi-egeria-lab-ui-74cc464575-cf8rm            <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-odpi-egeria-lab-datalake-0                     <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-odpi-egeria-lab-nginx-7b96949b4f-7dff4         <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-odpi-egeria-lab-presentation-bd9789747-rbv69   <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-kafka-0                                        <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-zookeeper-0                                    <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-odpi-egeria-lab-dev-0                          <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-odpi-egeria-lab-uistatic-7b98d4bf9b-sf9bj      <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-odpi-egeria-lab-core-0                         <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-odpi-egeria-lab-factory-0                      <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
+pod/lab-odpi-egeria-lab-jupyter-77b6868c4-9hnlp        <span class="m">1</span>/1     Running   <span class="m">0</span>          126m
 
-NAME                                  TYPE           CLUSTER-IP       EXTERNAL-IP                         PORT(S)                      AGE
-service/lab-core                      ClusterIP      172.21.163.188   &lt;none&gt;                              9443/TCP                     34s
-service/lab-datalake                  ClusterIP      172.21.25.50     &lt;none&gt;                              9443/TCP                     34s
-service/lab-dev                       ClusterIP      172.21.19.97     &lt;none&gt;                              9443/TCP                     34s
-service/lab-jupyter                   ClusterIP      172.21.200.189   &lt;none&gt;                              8888/TCP                     34s
-service/lab-kafka                     ClusterIP      172.21.199.61    &lt;none&gt;                              9092/TCP                     34s
-service/lab-kafka-headless            ClusterIP      None             &lt;none&gt;                              9092/TCP,9093/TCP            34s
-service/lab-nginx                     ClusterIP      172.21.245.104   &lt;none&gt;                              443/TCP                      34s
-service/lab-odpi-egeria-lab-factory   ClusterIP      172.21.112.28    &lt;none&gt;                              9443/TCP                     34s
-service/lab-presentation              ClusterIP      172.21.151.140   &lt;none&gt;                              8091/TCP                     34s
-service/lab-ui                        ClusterIP      172.21.115.64    &lt;none&gt;                              8443/TCP                     34s
-service/lab-uistatic                  ClusterIP      172.21.247.192   &lt;none&gt;                              80/TCP                       34s
-service/lab-zookeeper                 ClusterIP      172.21.100.132   &lt;none&gt;                              2181/TCP,2888/TCP,3888/TCP   34s
-service/lab-zookeeper-headless        ClusterIP      None             &lt;none&gt;                              2181/TCP,2888/TCP,3888/TCP   34s
+NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>                      AGE
+service/kubernetes                    ClusterIP   <span class="m">10</span>.152.183.1     &lt;none&gt;        <span class="m">443</span>/TCP                      20h
+service/lab-kafka-headless            ClusterIP   None             &lt;none&gt;        <span class="m">9092</span>/TCP,9093/TCP            126m
+service/lab-zookeeper-headless        ClusterIP   None             &lt;none&gt;        <span class="m">2181</span>/TCP,2888/TCP,3888/TCP   126m
+service/lab-zookeeper                 ClusterIP   <span class="m">10</span>.152.183.25    &lt;none&gt;        <span class="m">2181</span>/TCP,2888/TCP,3888/TCP   126m
+service/lab-jupyter                   ClusterIP   <span class="m">10</span>.152.183.172   &lt;none&gt;        <span class="m">8888</span>/TCP                     126m
+service/lab-core                      ClusterIP   <span class="m">10</span>.152.183.248   &lt;none&gt;        <span class="m">9443</span>/TCP                     126m
+service/lab-nginx                     ClusterIP   <span class="m">10</span>.152.183.155   &lt;none&gt;        <span class="m">443</span>/TCP                      126m
+service/lab-datalake                  ClusterIP   <span class="m">10</span>.152.183.191   &lt;none&gt;        <span class="m">9443</span>/TCP                     126m
+service/lab-dev                       ClusterIP   <span class="m">10</span>.152.183.122   &lt;none&gt;        <span class="m">9443</span>/TCP                     126m
+service/lab-kafka                     ClusterIP   <span class="m">10</span>.152.183.79    &lt;none&gt;        <span class="m">9092</span>/TCP                     126m
+service/lab-odpi-egeria-lab-factory   ClusterIP   <span class="m">10</span>.152.183.158   &lt;none&gt;        <span class="m">9443</span>/TCP                     126m
+service/lab-uistatic                  ClusterIP   <span class="m">10</span>.152.183.156   &lt;none&gt;        <span class="m">80</span>/TCP                       126m
+service/lab-presentation              ClusterIP   <span class="m">10</span>.152.183.61    &lt;none&gt;        <span class="m">8091</span>/TCP                     126m
+service/lab-ui                        ClusterIP   <span class="m">10</span>.152.183.186   &lt;none&gt;        <span class="m">8443</span>/TCP                     126m
 
 NAME                                               READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/lab-odpi-egeria-lab-jupyter        1/1     1            1           34s
-deployment.apps/lab-odpi-egeria-lab-nginx          1/1     1            1           34s
-deployment.apps/lab-odpi-egeria-lab-presentation   1/1     1            1           34s
-deployment.apps/lab-odpi-egeria-lab-ui             0/1     1            0           34s
-deployment.apps/lab-odpi-egeria-lab-uistatic       1/1     1            1           34s
+deployment.apps/lab-odpi-egeria-lab-presentation   <span class="m">1</span>/1     <span class="m">1</span>            <span class="m">1</span>           126m
+deployment.apps/lab-odpi-egeria-lab-nginx          <span class="m">1</span>/1     <span class="m">1</span>            <span class="m">1</span>           126m
+deployment.apps/lab-odpi-egeria-lab-ui             <span class="m">1</span>/1     <span class="m">1</span>            <span class="m">1</span>           126m
+deployment.apps/lab-odpi-egeria-lab-uistatic       <span class="m">1</span>/1     <span class="m">1</span>            <span class="m">1</span>           126m
+deployment.apps/lab-odpi-egeria-lab-jupyter        <span class="m">1</span>/1     <span class="m">1</span>            <span class="m">1</span>           126m
 
-NAME                                                          DESIRED   CURRENT   READY   AGE
-replicaset.apps/lab-odpi-egeria-lab-jupyter-bb7cf5f47         1         1         1       34s
-replicaset.apps/lab-odpi-egeria-lab-nginx-69f7cfc67b          1         1         1       34s
-replicaset.apps/lab-odpi-egeria-lab-presentation-66574b9796   1         1         1       34s
-replicaset.apps/lab-odpi-egeria-lab-ui-6b4874b5d              1         1         0       34s
-replicaset.apps/lab-odpi-egeria-lab-uistatic-6694896d7b       1         1         1       34s
+NAME                                                         DESIRED   CURRENT   READY   AGE
+replicaset.apps/lab-odpi-egeria-lab-presentation-bd9789747   <span class="m">1</span>         <span class="m">1</span>         <span class="m">1</span>       126m
+replicaset.apps/lab-odpi-egeria-lab-nginx-7b96949b4f         <span class="m">1</span>         <span class="m">1</span>         <span class="m">1</span>       126m
+replicaset.apps/lab-odpi-egeria-lab-ui-74cc464575            <span class="m">1</span>         <span class="m">1</span>         <span class="m">1</span>       126m
+replicaset.apps/lab-odpi-egeria-lab-uistatic-7b98d4bf9b      <span class="m">1</span>         <span class="m">1</span>         <span class="m">1</span>       126m
+replicaset.apps/lab-odpi-egeria-lab-jupyter-77b6868c4        <span class="m">1</span>         <span class="m">1</span>         <span class="m">1</span>       126m
 
 NAME                                            READY   AGE
-statefulset.apps/lab-kafka                      0/1     34s
-statefulset.apps/lab-odpi-egeria-lab-core       0/1     34s
-statefulset.apps/lab-odpi-egeria-lab-datalake   0/1     34s
-statefulset.apps/lab-odpi-egeria-lab-dev        0/1     34s
-statefulset.apps/lab-odpi-egeria-lab-factory    0/1     34s
-statefulset.apps/lab-zookeeper                  1/1     34s```
+statefulset.apps/lab-odpi-egeria-lab-dev        <span class="m">1</span>/1     126m
+statefulset.apps/lab-zookeeper                  <span class="m">1</span>/1     126m
+statefulset.apps/lab-kafka                      <span class="m">1</span>/1     126m
+statefulset.apps/lab-odpi-egeria-lab-core       <span class="m">1</span>/1     126m
+statefulset.apps/lab-odpi-egeria-lab-datalake   <span class="m">1</span>/1     126m
+statefulset.apps/lab-odpi-egeria-lab-factory    <span class="m">1</span>/1     126m
+<span class="sb">````</span>
 
-(Note that all of the `pod/...` listed at the top have `Running` as their `STATUS` and `1/1` under `READY`.)
+All of the <span class="sb">`</span>pod/...<span class="sb">`</span> listed at the top have <span class="sb">`</span>Running<span class="sb">`</span> as their <span class="sb">`</span>STATUS<span class="sb">`</span> and <span class="sb">`</span><span class="m">1</span>/1<span class="sb">`</span> under <span class="sb">`</span>READY<span class="sb">`</span>.<span class="o">)</span>
 
-At this point you should be able to access your notebook by going to the port listed to the right of
-`service/lab-jupyter` -- by default (and in the case above) the port is `30888`:
+<span class="c1">## Accessing the Jupyter notebooks</span>
 
-For example, if running Kubernetes locally on your machine, you should be able to get to the notebook
-with:
+We now need to get connectivity to the interesting pods, such as that running the Jupyer notebook server, as this is where you<span class="s1">&#39;ll get to the examples.</span>
 
-```text
-http://localhost:30888
+<span class="s1">Since k8s implementations vary one simple approach for local testing is to use `kubectl port-forward` to connect to the relevant service.</span>
+
+<span class="s1">If you look in the list of services above (`kubectl get services`) we have one named &#39;</span>service/lab-jupyter<span class="s1">&#39; so let&#39;</span>s try that <span class="o">(</span>with microk8s<span class="o">)</span>:
+<span class="sb">```</span>shell
+$ microk8s kubectl port-forward service/lab-jupyter <span class="m">8888</span>:8888                                                                  <span class="o">[</span><span class="m">13</span>:53:52<span class="o">]</span>
+Forwarding from <span class="m">127</span>.0.0.1:8888 -&gt; <span class="m">8888</span>
+Forwarding from <span class="o">[</span>::1<span class="o">]</span>:8888 -&gt; <span class="m">8888</span>
 </code></pre></div>
-<p>If you are using a cloud service, you will need to know what external ip address or name is exposed. This may be called 'Ingress Domain' or similar, but will typically not be seen in the output above. For example:</p>
-<div class="highlight"><pre><span></span><code>http://mycluster.mydomain.mycloud.com:30888
+This command will not return - the port forwarding is active whilst it's running. In this example we're forwarding all requests to local port 8888 to the k8s service for jupyter</p>
+<p>At this point you should be able to access your notebooks by going to this forwarded port ie 'http://localhost:8888'</p>
+<h2 id="accessing-the-react-ui">Accessing the React UI<a class="headerlink" href="#accessing-the-react-ui" title="Permanent link">&para;</a></h2>
+<p>We repeat the port forwarding above, this time for another service
+<div class="highlight"><pre><span></span><code>$ microk8s kubectl port-forward service/lab-presentation <span class="m">8091</span>:8091                                                             <span class="o">[</span><span class="m">14</span>:15:37<span class="o">]</span>
+Forwarding from <span class="m">127</span>.0.0.1:8091 -&gt; <span class="m">8091</span>
+Forwarding from <span class="o">[</span>::1<span class="o">]</span>:8091 -&gt; <span class="m">8091</span>
 </code></pre></div>
-<p>You may wish to expose these cluster IPs via a LoadBalancer. You can find an example of this
-in the egeria-base chart README.</p>
-<p>You will find the egeria open metadata lab notebooks already populated in the notebook server.</p>
+As before, you can define an Ingress, or use nodeports instead if preferred.</p>
+<p>Now go to https://localhost:8091/coco to access the React UI. Login as 'garygeeke',password 'admin'.</p>
 <h2 id="starting-over">Starting over<a class="headerlink" href="#starting-over" title="Permanent link">&para;</a></h2>
 <p>Because the environment is entirely self-contained, you can easily start over the labs simply
 by deleting the deployment and running the installation again. This will wipe out all of the
@@ -931,9 +904,8 @@ reset the Jupyter notebooks to their original clean state, etc.</p>
 </code></pre></div>
 <p>Where <code>lab</code> is the name you used in your original deployment. (You can see what it's called by first running <code>helm list</code> and reviewing the output.)</p>
 <p>(Then just re-run the last command in the Installation section above to get a fresh environment.)</p>
-<h2 id="port-clashes">Port Clashes<a class="headerlink" href="#port-clashes" title="Permanent link">&para;</a></h2>
-<p>The chart is configured to use a fixed set of ports and expose them using a 'NodePort' service as described above.</p>
-<p>You may find you clash with other services setup in your cluster. If so you can override the ports by creating a file such as <code>lab.yaml</code> with the following contents:</p>
+<h2 id="overriding-configuration">Overriding Configuration<a class="headerlink" href="#overriding-configuration" title="Permanent link">&para;</a></h2>
+<p>The chart is configured to use a default set of parameters.  You can override these by creating a file such as <code>lab.yaml</code> with the  contents of any values you wish to modify, for example:</p>
 <div class="highlight"><pre><span></span><code>service:
   type: NodePort
   nodeport:
@@ -944,7 +916,6 @@ reset the Jupyter notebooks to their original clean state, etc.</p>
     factory: 30083
     ui: 30443
 </code></pre></div>
-<p>and then change the port numbers accordingly.</p>
 <p>Refer to the existing values file for additional ports in this section that may reflect new components as added</p>
 <p>You can then deploy using
 <code>helm install lab odpi-egeria-lab -f lab.yaml</code> which will override standard defaults with your choices</p>
@@ -952,15 +923,11 @@ reset the Jupyter notebooks to their original clean state, etc.</p>
 <p>Support has been added to use persistence in these charts. See 'values.yaml' for more information on this option.
 You may also wish to refer to the 'egeria-base' helm chart which is a deployment of a single, persistent, autostart server with UI.</p>
 <p>Note however that since this will save the state of your configuration done from
-the tutorial notebooks it may be confusing - as such this is disabled by default.</p>
-<h2 id="using-the-environment-to-extend-notebooks-or-develop-new-ones">Using the environment to extend notebooks or develop new ones<a class="headerlink" href="#using-the-environment-to-extend-notebooks-or-develop-new-ones" title="Permanent link">&para;</a></h2>
-<ul>
-<li>If you are using a notebook written to assume 'localhost:9443' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :
-  corePlatformURL     = os.environ.get('corePlatformURL','https://localhost:9443')
-  dataLakePlatformURL = os.environ.get('dataLakePlatformURL','https://localhost:9444')
-  devPlatformURL      = os.environ.get('devPlatformURL','https://localhost:9445')
-  factoryPlatformURL  = os.environ.get('factoryPlatformURL','https://localhost:9446')</li>
-</ul>
+the tutorial notebooks it may be confusing - as such this is disabled by default. It may be useful if you are modifying the charts for your own use.</p>
+<p>You will also need to delete all storage associated with the chart manually if you want to cleanup/reset - for example
+<div class="highlight"><pre><span></span><code>kubectl delete pvc --all
+kubectl delete pv --all
+</code></pre></div></p>
 <hr />
 <p>License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>,
 Copyright Contributors to the ODPi Egeria project.</p>
