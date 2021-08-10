@@ -104,6 +104,13 @@ As with most k8s implementations, when running some ongoing cpu will be used, so
 
 When running on a separate server or a cloud service this isn't a concern.
 
+When using microk8s, note that the standard k8s commands are renamed to avoid clashes, so use the microk8s ones in the remainder of the Egeria documentation
+
+kubectl -> microk8s kubectl
+helm -> microk8s helm
+
+They can also be aliased on some platforms.
+
 ### MacOS
 The [macos install](https://microk8s.io/#tab-three__content) docs cover the steps needed to install microk8s.
 
@@ -151,6 +158,28 @@ Many cloud providers offer Kubernetes deployments which can be used for experime
 In addition to a cloud install, ensure you have installed the relevant cloud provider's tooling to manage their k8s environment, including having access to the standard kubernetes command `kubectl`.
 
 Note that in the team's testing we mostly are running Redhat OpenShift on IBMCloud as a managed service. We welcome feedback of running our examples on other environments, especially as some of the specifics around ingress rules, storage, security can vary.
+
+## Accessing applications in your cluster
+
+See also [kubernetes docs](https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-services/)
+
+### NodePort
+
+In the sample charts provided an option to use a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) is usually provided.
+
+This is often easiest when running k8s locally, as any of the ip addressible worker nodes in your cluster can service a request on the port provided. This is why it's named a 'node port' ie a port on your node..
+
+### kubectl port-forward
+
+This can be run at a command line, and directly sets up forwarding from local ports into services running in your cluster. It requires no additional configuration beforehand, and lasts only as long as the port forwarding is running.
+
+See [port forwarding](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/) for more info
+
+### Ingress
+
+Ingress rules define how traffic directed at your k8s cluster is directed. Their definition tends to vary substantially between different k8s implementations but often is the easiest approach when running with a cloud service.
+
+* [microk8s ingress](https://microk8s.io/docs/addon-ingress) 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

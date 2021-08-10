@@ -3,13 +3,17 @@
 
 # Lab - Coco Pharmaceuticals (odpi-egeria-lab)
 
-This Helm chart will deploy the following components, all in a self-contained environment,
-for use in the Egeria hands-on labs -- allowing you to explore Egeria and its concepts safely
+This example is intended to replicate the metadata landscape of a hypothetical company, Coco Pharmaceuticals, and allow you to understand a little more about how Egeria can help, and how to use it. This forms our 'Hands on Lab'.
+
+The Helm chart will deploy the following components, all in a self-contained environment,
+ allowing you to explore Egeria and its concepts safely
 and repeatably:
 
 - Multiple Egeria servers
 - Apache Kafka (and its Zookeeper dependency)
-- Jupyter Notebooks
+- Example Jupyter Notebooks
+- Jupyter runtime
+- Egeria's React based UI
 
 ## Prerequisites
 
@@ -17,160 +21,122 @@ In order to use the labs, you'll first need to have the following installed:
 
 - Kubernetes 1.15 or above
 - Helm 3.0 or above
+- Egeria chart repository configured & updated
 
-The minimum tested configurations for Kubernetes are
-- Cloud/remote service - 3 nodes, 2GB ram per node
-- Local docker for mac/windows - 1 node, 6Gb ram dedicated to docker
+6GB RAM minimum is recommended for your k8s environment.
 
-You could use the Docker-embedded Kubernetes for this on eg. Docker Desktop,
-or a public cloud service that provides Kubernetes
-
-If you need to install helm3, please obtain from https://github.com/helm/helm/releases before starting and
-ensure the 'helm' executable is in your PATH. The
-instructions and examples that follow assume use of this version
-
-If you can't meet these requirements, or would like to start with a simpler approach,
-an alternative environment for running the tutorials has been implemented using docker-compose & can be found at https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials .
+You no longer need a git clone of this repository to install the chart.
 
 ## Installation
 
-From one directory level above the location of this README, run the following:
+```bash
+helm install lab egeria/odpi-egeria-lab
+```
+
+In the following examples we're using microk8s. This defaults to use `microk8s helm3` to execute helm commands, and `microk8s kubectl` for kubernetes, to avoid command name clashes. We'll do this throughout the example. If you are using a regular k8s environment just use `helm` or `kubectl` instead.
 
 ```bash
-helm dep update odpi-egeria-lab
-helm install lab odpi-egeria-lab
-```
-
-Example transcript:
-
-```text
-$ export PATH=~/bin:$PATH
-$ pwd
-/home/jonesn/egeria/open-metadata-resources/open-metadata-deployment/charts
-$ helm version
-version.BuildInfo{Version:"v3.5.3", GitCommit:"041ce5a2c17a58be0fcd5f5e16fb3e7e95fea622", GitTreeState:"dirty", GoVersion:"go1.16"}
-$ helm dep update odpi-egeria-lab
-Getting updates for unmanaged Helm repositories...
-...Successfully got an update from the "https://charts.bitnami.com/bitnami" chart repository
-Saving 1 charts
-Downloading kafka from repo https://charts.bitnami.com/bitnami
-Deleting outdated charts
-```
-
-Now we can actually do the deployment with
-
-```bash
-helm install lab odpi-egeria-lab
-```
-
-which will look like:
-
-```text
-$ helm install lab odpi-egeria-lab                                      [16:52:10]
+$ microk8s helm3 install lab egeria/odpi-egeria-lab                                                                            [11:47:04]
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /var/snap/microk8s/2346/credentials/client.config
 NAME: lab
-LAST DEPLOYED: Tue Apr  6 16:52:17 2021
-NAMESPACE: egeria-release
+LAST DEPLOYED: Tue Aug 10 11:47:19 2021
+NAMESPACE: default
 STATUS: deployed
 REVISION: 1
 TEST SUITE: None
 NOTES:
 ODPi Egeria lab tutorial
 ---
-
-The Egeria tutorials have now been deployed to Kubernetes.
-It may take a minute or so for everything to start up.
-
-Open your web browser and go to addressofmycluster:30888 to
-get started
-
-You may need to contact your cluster admin, or read your cloud provider helptext to understand
-the correct 'addressofmycluster' to use.
-
-If you experience problems, check memory consumption on your nodes. A minimum of
-a 3 node cluster, 2GB per node; or a desktop environment with 6GB dedicated is recommended.
-
-Please provide any feeback via a github issue at https://github.com/odpi/egeria or
-join us on slack via https://http://slack.lfai.foundation
-
-- The ODPi Egeria team
 ```
+Some additional help text is also output, which is truncated for brevity.
 
-Note that it can take a few seconds for the various components to all spin-up. You can monitor
+It can take a few seconds for the various components to all spin-up. You can monitor
 the readiness by running `kubectl get all` -- when ready, you should see output like the following:
 
-```text
-$ kubectl get all                                                       [16:52:24]
-NAME                                                    READY   STATUS    RESTARTS   AGE
-pod/lab-odpi-egeria-lab-core-0                          0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-datalake-0                      0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-dev-0                           0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-factory-0                       0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-jupyter-bb7cf5f47-k6w2p         1/1     Running   0          34s
-pod/lab-odpi-egeria-lab-nginx-69f7cfc67b-nptz5          1/1     Running   0          34s
-pod/lab-odpi-egeria-lab-presentation-66574b9796-7t4rc   1/1     Running   0          34s
-pod/lab-odpi-egeria-lab-ui-6b4874b5d-6kr74              0/1     Running   0          34s
-pod/lab-odpi-egeria-lab-uistatic-6694896d7b-7qj2w       1/1     Running   0          34s
-pod/lab-zookeeper-0                                     1/1     Running   0          34s
+```bash
+$ microk8s kubectl get all                                                                                                     [13:53:43]
+NAME                                                   READY   STATUS    RESTARTS   AGE
+pod/lab-odpi-egeria-lab-ui-74cc464575-cf8rm            1/1     Running   0          126m
+pod/lab-odpi-egeria-lab-datalake-0                     1/1     Running   0          126m
+pod/lab-odpi-egeria-lab-nginx-7b96949b4f-7dff4         1/1     Running   0          126m
+pod/lab-odpi-egeria-lab-presentation-bd9789747-rbv69   1/1     Running   0          126m
+pod/lab-kafka-0                                        1/1     Running   0          126m
+pod/lab-zookeeper-0                                    1/1     Running   0          126m
+pod/lab-odpi-egeria-lab-dev-0                          1/1     Running   0          126m
+pod/lab-odpi-egeria-lab-uistatic-7b98d4bf9b-sf9bj      1/1     Running   0          126m
+pod/lab-odpi-egeria-lab-core-0                         1/1     Running   0          126m
+pod/lab-odpi-egeria-lab-factory-0                      1/1     Running   0          126m
+pod/lab-odpi-egeria-lab-jupyter-77b6868c4-9hnlp        1/1     Running   0          126m
 
-NAME                                  TYPE           CLUSTER-IP       EXTERNAL-IP                         PORT(S)                      AGE
-service/lab-core                      ClusterIP      172.21.163.188   <none>                              9443/TCP                     34s
-service/lab-datalake                  ClusterIP      172.21.25.50     <none>                              9443/TCP                     34s
-service/lab-dev                       ClusterIP      172.21.19.97     <none>                              9443/TCP                     34s
-service/lab-jupyter                   ClusterIP      172.21.200.189   <none>                              8888/TCP                     34s
-service/lab-kafka                     ClusterIP      172.21.199.61    <none>                              9092/TCP                     34s
-service/lab-kafka-headless            ClusterIP      None             <none>                              9092/TCP,9093/TCP            34s
-service/lab-nginx                     ClusterIP      172.21.245.104   <none>                              443/TCP                      34s
-service/lab-odpi-egeria-lab-factory   ClusterIP      172.21.112.28    <none>                              9443/TCP                     34s
-service/lab-presentation              ClusterIP      172.21.151.140   <none>                              8091/TCP                     34s
-service/lab-ui                        ClusterIP      172.21.115.64    <none>                              8443/TCP                     34s
-service/lab-uistatic                  ClusterIP      172.21.247.192   <none>                              80/TCP                       34s
-service/lab-zookeeper                 ClusterIP      172.21.100.132   <none>                              2181/TCP,2888/TCP,3888/TCP   34s
-service/lab-zookeeper-headless        ClusterIP      None             <none>                              2181/TCP,2888/TCP,3888/TCP   34s
+NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+service/kubernetes                    ClusterIP   10.152.183.1     <none>        443/TCP                      20h
+service/lab-kafka-headless            ClusterIP   None             <none>        9092/TCP,9093/TCP            126m
+service/lab-zookeeper-headless        ClusterIP   None             <none>        2181/TCP,2888/TCP,3888/TCP   126m
+service/lab-zookeeper                 ClusterIP   10.152.183.25    <none>        2181/TCP,2888/TCP,3888/TCP   126m
+service/lab-jupyter                   ClusterIP   10.152.183.172   <none>        8888/TCP                     126m
+service/lab-core                      ClusterIP   10.152.183.248   <none>        9443/TCP                     126m
+service/lab-nginx                     ClusterIP   10.152.183.155   <none>        443/TCP                      126m
+service/lab-datalake                  ClusterIP   10.152.183.191   <none>        9443/TCP                     126m
+service/lab-dev                       ClusterIP   10.152.183.122   <none>        9443/TCP                     126m
+service/lab-kafka                     ClusterIP   10.152.183.79    <none>        9092/TCP                     126m
+service/lab-odpi-egeria-lab-factory   ClusterIP   10.152.183.158   <none>        9443/TCP                     126m
+service/lab-uistatic                  ClusterIP   10.152.183.156   <none>        80/TCP                       126m
+service/lab-presentation              ClusterIP   10.152.183.61    <none>        8091/TCP                     126m
+service/lab-ui                        ClusterIP   10.152.183.186   <none>        8443/TCP                     126m
 
 NAME                                               READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/lab-odpi-egeria-lab-jupyter        1/1     1            1           34s
-deployment.apps/lab-odpi-egeria-lab-nginx          1/1     1            1           34s
-deployment.apps/lab-odpi-egeria-lab-presentation   1/1     1            1           34s
-deployment.apps/lab-odpi-egeria-lab-ui             0/1     1            0           34s
-deployment.apps/lab-odpi-egeria-lab-uistatic       1/1     1            1           34s
+deployment.apps/lab-odpi-egeria-lab-presentation   1/1     1            1           126m
+deployment.apps/lab-odpi-egeria-lab-nginx          1/1     1            1           126m
+deployment.apps/lab-odpi-egeria-lab-ui             1/1     1            1           126m
+deployment.apps/lab-odpi-egeria-lab-uistatic       1/1     1            1           126m
+deployment.apps/lab-odpi-egeria-lab-jupyter        1/1     1            1           126m
 
-NAME                                                          DESIRED   CURRENT   READY   AGE
-replicaset.apps/lab-odpi-egeria-lab-jupyter-bb7cf5f47         1         1         1       34s
-replicaset.apps/lab-odpi-egeria-lab-nginx-69f7cfc67b          1         1         1       34s
-replicaset.apps/lab-odpi-egeria-lab-presentation-66574b9796   1         1         1       34s
-replicaset.apps/lab-odpi-egeria-lab-ui-6b4874b5d              1         1         0       34s
-replicaset.apps/lab-odpi-egeria-lab-uistatic-6694896d7b       1         1         1       34s
+NAME                                                         DESIRED   CURRENT   READY   AGE
+replicaset.apps/lab-odpi-egeria-lab-presentation-bd9789747   1         1         1       126m
+replicaset.apps/lab-odpi-egeria-lab-nginx-7b96949b4f         1         1         1       126m
+replicaset.apps/lab-odpi-egeria-lab-ui-74cc464575            1         1         1       126m
+replicaset.apps/lab-odpi-egeria-lab-uistatic-7b98d4bf9b      1         1         1       126m
+replicaset.apps/lab-odpi-egeria-lab-jupyter-77b6868c4        1         1         1       126m
 
 NAME                                            READY   AGE
-statefulset.apps/lab-kafka                      0/1     34s
-statefulset.apps/lab-odpi-egeria-lab-core       0/1     34s
-statefulset.apps/lab-odpi-egeria-lab-datalake   0/1     34s
-statefulset.apps/lab-odpi-egeria-lab-dev        0/1     34s
-statefulset.apps/lab-odpi-egeria-lab-factory    0/1     34s
-statefulset.apps/lab-zookeeper                  1/1     34s```
+statefulset.apps/lab-odpi-egeria-lab-dev        1/1     126m
+statefulset.apps/lab-zookeeper                  1/1     126m
+statefulset.apps/lab-kafka                      1/1     126m
+statefulset.apps/lab-odpi-egeria-lab-core       1/1     126m
+statefulset.apps/lab-odpi-egeria-lab-datalake   1/1     126m
+statefulset.apps/lab-odpi-egeria-lab-factory    1/1     126m
+````
 
-(Note that all of the `pod/...` listed at the top have `Running` as their `STATUS` and `1/1` under `READY`.)
+All of the `pod/...` listed at the top have `Running` as their `STATUS` and `1/1` under `READY`.)
 
-At this point you should be able to access your notebook by going to the port listed to the right of
-`service/lab-jupyter` -- by default (and in the case above) the port is `30888`:
+## Accessing the Jupyter notebooks
 
-For example, if running Kubernetes locally on your machine, you should be able to get to the notebook
-with:
+We now need to get connectivity to the interesting pods, such as that running the Jupyer notebook server, as this is where you'll get to the examples.
 
-```text
-http://localhost:30888
+Since k8s implementations vary one simple approach for local testing is to use `kubectl port-forward` to connect to the relevant service.
+
+If you look in the list of services above (`kubectl get services`) we have one named 'service/lab-jupyter' so let's try that (with microk8s):
+```shell
+$ microk8s kubectl port-forward service/lab-jupyter 8888:8888                                                                  [13:53:52]
+Forwarding from 127.0.0.1:8888 -> 8888
+Forwarding from [::1]:8888 -> 8888
 ```
+This command will not return - the port forwarding is active whilst it's running. In this example we're forwarding all requests to local port 8888 to the k8s service for jupyter
 
-If you are using a cloud service, you will need to know what external ip address or name is exposed. This may be called 'Ingress Domain' or similar, but will typically not be seen in the output above. For example:
+At this point you should be able to access your notebooks by going to this forwarded port ie 'http://localhost:8888'
 
+## Accessing the React UI
+
+We repeat the port forwarding above, this time for another service
+```shell
+$ microk8s kubectl port-forward service/lab-presentation 8091:8091                                                             [14:15:37]
+Forwarding from 127.0.0.1:8091 -> 8091
+Forwarding from [::1]:8091 -> 8091
 ```
-http://mycluster.mydomain.mycloud.com:30888
-```
+As before, you can define an Ingress, or use nodeports instead if preferred.
 
-You may wish to expose these cluster IPs via a LoadBalancer. You can find an example of this
-in the egeria-base chart README.
+Now go to https://localhost:8091/coco to access the React UI. Login as 'garygeeke',password 'admin'.
 
-You will find the egeria open metadata lab notebooks already populated in the notebook server.
 ## Starting over
 
 Because the environment is entirely self-contained, you can easily start over the labs simply
@@ -187,10 +153,10 @@ $ helm delete lab
 Where `lab` is the name you used in your original deployment. (You can see what it's called by first running `helm list` and reviewing the output.)
 
 (Then just re-run the last command in the Installation section above to get a fresh environment.)
-## Port Clashes
-The chart is configured to use a fixed set of ports and expose them using a 'NodePort' service as described above.
 
-You may find you clash with other services setup in your cluster. If so you can override the ports by creating a file such as `lab.yaml` with the following contents:
+## Overriding Configuration
+
+The chart is configured to use a default set of parameters.  You can override these by creating a file such as `lab.yaml` with the  contents of any values you wish to modify, for example:
 
 ```
 service:
@@ -204,8 +170,6 @@ service:
     ui: 30443
 ```
 
-and then change the port numbers accordingly.
-
 Refer to the existing values file for additional ports in this section that may reflect new components as added
 
 You can then deploy using
@@ -217,15 +181,13 @@ Support has been added to use persistence in these charts. See 'values.yaml' for
 You may also wish to refer to the 'egeria-base' helm chart which is a deployment of a single, persistent, autostart server with UI.
 
 Note however that since this will save the state of your configuration done from
-the tutorial notebooks it may be confusing - as such this is disabled by default.
+the tutorial notebooks it may be confusing - as such this is disabled by default. It may be useful if you are modifying the charts for your own use.
 
-## Using the environment to extend notebooks or develop new ones
-
-- If you are using a notebook written to assume 'localhost:9443' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :
-  corePlatformURL     = os.environ.get('corePlatformURL','https://localhost:9443')
-  dataLakePlatformURL = os.environ.get('dataLakePlatformURL','https://localhost:9444')
-  devPlatformURL      = os.environ.get('devPlatformURL','https://localhost:9445')
-  factoryPlatformURL  = os.environ.get('factoryPlatformURL','https://localhost:9446')
+You will also need to delete all storage associated with the chart manually if you want to cleanup/reset - for example
+```bash
+kubectl delete pvc --all
+kubectl delete pv --all
+```
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
