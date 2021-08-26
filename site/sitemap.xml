@@ -2,42 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://odpi.github.io/egeria-charts/site/</loc>
-         <lastmod>2021-08-10</lastmod>
+         <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://odpi.github.io/egeria-charts/site/charts/base/</loc>
-         <lastmod>2021-08-10</lastmod>
+         <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://odpi.github.io/egeria-charts/site/charts/lab/</loc>
-         <lastmod>2021-08-10</lastmod>
+         <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://odpi.github.io/egeria-charts/site/contribute/devguide/</loc>
-         <lastmod>2021-08-10</lastmod>
+         <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://odpi.github.io/egeria-charts/site/contribute/feedback/</loc>
-         <lastmod>2021-08-10</lastmod>
+         <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://odpi.github.io/egeria-charts/site/intro/helm/</loc>
-         <lastmod>2021-08-10</lastmod>
+         <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://odpi.github.io/egeria-charts/site/intro/k8s/</loc>
-         <lastmod>2021-08-10</lastmod>
+         <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://odpi.github.io/egeria-charts/site/more/operator/</loc>
-         <lastmod>2021-08-10</lastmod>
+         <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
