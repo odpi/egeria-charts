@@ -2,6 +2,27 @@ apiVersion: v1
 entries:
   egeria-base:
   - apiVersion: v2
+    created: "2021-08-31T15:11:56.558912139Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 14.0.5
+    description: Egeria simple deployment to Kubernetes
+    digest: 709f31af65d7edda42703cab6097bcc041f1f0cfea258019dec9b28ccdf0d22a
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, base, simple
+    maintainers:
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: egeria-base
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/egeria-base-3.1.0/egeria-base-3.1.0.tgz
+    version: 3.1.0
+  - apiVersion: v2
     created: "2021-08-26T13:50:45.759163266Z"
     dependencies:
     - name: kafka
@@ -44,6 +65,25 @@ entries:
     - https://github.com/odpi/egeria-charts/releases/download/egeria-base-3.0.1/egeria-base-3.0.1.tgz
     version: 3.0.1
   odpi-egeria-lab:
+  - apiVersion: v1
+    created: "2021-08-31T15:11:56.702711562Z"
+    description: Egeria lab environment
+    digest: 723cf7057b86864517d67063546eac7ecb8b6756bd75497ab393e11495b42076
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, lab, jupyter, notebook
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: odpi-egeria-lab
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.1.0/odpi-egeria-lab-3.1.0.tgz
+    version: 3.1.0
   - apiVersion: v1
     created: "2021-08-27T12:49:36.615214416Z"
     description: Egeria lab environment
@@ -101,4 +141,4 @@ entries:
     urls:
     - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.0.1/odpi-egeria-lab-3.0.1.tgz
     version: 3.0.1
-generated: "2021-08-27T12:49:36.615239616Z"
+generated: "2021-08-31T15:11:56.702745162Z"
