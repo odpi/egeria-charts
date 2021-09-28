@@ -6,7 +6,7 @@
 egeria:
   # Set to INFO, WARNING, DEBUG if needed
   logging: 
-  version: "3.1"
+  version: "3.2"
   repositoryType: "local-graph-repository"
   debug: false
   persistence: true
@@ -88,13 +88,13 @@ imageDefaults:
 image:
   egeria:
     name: egeria
-    tag: "3.1"
+    tag: "3.2"
   presentation:
     name: egeria-react-ui
-    tag: "3.1.0"
+    tag: "3.2.0"
   configure:
     name: egeria-configure
-    tag: "3.1"
+    tag: "3.2"
 
 # --- Kafka Configuration ---
 
