@@ -36,7 +36,7 @@ egeria:
   repositoryType: "in-memory-repository"
   # See https://github.com/odpi/egeria-charts/issues/56 for status of the Egeria UI (polymer) in this environment
   # Set to 'true' to deploy the Egeria UI, but note the configuration may not work properly
-  egeriaui: false
+  egeriaui: true
 
 debug:
   egeriaJVM: false
