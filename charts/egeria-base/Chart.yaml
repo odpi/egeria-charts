@@ -4,7 +4,7 @@
 name: egeria-base
 description: Egeria simple deployment to Kubernetes
 apiVersion: v2
-version: 3.3-prerelease.0
+version: 3.3-prerelease.1
 appVersion: 3.3-SNAPSHOT
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
@@ -17,5 +17,5 @@ maintainers:
     email: nigel.l.jones+git@gmail.com
 dependencies:
   - name: kafka
-    version: 14.2.0
+    version: 14.2.2
     repository: https://charts.bitnami.com/bitnami
