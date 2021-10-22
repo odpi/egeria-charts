@@ -63,8 +63,8 @@ done < <(echo "${TEST_CASES}")
 
 echo -e '\n > Bundling all results into an archive...\n'
 cd /tmp
-tar cvf pd.tar profile-details/*.json; gzip pd.tar
-tar cvf tcd.tar test-case-details/*.json; gzip tcd.tar
-tar cvf ${CTS_REPORT_NAME}.tar *.config cohort.* openmetadata_cts_summary.json pd.tar.gz tcd.tar.gz; gzip ${CTS_REPORT_NAME}.tar
+tar cf pd.tar profile-details/*.json; gzip pd.tar
+tar cf tcd.tar test-case-details/*.json; gzip tcd.tar
+tar cf ${CTS_REPORT_NAME}.tar *.config cohort.* openmetadata_cts_summary.json pd.tar.gz tcd.tar.gz; gzip ${CTS_REPORT_NAME}.tar
 
 echo -e "\n-- End of conformance test suite results collection, download from: /tmp/${CTS_REPORT_NAME}.tar.gz"
