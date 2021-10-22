@@ -31,9 +31,12 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: "2.11-SNAPSHOT"
+  version: "3.3-SNAPSHOT"
   #repositoryType: "local-graph-repository"
   repositoryType: "in-memory-repository"
+  # See https://github.com/odpi/egeria-charts/issues/56 for status of the Egeria UI (polymer) in this environment
+  # Set to 'true' to deploy the Egeria UI, but note the configuration may not work properly
+  egeriaui: true
 
 debug:
   egeriaJVM: false
@@ -44,7 +47,7 @@ imageDefaults:
   registry: docker.io
   namespace: odpi
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
@@ -57,16 +60,19 @@ imageDefaults:
 image:
   egeria:
     name: egeria
+    tag: "3.3-SNAPSHOT"
   presentation:
     name: egeria-react-ui
-    tag: latest
+    tag: "3.3.0-rc.0"
   configure:
     name: egeria-configure
+    tag: "3.3-SNAPSHOT"
   jupyter:
     name: jupyter
+    tag: "3.3-SNAPSHOT"
   uistatic:
     name: egeria-ui
-    tag: latest
+    tag: "3.0.1"
   nginx:
     name: nginx
     namespace:

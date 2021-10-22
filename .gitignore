@@ -33,3 +33,6 @@ venv
 
 THIRD_PARTY*.txt
 
+site/site/
+
+requirements.lock

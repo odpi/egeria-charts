@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
+{{ if .Values.egeria.egeriaui }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -86,13 +87,13 @@ spec:
           resources: {}
           env:
             - name: "OMAS_SERVER_NAME"
-              value: "cocoMDS4"
+              value: "cocoMDS1"
             - name: "OMAS_SERVER_URL"
               value: "https://{{ .Release.Name }}-datalake:9443"
             - name: "OPEN_LINEAGE_SERVER_URL"
               value: "https://{{ .Release.Name }}-datalake:9443"
             - name: "OPEN_LINEAGE_SERVER_NAME"
-              value: "open-lineage"
+              value: "cocoOLS1"
             - name: "OPEN_LINEAGE_GRAPH_SOURCE"
               value: "MAIN"
             {{ if .Values.debug.egeriaJVM }}
@@ -105,3 +106,4 @@ spec:
 
 status: {}
 ...
+{{ end }}
