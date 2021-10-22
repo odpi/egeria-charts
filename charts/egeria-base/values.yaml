@@ -72,7 +72,7 @@ options:
 # Defaults for the images (can be overridden here or individually, see comment below)
 # Note for egeria provided images we use the version specified above
 imageDefaults:
-  registry: docker.io
+  registry: quay.io
   namespace: odpi
   tag: latest
   pullPolicy: IfNotPresent
