@@ -36,11 +36,11 @@ until [ $(curl -f -k --silent -X GET ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}
   sleep 30;
 done
 
-curl -f -k --silent -X GET --max-time 60 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/summary > /tmp/openmetadata_pts_summary.json
+curl -f -k --silent -X GET --max-time 120 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/summary > /tmp/openmetadata_pts_summary.json
 
-TEST_CASES=$(curl -f -k --silent -X GET --max-time 60 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/test-cases  | jq -r '.testCaseIds[]')
+TEST_CASES=$(curl -f -k --silent -X GET --max-time 120 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/test-cases  | jq -r '.testCaseIds[]')
 
-PROFILES=$(curl -f -k --silent -X GET --max-time 60 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/profiles | jq -r '.profileNames[]')
+PROFILES=$(curl -f -k --silent -X GET --max-time 120 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/profiles | jq -r '.profileNames[]')
 
 echo -e '\n > Retrieving detailed profile results...\n'
 mkdir -p /tmp/profile-details
@@ -48,7 +48,7 @@ while read -r line; do
   urlencoded=$(echo ${line} | sed -e 's/ /%20/g');
   filename=$(echo ${line} | sed -e 's/ /_/g');
   echo "   ... retrieving profile details for: ${line}";
-  curl -f -k --silent -X GET --max-time 60 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/profiles/${urlencoded} > /tmp/profile-details/${filename}.json;
+  curl -f -k --silent -X GET --max-time 120 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/profiles/${urlencoded} > /tmp/profile-details/${filename}.json;
 done < <(echo "${PROFILES}")
 
 echo -e '\n > Retrieving detailed test case results...\n'
@@ -58,7 +58,7 @@ while read -r line; do
   urlencoded=$(echo ${urlencoded} | sed -e 's/>/%3E/g');
   filename=$(echo ${line} | sed -e 's/[<>]/_/g');
   echo "   ... retrieving test case details for: ${line}";
-  curl -f -k --silent -X GET --max-time 60 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/test-cases/${urlencoded} > /tmp/test-case-details/${filename}.json;
+  curl -f -k --silent -X GET --max-time 120 ${EGERIA_ENDPOINT}/servers/${EGERIA_SERVER}/open-metadata/conformance-suite/users/${EGERIA_USER}/report/test-cases/${urlencoded} > /tmp/test-case-details/${filename}.json;
 done < <(echo "${TEST_CASES}")
 
 echo -e '\n > Bundling all results into an archive...\n'
