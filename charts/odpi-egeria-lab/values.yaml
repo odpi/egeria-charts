@@ -72,7 +72,7 @@ image:
     tag: "3.3-SNAPSHOT"
   uistatic:
     name: egeria-ui
-    tag: "3.0.1"
+    tag: "3.1.0"
   nginx:
     registry: docker.io
     name: nginx
