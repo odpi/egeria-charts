@@ -79,10 +79,10 @@ spec:
                 tail -f /dev/null
           resources:
             requests:
-              memory: "16Mi"
+              memory: "32Mi"
               cpu: "100m"
             limits:
-              memory: "64Mi"
+              memory: "128Mi"
               cpu: "500m"
           volumeMounts:
             - name: scripts-vol
