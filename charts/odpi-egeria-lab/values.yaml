@@ -74,9 +74,9 @@ image:
     name: egeria-ui
     tag: "3.0.1"
   nginx:
-    registry: docker.io
-    name: nginx
-    namespace:
+    registry: gallery.ecr.aws
+    name: nginx/nginx
+
 
 # --- 
 # Persistence
