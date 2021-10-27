@@ -74,7 +74,7 @@ image:
     name: egeria-ui
     tag: "3.1.0"
   nginx:
-    registry: gallery.ecr.aws
+    registry: public.ecr.aws
     name: nginx/nginx
 
 
