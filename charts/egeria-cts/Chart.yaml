@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+name: egeria-cts
+description: Egeria Conformance Test Suite deployment to Kubernetes
+apiVersion: v2
+version: 3.3-prerelease.0
+appVersion: 3.3-SNAPSHOT
+icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+keywords:
+  - odpi, egeria, cts
+sources:
+  - https://github.com/odpi/egeria
+home: https://github.com/odpi/egeria
+maintainers:
+  - name: Christopher Grote
+    email: chris@thegrotes.net
+dependencies:
+  - name: kafka
+    version: 14.2.0
+    repository: https://charts.bitnami.com/bitnami
+

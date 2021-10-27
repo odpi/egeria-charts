@@ -1,0 +1,84 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+
+# --- General Egeria configuration ---
+egeria:
+  user: admin
+  cohort: cts
+  serverName: cts
+
+# --- CTS configuration ---
+# "Scale factor" for the CTS (sets a limit on the overall number of records, search results, etc)
+records: 5
+# Details of the technology under test ("tut") for the CTS
+tut:
+  serverName: tut
+  # serverType defines the type of the technology under test:
+  # - native = a built-in repository of Egeria core (e.g. in-memory repository)
+  # - plugin = a pluggable native repository for Egeria (e.g. XTDB)
+  # - proxy  = a proxy'd third party repository technology (e.g. Apache Atlas)
+  serverType: "native"
+  connectorProvider: "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider"
+  # connectorConfig is to provide any additional configuration to the connector, via 'configurationProperties'
+  connectorConfig:
+  # serverEndpoint is only needed for the 'proxy' type, where the third party technology is running remotely
+  serverEndpoint:
+    host:
+    port:
+    protocol:
+    username:
+    password:
+
+# Provide a list of URLs to all files (i.e. jars) that should be downloaded for connectivity, where
+# each item in the list is a dict pair of 'filename' and 'url', e.g.
+# - filename: my-connector-file.jar
+#   url: https://some-location/com?even=with&some-parameters=embedded&for-dynamic-download=true
+downloads:
+
+# --- Additional environment variables - inserted directly into configmap. Can use helm template directives
+#extraEnv: |
+#  VAR1: value1
+#  VAR2: value2
+
+# --- Resource limits ---
+resources:
+  requests:
+    memory: "8Gi"
+    cpu: "2000m"
+  limits:
+    memory: "16Gi"
+    cpu: "4000m"
+
+# --- Docker image sources ---
+# Defaults for the images (can be overridden here or individually, see comment below)
+imageDefaults:
+  registry: docker.io
+  namespace: odpi
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# The following section defines all DOCKER images being used by this chart. Normally they should be left as is,
+# but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
+# these can be individually overridden for each image, if desired, by providing a subkey for 'namespace', 'tag' or
+# 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
+# 'docker.io/library' as the registry override, and set namespace to be your user or organization id).
+image:
+  egeria:
+    name: egeria
+  configure:
+    name: egeria-configure
+
+# --- Kafka Configuration ---
+
+# When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
+# See https://github.com/bitnami/charts/tree/master/bitnami/kafka for more info
+kafka:
+  zookeeper:
+    persistence:
+      enabled: false
+  securityContext:
+    enabled: false
+  persistence:
+    enabled: false
+...
