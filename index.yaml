@@ -197,6 +197,26 @@ entries:
   odpi-egeria-lab:
   - apiVersion: v1
     appVersion: 3.3-SNAPSHOT
+    created: "2021-10-27T09:04:43.18951658Z"
+    description: Egeria lab environment
+    digest: 7f5e91c5f9c2a4a76e377c94fc90d1b54d8186b308dc8ad59414a5e03ed476be
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, lab, jupyter, notebook
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: odpi-egeria-lab
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.3.0-prerelease.6/odpi-egeria-lab-3.3.0-prerelease.6.tgz
+    version: 3.3.0-prerelease.6
+  - apiVersion: v1
+    appVersion: 3.3-SNAPSHOT
     created: "2021-10-27T08:49:56.647671445Z"
     description: Egeria lab environment
     digest: a672c3bc9fb882098785ccd0ea284f7ddfece22b4bc899ce6c873a67a509db3e
@@ -469,4 +489,4 @@ entries:
     urls:
     - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.0.1/odpi-egeria-lab-3.0.1.tgz
     version: 3.0.1
-generated: "2021-10-27T08:49:56.647984548Z"
+generated: "2021-10-27T09:04:43.189729381Z"
