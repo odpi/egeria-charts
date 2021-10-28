@@ -6,7 +6,7 @@
 egeria:
   # Set to INFO, WARNING, DEBUG if needed
   logging: 
-  version: "3.3-SNAPSHOT"
+  version: "3.3"
   repositoryType: "local-graph-repository"
   debug: false
   persistence: true
@@ -74,7 +74,7 @@ options:
 imageDefaults:
   registry: quay.io
   namespace: odpi
-  tag: latest
+  tag: 3.3
   pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
@@ -88,13 +88,11 @@ imageDefaults:
 image:
   egeria:
     name: egeria
-    tag: "3.3-SNAPSHOT"
   presentation:
     name: egeria-react-ui
-    tag: "3.3.0-rc.0"
+    tag: "3.3.0"
   configure:
     name: egeria-configure
-    tag: "3.3-SNAPSHOT"
 
 # --- Kafka Configuration ---
 
