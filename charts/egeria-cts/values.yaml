@@ -53,9 +53,9 @@ resources:
 # --- Docker image sources ---
 # Defaults for the images (can be overridden here or individually, see comment below)
 imageDefaults:
-  registry: docker.io
+  registry: quay.io
   namespace: odpi
-  tag: latest
+  tag: 3.3
   pullPolicy: IfNotPresent
 
 # The following section defines all DOCKER images being used by this chart. Normally they should be left as is,
