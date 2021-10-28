@@ -46,7 +46,7 @@ debug:
 imageDefaults:
   registry: quay.io
   namespace: odpi
-  tag: latest
+  tag: 3.3
   pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
@@ -60,22 +60,20 @@ imageDefaults:
 image:
   egeria:
     name: egeria
-    tag: "3.3"
   presentation:
     name: egeria-react-ui
     tag: "3.3.0"
   configure:
     name: egeria-configure
-    tag: "3.3"
   jupyter:
     name: jupyter
-    tag: "3.3"
   uistatic:
     name: egeria-ui
     tag: "3.1.0"
   nginx:
     registry: public.ecr.aws
     name: nginx/nginx
+    tag: latest
 
 
 # --- 
