@@ -14,6 +14,8 @@ if [ "200" != "$(echo ${response} | jq '.relatedHTTPCode')" ]; then
   echo "Unable to start the PTS server:"
   echo ${response}
   exit 2
+else
+  echo ${response}
 fi
 
 echo -e '\n > Starting the technology under test:\n'
@@ -25,6 +27,8 @@ if [ "200" != "$(echo ${response} | jq '.relatedHTTPCode')" ]; then
   echo "Unable to start the TUT server:"
   echo ${response}
   exit 3
+else
+  echo ${response}
 fi
 
 echo -e "\n-- End of performance test suite startup"
