@@ -1,0 +1,119 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-report
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: report
+
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/component: report
+    spec:
+      serviceAccountName: {{ .Release.Name }}-cts
+      restartPolicy: OnFailure
+      initContainers:
+        - name: wait-for-platform
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          env:
+            - name: SERVICE
+              value: {{ .Release.Name }}-platform
+        - name: wait-for-kafka
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          env:
+            - name: SERVICE
+              value: {{ .Release.Name }}-kafka
+        - name: wait-for-init
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-env
+          command:
+            - "/bin/bash"
+            - "-c"
+            - "/scripts/wait-for-init.sh"
+          volumeMounts:
+            - name: scripts-vol
+              mountPath: /scripts
+        - name: report
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-env
+          command:
+            - "/bin/bash"
+            - "-c"
+            - /scripts/collect-results.sh
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: output-files
+              mountPath: /export
+            - name: scripts-vol
+              mountPath: /scripts
+      containers:
+        - name: wait-for-retrieval
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-env
+          volumeMounts:
+            - name: output-files
+              mountPath: /export
+          command: [/bin/sh, -c]
+          args:
+            - |
+              set -e
+              echo "Creating a fifo pipe to send the output data"
+              mkfifo /export/pipe
+              echo "You'll need to stream the files out for this pod to shutdown, using a command like:"
+              echo "oc exec POD_NAME -- sh -c 'cat /export/pipe' | tar -xvf -"
+              cd /export
+              tar -cvf - /export/${CTS_REPORT_NAME}.tar.gz > /export/pipe
+              echo "The files have been read, the previous command stopped blocking, will wait for final cleanup..."
+              sleep 10
+              echo "Will now exit."
+      volumes:
+        - name: output-files
+          emptyDir: {}
+        - name: scripts-vol
+          configMap:
+            name: {{ .Release.Name }}-scripts-configmap
+            defaultMode: 0755
+  # Keep trying quite a few times to aid in debugging
+  backoffLimit: {{ .Values.options.jobs.config.backOffLimit }}
