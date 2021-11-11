@@ -102,7 +102,7 @@ spec:
               echo "Creating a fifo pipe to send the output data"
               mkfifo /export/pipe
               echo "You'll need to stream the files out for this pod to shutdown, using a command like:"
-              echo "oc exec POD_NAME -- sh -c 'cat /export/pipe' | tar -xvf -"
+              echo "kubectl exec POD_NAME -- sh -c 'cat /export/pipe' | tar -xvf -"
               cd /export
               tar -cvf - /export/${PTS_REPORT_NAME}.tar.gz > /export/pipe
               echo "The files have been read, the previous command stopped blocking, will wait for final cleanup..."
