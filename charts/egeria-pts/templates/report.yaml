@@ -23,7 +23,7 @@ spec:
       serviceAccountName: {{ .Release.Name }}-pts
       restartPolicy: OnFailure
       initContainers:
-        - name: wait-for-platform
+        - name: wait-for-pts
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.configure.name }}\
@@ -31,7 +31,7 @@ spec:
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: SERVICE
-              value: {{ .Release.Name }}-platform
+              value: {{ .Release.Name }}-pts
         - name: wait-for-kafka
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
@@ -41,6 +41,15 @@ spec:
           env:
             - name: SERVICE
               value: {{ .Release.Name }}-kafka
+        - name: wait-for-tut
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          env:
+            - name: SERVICE
+              value: {{ .Release.Name }}-tut
         - name: wait-for-init
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
@@ -102,7 +111,7 @@ spec:
               echo "Creating a fifo pipe to send the output data"
               mkfifo /export/pipe
               echo "You'll need to stream the files out for this pod to shutdown, using a command like:"
-              echo "oc exec POD_NAME -- sh -c 'cat /export/pipe' | tar -xvf -"
+              echo "kubectl exec POD_NAME -- sh -c 'cat /export/pipe' | tar -xvf -"
               cd /export
               tar -cvf - /export/${PTS_REPORT_NAME}.tar.gz > /export/pipe
               echo "The files have been read, the previous command stopped blocking, will wait for final cleanup..."

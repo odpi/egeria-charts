@@ -9,8 +9,8 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: platform
-  name: {{ .Release.Name }}-platform
+    app.kubernetes.io/component: tut
+  name: {{ .Release.Name }}-tut
 
 spec:
   ports:
@@ -19,19 +19,19 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: platform
+    app.kubernetes.io/component: tut
 ...
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-platform
+  name: {{ .Release.Name }}-tut
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: platform
+    app.kubernetes.io/component: tut
 
 spec:
   replicas: 1
@@ -39,14 +39,14 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: platform
+      app.kubernetes.io/component: tut
   strategy: {}
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: platform
+        app.kubernetes.io/component: tut
     spec:
       volumes:
         - name: egeria-connector-volume
@@ -76,7 +76,7 @@ spec:
               name: egeria-connector-volume
 {{ end }}
       containers:
-        - name: platform
+        - name: tut
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.egeria.name }}\

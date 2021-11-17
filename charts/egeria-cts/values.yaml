@@ -41,6 +41,17 @@ downloads:
 #  VAR1: value1
 #  VAR2: value2
 
+# Specific processing features
+options:
+  jobs:
+    config:
+      # Timeout for configuration job
+      backOffLimit: 60
+      # Default will be true, but during dev set to false
+      # This setting will control if the k8s job (and hence pod/logs) are deleted after egeria configuration
+      # Set to false to assist in debugging
+      jobdelete: true
+
 # --- Resource limits ---
 resources:
   requests:

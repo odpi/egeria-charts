@@ -7,12 +7,28 @@ echo -e '\n-- Running the conformance test suite...'
 
 echo -e '\n > Starting conformance test suite:\n'
 
-curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X POST \
-  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance"
+response=$(curl -f -k --silent -X POST \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance") || exit $?
+
+if [ "200" != "$(echo ${response} | jq '.relatedHTTPCode')" ]; then
+  echo "Unable to start the PTS server:"
+  echo ${response}
+  exit 2
+else
+  echo ${response}
+fi
 
 echo -e '\n > Starting the technology under test:\n'
 
-curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X POST --max-time 900 \
-  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${TUT_SERVER}/instance"
+response=$(curl -f -k --silent -X POST --max-time 900 \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${TUT_SERVER}/instance") || exit $?
+
+if [ "200" != "$(echo ${response} | jq '.relatedHTTPCode')" ]; then
+  echo "Unable to start the TUT server:"
+  echo ${response}
+  exit 3
+else
+  echo ${response}
+fi
 
 echo -e "\n-- End of conformance test suite startup"
