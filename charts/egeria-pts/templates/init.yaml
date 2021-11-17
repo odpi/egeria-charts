@@ -23,7 +23,7 @@ spec:
       serviceAccountName: {{ .Release.Name }}-pts
       restartPolicy: OnFailure
       initContainers:
-        - name: wait-for-platform
+        - name: wait-for-pts
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.configure.name }}\
@@ -31,7 +31,7 @@ spec:
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: SERVICE
-              value: {{ .Release.Name }}-platform
+              value: {{ .Release.Name }}-pts
         - name: wait-for-kafka
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
@@ -41,6 +41,15 @@ spec:
           env:
             - name: SERVICE
               value: {{ .Release.Name }}-kafka
+        - name: wait-for-tut
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          env:
+            - name: SERVICE
+              value: {{ .Release.Name }}-tut
       containers:
         - name: init
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\

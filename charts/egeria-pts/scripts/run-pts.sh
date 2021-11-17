@@ -8,7 +8,7 @@ echo -e '\n-- Running the performance test suite...'
 echo -e '\n > Starting performance test suite:\n'
 
 response=$(curl -f -k --silent -X POST \
-  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance") || exit $?
+  "${PTS_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${PTS_SERVER}/instance") || exit $?
 
 if [ "200" != "$(echo ${response} | jq '.relatedHTTPCode')" ]; then
   echo "Unable to start the PTS server:"
@@ -21,7 +21,7 @@ fi
 echo -e '\n > Starting the technology under test:\n'
 
 response=$(curl -f -k --silent -X POST --max-time 900 \
-  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${TUT_SERVER}/instance") || exit $?
+  "${TUT_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${TUT_SERVER}/instance") || exit $?
 
 if [ "200" != "$(echo ${response} | jq '.relatedHTTPCode')" ]; then
   echo "Unable to start the TUT server:"
