@@ -47,13 +47,15 @@ imageDefaults:
   registry: quay.io
   namespace: odpi
   tag: latest
-  pullPolicy: IfNotPresent
+  #pullPolicy is now automatically set to Always for snapshots, and IfNotPresent for release
+  #pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
 # these can be individually overridden for each image, if desired, by providing a subkey for 'namespace', 'tag' or
 # 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
 # 'docker.io/library' as the registry override, and set namespace to be your user or organization id).
+# Note that now 'pullPolicy' is automatically set to 'Always' for snapshots, and 'IfNotPresent' for stable releases
 #
 #  To build from egeria source - (example)
 #  mvn clean install -Ddocker -Ddocker.registry=localhost:5000 -Ddocker.repo=odpi
