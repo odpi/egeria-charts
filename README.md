@@ -3,7 +3,7 @@
 
 # Egeria helm charts for Kubernetes
 
-**Refer to the full documentation on the [Egeria documentation site](https://odpi.github.io/egeria-docs/guides/admin/kubernetes/intro/)** .
+**Refer to the full documentation on the [Egeria documentation site](https://odpi.github.io/egeria-docs/guides/operations/kubernetes/)** .
 
 This repository manages helm chart definitions for Egeria. These are published automatically on build when the chart version
 is incremented. The repository can be accessed by adding to your list of helm repositories via:
