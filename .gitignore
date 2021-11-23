@@ -36,3 +36,6 @@ THIRD_PARTY*.txt
 site/site/
 
 requirements.lock
+
+# MacOS special files
+.DS_Store
