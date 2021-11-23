@@ -69,7 +69,7 @@ spec:
                   {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.egeria.name }}\
                   :{{ .Values.image.egeria.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          imagePullPolicy: {{ (.Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.egeria.tag | default .Values.egeria.version )))  }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap

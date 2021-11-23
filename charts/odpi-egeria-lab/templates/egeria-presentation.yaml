@@ -60,7 +60,7 @@ spec:
                   {{ if (.Values.image.presentation.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.presentation.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.presentation.name }}\
                   :{{ .Values.image.presentation.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ .Values.image.presentation.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          imagePullPolicy: {{ (.Values.image.presentation.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( contains "-rc" (.Values.image.presentation.tag | default .Values.egeria.version )))  }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap

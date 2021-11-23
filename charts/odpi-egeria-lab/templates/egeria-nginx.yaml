@@ -62,7 +62,7 @@ spec:
                   {{ if (.Values.image.nginx.namespace) }}{{ .Values.image.nginx.namespace }}/{{ end }}\
                   {{ .Values.image.nginx.name }}\
                   {{ if (.Values.image.nginx.tag) }}:{{ .Values.image.nginx.tag }}{{ end }}"
-          imagePullPolicy: {{ .Values.image.nginx.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          imagePullPolicy: {{ .Values.image.nginx.pullPolicy | default .Values.imageDefaults.pullPolicy | default "IfNotPresent" }}
           ports:
             - containerPort: 443
           readinessProbe:

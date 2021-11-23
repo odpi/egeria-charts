@@ -82,7 +82,8 @@ imageDefaults:
   registry: quay.io
   namespace: odpi
   tag: latest
-  pullPolicy: IfNotPresent
+  # -- pullPolicy is now set automatically to 'Always' for SNAPSHOTs, and 'IfNotPresent' for releases
+  #pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but

@@ -62,7 +62,7 @@ spec:
                   {{ if (.Values.image.jupyter.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.jupyter.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.jupyter.name }}\
                   :{{ .Values.image.jupyter.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ .Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          imagePullPolicy: {{ (.Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.jupyter.tag | default .Values.egeria.version )))  }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap

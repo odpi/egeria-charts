@@ -61,7 +61,7 @@ spec:
                   {{ if (.Values.image.uistatic.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.uistatic.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.uistatic.name }}\
                   :{{ .Values.image.uistatic.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ .Values.image.uistatic.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          imagePullPolicy: {{ .Values.image.uistatic.pullPolicy | default .Values.imageDefaults.pullPolicy | default "IfNotPresent" }}
           ports:
             - containerPort: 80
           readinessProbe:
