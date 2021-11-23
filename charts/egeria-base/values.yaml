@@ -23,6 +23,11 @@ egeria:
   storageClass:
   # Default to 8GB
   storageSize: 8Gi
+  # Whether a default configuration is performed or not. Note that the environment for
+  # presentation server is hardcoded based on the viewOrg and viewServerName above EVEN
+  # if the configuration is not actually performed. Note that no autostart setup
+  # will be done either if set to false. Defaults to true
+  config: true
 
 # --- Additional environment variables - inserted directly into configmap. Can use helm template directives
 #extraEnv: |
@@ -65,7 +70,9 @@ options:
       # Default will be true, but during dev set to false
       # This setting will control if the k8s job (and hence pod/logs) are deleted after egeria configuration
       # Set to false to assist in debugging 
-      jobdelete: true    
+      jobdelete: true
+      # If set to true helm install will not complete successfully until configuration is complete
+      usehook: false
 
 # --- Docker image sources ---
 

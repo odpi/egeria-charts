@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
+
+{{ if .Values.egeria.config }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -10,10 +12,11 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/name: {{ include "myapp.name" . }}
   annotations:
+    {{ if .Values.options.jobs.config.usehook }}
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": "{{ if .Values.options.jobs.config.jobdelete }} hook-succeeded , {{ end }} before-hook-creation"
-
+    {{ end }}
 spec:
   template:
     metadata:
@@ -63,3 +66,4 @@ spec:
             name: {{ .Release.Name }}-scripts-configmap
   # Keep trying quite a few times to aid in debugging
   backoffLimit: {{ .Values.options.jobs.config.backOffLimit }}
+  {{ end }}

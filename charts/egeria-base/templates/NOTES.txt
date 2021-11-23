@@ -1,8 +1,14 @@
 ODPi Egeria
 ---
 
-Egeria tutorials has now been deployed to Kubernetes.
+Egeria base environment has now been deployed to Kubernetes.
 It may take a minute or so for everything to start up.
+
+Use 'helm show values egeria/egeria-base' if installed direct from repo to see all
+configurable values
+
+By default a single platform is created using the latest release of Egeria, with a single
+metadata server 'mds1' and a view server 'view1'. The UI organization name is 'org'.
 
 Please provide any feeback via a github issue at https://github.com/odpi/egeria or 
 join us on slack via https://http://slack.lfai.foundation
