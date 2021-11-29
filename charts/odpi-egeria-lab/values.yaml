@@ -71,7 +71,7 @@ image:
     name: jupyter
   uistatic:
     name: egeria-ui
-    tag: "3.1.1"
+    tag: "3.2.0"
   nginx:
     registry: public.ecr.aws
     name: nginx/nginx
