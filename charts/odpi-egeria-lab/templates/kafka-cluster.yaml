@@ -4,7 +4,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
-  name: {{ include "myapp.fullname" . }}
+  name: {{ .Release.Name }}-strimzi
 spec:
   kafka:
     version: 3.0.0
