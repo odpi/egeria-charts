@@ -95,21 +95,3 @@ image:
 
 persistence:
   enabled: false
-
-# When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
-# See https://github.com/bitnami/charts/tree/master/bitnami/kafka for more info
-kafka:
-    #volumePermissions:
-    #enabled: true
-    securityContext:
-        enabled: false
-    zookeeper:
-        persistence: 
-            enabled: false
-    persistence: 
-        enabled: false
-    logpersistence: 
-        enabled: false
-    #can be enabled if external kafka access is required
-    #service:
-        #nodeport: 30092
