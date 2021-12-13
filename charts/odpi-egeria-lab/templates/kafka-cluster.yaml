@@ -20,6 +20,13 @@ spec:
       transaction.state.log.min.isr: 1
       log.message.format.version: "3.0"
       inter.broker.protocol.version: "3.0"
+      auto.create.topics.enable: "true"
+    readinessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    livenessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
     storage:
       type: jbod
       volumes:
@@ -44,5 +51,7 @@ spec:
           runAsUser: 1001
           fsGroup: 0
   entityOperator:
-    topicOperator: {}
-    userOperator: {}
+    topicOperator:
+      reconciliationIntervalSeconds: 20
+    userOperator: 
+      reconciliationIntervalSeconds: 20
