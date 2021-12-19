@@ -1,0 +1,5 @@
+A new Egeria Server Platform was started:
+- internal URL: {{ include "egeria-platform.ownPlatformUrl" . }}
+- external URL: {{ include "egeria-platform.fullname" . }}
+- image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+- autostart servers: {{ .Values.egeria.serverList }}

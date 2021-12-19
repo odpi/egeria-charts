@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "egeria-platform.fullname" . }}
+  labels:
+    {{- include "egeria-platform.labels" . | nindent 4 }}
+  {{ if .Values.image.project }}
+  annotations:
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"{{ last (splitList "/" .Values.image.repository) }}:{{ .Values.image.tag }}","namespace":"{{ .Values.image.project }}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"egeria\")].image"}]
+  {{- end }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  serviceName: {{ include "egeria-platform.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "egeria-platform.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "egeria-platform.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "egeria-platform.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: egeria
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "egeria-platform.fullname" . }}-config
+            {{ if .Values.secretName }}
+            - secretRef:
+                name: {{ .Values.secretName }}
+            {{- end }}
+          ports:
+            - containerPort: {{ .Values.service.platformPort }}
+              name: platform
+          {{ if .Values.egeria.debug }}
+            - containerPort: {{ .Values.service.debugPort }}
+              name: debug
+          {{ end }}
+          # No other checks until this passes
+          startupProbe:
+            exec:
+              command:
+                - stat
+                - /tmp/done.txt
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 1
+            failureThreshold: 25
+          # Is pod ready to service network requests - it will pause (for replicas, others will take the load)
+          readinessProbe:
+            httpGet:
+              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/origin
+              port: {{ .Values.service.platformPort }}
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 25
+          # Is pod doing useful work - if not we will restart it
+          livenessProbe:
+            httpGet:
+              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/origin
+              port: {{ .Values.service.platformPort }}
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 25
+          command: ["/home/jboss/scripts/run.sh"]
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{ if .Values.egeria.persistence }}
+          volumeMounts:
+            - mountPath: "/deployments/data"
+              # NO need to include release name in template - included as a SS
+              name: data
+            - mountPath: /home/jboss/scripts
+              name: configuration-scripts
+          {{ end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: Always
+      volumes:
+      - name: configuration-scripts
+        configMap:
+          name: {{ include "egeria-platform.fullname" . }}-scripts
+          defaultMode: 511
+  {{ if .Values.egeria.persistence }}
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.egeria.storageSize}}
+      {{ if .Values.egeria.storageClass }}
+      storageClassName: {{ .Values.egeria.StorageClass }}
+      {{ end }}
+  {{ end }}

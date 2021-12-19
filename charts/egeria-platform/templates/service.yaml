@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "egeria-platform.fullname" . }}
+  labels:
+    {{- include "egeria-platform.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.platformPort }}
+      name: platform
+      targetPort: {{ .Values.service.platformPort }}
+    {{ if .Values.egeria.debug }}
+    - port: {{ .Values.service.debugPort }}
+      name: debug
+      targetPort: {{ .Values.service.debugPort }}
+    {{- end }}
+  selector:
+    {{- include "egeria-platform.selectorLabels" . | nindent 4 }}

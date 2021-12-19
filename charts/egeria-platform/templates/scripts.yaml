@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "egeria-platform.fullname" . }}-scripts
+  labels:
+    {{- include "egeria-platform.labels" . | nindent 4 }}
+data:
+{{ (.Files.Glob "scripts/run.sh").AsConfig | indent 2 }}
+{{ (.Files.Glob "scripts/config-daemon.sh").AsConfig | indent 2 }}
+{{ (.Files.Glob "scripts/config-mds1.sh").AsConfig | indent 2 }}
+{{ (.Files.Glob "scripts/config-view1.sh").AsConfig | indent 2 }}

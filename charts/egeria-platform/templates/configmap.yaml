@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "egeria-platform.fullname" . }}-config
+  labels:
+    {{- include "egeria-platform.labels" . | nindent 4 }}
+data:
+  # Disables strict checking by egeria of TLS certs. Needed for self-signed
+  STRICT_SSL: "false"
+  # Not set in values -- Only expected to be used for debugging. For regular use Audit Logs should be sufficient
+  {{ if .Values.egeria.logging }}
+  LOGGING_LEVEL_ROOT: {{ .Values.egeria.logging }}
+  {{ end }}
+  {{ if .Values.egeria.debug }}
+  JAVA_DEBUG: "true"
+  {{ end }}
+
+  # cluster internal URL for Egeria Platform
+  EGERIA_ENDPOINT: {{ include "egeria-platform.ownPlatformUrl" . }}
+  
+  # Egeria Endpoint on Localhost, used during startup
+  EGERIA_LOCAL_ENDPOINT: https://localhost:{{ .Values.service.platformPort }}
+  
+  # General Egeria Configuration
+  EGERIA_USER: {{ .Values.egeria.user }}
+  EGERIA_COHORT: {{ .Values.egeria.cohort }}
+  EGERIA_KAFKA_ENDPOINT: {{ .Values.egeria.kafkaEndpoint }}
+  EGERIA_VIEW_ORG: {{ .Values.egeria.viewOrg }}
+  EGERIA_LOADER_PATH: /extlib,/deployments/server/lib
+
+  # info to OMAG server
+  EGERIA_OMAG_SERVER_NAME: {{ .Values.egeria.omagServer.name }}
+  EGERIA_OMAG_SERVER_URL: {{ include "egeria-platform.omagPlatformUrl" . }}
+
+  # Autostart
+  SERVER_LIST: {{ .Values.egeria.serverList }}
+  
+  # Additional values inserted by user
+{{- if .Values.extraEnv }}
+{{ toYaml .Values.extraEnv | indent 2 }}
+{{- end }}
