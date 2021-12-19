@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo -e '\n-- Configuring platform with requires servers'
 
 # Set the URL root

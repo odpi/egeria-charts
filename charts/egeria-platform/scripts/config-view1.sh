@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export EGERIA_VIEW_SERVER=view1
 
 # Set the URL root
