@@ -11,19 +11,3 @@ roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
   name: {{ include "egeria-platform.fullname" . }}-role
----
-{{ if .Values.image.project }}
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: allow-pull-{{ include "egeria-platform.fullname" . }}-{{ .Release.Namespace }}
-  namespace: {{ .Values.image.project }}
-subjects:
-  - kind: ServiceAccount
-    name: {{ include "egeria-platform.serviceAccountName" . }}
-    namespace: {{ .Release.Namespace }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: 'system:image-puller'
-{{- end }}

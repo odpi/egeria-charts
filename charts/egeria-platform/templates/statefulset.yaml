@@ -4,11 +4,6 @@ metadata:
   name: {{ include "egeria-platform.fullname" . }}
   labels:
     {{- include "egeria-platform.labels" . | nindent 4 }}
-  {{ if .Values.image.project }}
-  annotations:
-    image.openshift.io/triggers: >-
-      [{"from":{"kind":"ImageStreamTag","name":"{{ last (splitList "/" .Values.image.repository) }}:{{ .Values.image.tag }}","namespace":"{{ .Values.image.project }}"},"fieldPath":"spec.template.spec.containers[?(@.name==\"egeria\")].image"}]
-  {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}

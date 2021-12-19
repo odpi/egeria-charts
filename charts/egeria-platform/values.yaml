@@ -46,9 +46,7 @@ image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "3.5-SNAPSHOT"
-  # load from OpenShift Project
-  project: ""
-
+  
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
