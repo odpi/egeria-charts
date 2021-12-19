@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "egeria-presentation.fullname" . }}
+  labels:
+    {{- include "egeria-presentation.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "egeria-presentation.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "egeria-presentation.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "egeria-presentation.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.egeria.platformConfigMap }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: EGERIA_PRESENTATIONSERVER_SERVER_{{ .Values.egeria.viewOrg }}
+              value: '{"remoteServerName":"{{ .Values.egeria.viewServer }}","remoteURL":"{{ .Values.egeria.viewServerPlatformUrl }}"}'
+            - name: VIEW_ORG
+              value: {{ .Values.egeria.viewOrg }}
+          ports:
+            - name: presentation
+              containerPort: 8091
+              protocol: TCP
+          # No other checks until this passes
+          startupProbe:
+            tcpSocket:
+              port: 8091
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 15
+          # Is pod ready to service network requests - it will pause (for replicas, others will take the load)
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8091
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          # Is pod doing useful work - if not we will restart it
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8091
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
