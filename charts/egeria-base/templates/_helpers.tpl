@@ -46,6 +46,5 @@ Create the name of the service account to use
 
 {{- define "egeria.security" -}}
 serviceAccountName: {{ template "mychart.serviceAccountName" . }}
-securityContext:
-  fsGroup: 0
+
 {{- end }}
