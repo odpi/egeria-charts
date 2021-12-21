@@ -44,7 +44,7 @@ spec:
           imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.egeria.version )))  }}
           env:
             - name: SERVICE
-              value: {{ .Release.Name }}-kafka
+              value: {{ .Release.Name }}-strimzi-kafka-bootstrap
       containers:
         - name: initialize
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
