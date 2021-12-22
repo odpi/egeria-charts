@@ -54,8 +54,6 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: jupyter
     spec:
-      securityContext:
-        fsGroup: 100
       containers:
         - name: jupyter
           image: "{{ if (.Values.image.jupyter.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.jupyter.registry | default .Values.imageDefaults.registry }}/{{ end }}\
