@@ -54,7 +54,7 @@ curl -f -k --verbose --basic admin:admin -X POST --max-time 900 \
 
 # --- Now the view server
 
-=# Set the URL root
+# Set the URL root
 echo -e '\n\n > Setting view server URL root:\n'
 curl -f -k --verbose --basic admin:admin -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}"
