@@ -113,7 +113,7 @@ spec:
           resources: {}
           env:
             - name: UI_STATIC
-              value: http://{{ .Release.Name }}-uistatic:80
+              value: http://{{ .Release.Name }}-uistatic:8080
             - name: UI_API
               value: https://{{ .Release.Name }}-ui:8443
             - name: NGINX_SERVER_NAME
@@ -168,10 +168,10 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: etc
   name: {{ .Release.Name }}-template-configmap
-{{- if and (.Files.Glob "etc/**") }}
+{{- if and (.Files.Glob "etc/default.conf.template") }}
 binaryData:
   {{- $root := . }}
-  {{- range $path, $bytes := .Files.Glob "etc/**" }}
+  {{- range $path, $bytes := .Files.Glob "etc/default.conf.template" }}
   {{ base $path }}: {{ $root.Files.Get $path | b64enc | quote }}
   {{- end }}
   {{- end }}

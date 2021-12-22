@@ -1,6 +1,42 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: uistatic-nginx-conf
+  name: {{ .Release.Name }}-uistatic-nginx-conf
+data:
+  nginx.conf: |
+    # SPDX-License-Identifier: Apache-2.0
+    # Copyright Contributors to the Egeria project.
+    worker_processes  auto;
+    error_log  /var/log/nginx/error.log notice;
+    events {
+      worker_connections  1024;
+    }
+    pid        /tmp/nginx.pid;
+    http {
+      include       /etc/nginx/mime.types;
+      default_type  application/octet-stream;
+      log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+      access_log  /var/log/nginx/access.log  main;
+      sendfile        on;
+      keepalive_timeout  65;
+      client_body_temp_path /tmp/client_temp;
+      proxy_temp_path       /tmp/proxy_temp_path;
+      fastcgi_temp_path     /tmp/fastcgi_temp;
+      uwsgi_temp_path       /tmp/uwsgi_temp;
+      scgi_temp_path        /tmp/scgi_temp;
+      include /etc/nginx/conf.d/*.conf;
+    }
+...
+---
 {{ if .Values.egeria.egeriaui }}
 apiVersion: v1
 kind: Service
@@ -63,10 +99,10 @@ spec:
                   :{{ .Values.image.uistatic.tag | default .Values.egeria.version }}"
           imagePullPolicy: {{ .Values.image.uistatic.pullPolicy | default .Values.imageDefaults.pullPolicy | default "IfNotPresent" }}
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           readinessProbe:
             tcpSocket:
-              port: 80
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
@@ -74,8 +110,46 @@ spec:
           #env:
           #  - name: EGERIA_PRESENTATIONSERVER_SERVER_coco
           #    value: "{\"remoteServerName\":\"cocoView1\",\"remoteURL\":\"https://{{ .Release.Name }}-datalake:9443\"}"
+          volumeMounts:
+            - name: template-vol
+              mountPath: /etc/nginx/templates
+            - name: conf-vol
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: confd-vol
+              mountPath: /etc/nginx/conf.d
       restartPolicy: Always
+      volumes:
+        - name: template-vol
+          configMap:
+            name: {{ .Release.Name }}-uistatic-template-configmap
+        # default config file - read only (configmap)
+        - name: conf-vol
+          configMap:
+            name: {{ .Release.Name }}-uistatic-nginx-conf
+        # Created each time, so an empty local directory is suitable. Must be writeable
+        - name: confd-vol
+          emptyDir: { }
 
 status: {}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: etc
+  name: {{ .Release.Name }}-uistatic-template-configmap
+{{- if and (.Files.Glob "etc/staticui.conf.template") }}
+binaryData:
+  {{- $root := . }}
+  {{- range $path, $bytes := .Files.Glob "etc/staticui.conf.template" }}
+  {{ base $path }}: {{ $root.Files.Get $path | b64enc | quote }}
+  {{- end }}
+  {{- end }}
+
 ...
 {{ end }}
