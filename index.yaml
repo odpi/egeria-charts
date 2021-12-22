@@ -3,6 +3,28 @@ entries:
   egeria-base:
   - apiVersion: v2
     appVersion: "3.4"
+    created: "2021-12-22T16:47:18.877072293Z"
+    dependencies:
+    - name: strimzi-kafka-operator
+      repository: https://strimzi.io/charts/
+      version: 0.26.1
+    description: Egeria simple deployment (platform, react UI)
+    digest: 2dc79c76095dc5c52917a4e051780da7cad39859b00e72d6540516963b0100e4
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, base, simple
+    maintainers:
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: egeria-base
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/egeria-base-3.4.1-prelease.2/egeria-base-3.4.1-prelease.2.tgz
+    version: 3.4.1-prelease.2
+  - apiVersion: v2
+    appVersion: "3.4"
     created: "2021-12-22T16:38:46.890139573Z"
     dependencies:
     - name: strimzi-kafka-operator
@@ -1153,4 +1175,4 @@ entries:
     urls:
     - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.0.1/odpi-egeria-lab-3.0.1.tgz
     version: 3.0.1
-generated: "2021-12-22T16:38:47.113584655Z"
+generated: "2021-12-22T16:47:18.877747418Z"
