@@ -52,8 +52,8 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 8080
+      targetPort: 8080
       {{- if ( eq  .Values.service.type "NodePort" ) }}
       nodePort: {{ .Values.service.nodeport.uistatic }}
       {{- end }}
