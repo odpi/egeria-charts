@@ -11,7 +11,7 @@ metadata:
 spec:
   containers:
     - name: wget
-      image: busybox
+      image: quay.io/prometheus/busybox
       command: ['wget']
       args: ['{{ include "egeria-presentation.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
