@@ -2,12 +2,12 @@
 egeria:
   # Global Egeria Settings
   logging: error
-  version: "3.5"
+  version: "3.5-SNAPSHOT"
   debug: true
 
   # persistence
   persistence: true
-  storageClass: ibmc-vpc-block-10iops-tier
+  storageClass: default
   storageSize: 8Gi
   repositoryType: "local-graph-repository"
 
