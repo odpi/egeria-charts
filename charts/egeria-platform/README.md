@@ -1,6 +1,6 @@
 # egeria-platform
 
-This repository is based on https://github.com/odpi/egeria-charts, but it handles configuration differently and allows for multiple server platforms.
+This chart is based on `egeria-base` chart in https://github.com/odpi/egeria-charts, but it handles configuration differently and allows for multiple server platforms.
 
 
 ## Prerequisite: Install Kafka
@@ -38,7 +38,7 @@ The configuration script for a server needs to be placed in `/home/jboss/scripts
 
 Use the following settings in `egeria-platform` helm chart:
 - set `egeria.serverList` to `mds1,view1`
-- set `egeria.omagServer.name` to `mds1` and `egeria.omagServer.platformUrl` to `` (this will resolve to the platform URL of the deployment)
+- set `egeria.omagServer.name` to `mds1` and `egeria.omagServer.platformUrl` to `` (an empty string will be replaced with the platform URL of the deployment)
 - adjust `egeria.kafkaEndpoint` to use the correct Kafka address (see above)
 - make sure that the correct image is used (this must contain `config-mds1.sh` and `config-view1.sh`)
 
