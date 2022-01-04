@@ -1,6 +1,6 @@
 apiVersion: v2
 name: egeria-platform
-description: Egeria Platform for Kubernetes
+description: Egeria Platform
 
 # A chart can be either an 'application' or a 'library' chart.
 #
