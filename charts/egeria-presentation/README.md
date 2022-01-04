@@ -9,6 +9,8 @@ Use the following settings in `egeria-presentation` helm chart:
 - set `egeria.viewOrg` to the same viewOrg as the OMAG deployment (here `org`)
 - set `egeria.viewServerPlatformUrl` to the Egeria platform URL of `view1` (here `https://egeria-platform:9443`)
 
+Because the deployment needs access to the ConfigMap of the `egeria-platform`, it must be installed in the same namespace.
+
 Run
 ```
 helm install presentation ./egeria-presentation
