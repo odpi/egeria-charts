@@ -22,9 +22,12 @@ version: 3.5.0-prerelease.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "3.5-SNAPSHOT"
-
+keywords:
+  - odpi, egeria, base, simple
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 sources:
-  - https://github.com/odpi/egeria
-home: https://github.com/odpi/egeria
+  - https://github.com/odpi/egeria-charts
+home: https://github.com/odpi/egeria-charts
+maintainers:
+  - name: Max Simon
 dependencies: []
