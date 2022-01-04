@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- # Copyright Contributors to the Egeria project. -->
+
 # egeria-presentation
 
 This repository is based on https://github.com/odpi/egeria-charts, but it only deploys the Egeria UI. This chart assumes that the platform of the view server was deployed using [egeria-platform](../egeria-platform/README.md).

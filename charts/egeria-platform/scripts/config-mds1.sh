@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
 echo -e '\n-- Configuring platform with requires servers'
 
 # Set the URL root

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
 # wait until Egeria API is ready
 status_code=$(curl -s -o /dev/null -w "%{http_code}" -k -X GET ${EGERIA_LOCAL_ENDPOINT}/open-metadata/platform-services/users/${EGERIA_USER}/server-platform/origin)
 until [ $status_code -eq 200 ]; do

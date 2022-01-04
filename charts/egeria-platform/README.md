@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- # Copyright Contributors to the Egeria project. -->
+
 # egeria-platform
 
 This chart is based on `egeria-base` chart in https://github.com/odpi/egeria-charts, but it handles configuration differently and allows for multiple server platforms.

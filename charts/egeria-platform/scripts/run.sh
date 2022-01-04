@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
 # split SERVER_LIST by ,
 SERVER_LIST_ARR=($(echo $SERVER_LIST | tr "," "\n"))
 
