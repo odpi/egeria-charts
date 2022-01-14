@@ -200,6 +200,32 @@ curl -f -k --verbose --basic admin:admin \
 }
 EOF
 
+echo -e '\n\n > Setting up Server Author:\n'
+
+curl -f -k --verbose --basic admin:admin \
+  --header "Content-Type: application/json" \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/server-author" \
+  --data @- <<EOF
+{
+    "class":"IntegrationViewServiceConfig",
+    "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.serverauthor.admin.ServerAuthorViewAdmin",
+    "viewFullServiceName":"ServerAuthor",
+    "viewServiceOperationalStatus":"ENABLED",
+    "omagserverPlatformRootURL": "${EGERIA_ENDPOINT}",
+    "resourceEndpoints" : [
+        {
+           "class"              : "ResourceEndpointConfig",
+           "resourceCategory"   : "Platform",
+           "description"        : "Platform",
+           "platformName"       : "platform",
+           "platformRootURL"    : "${EGERIA_ENDPOINT}"
+        }
+    ]
+}
+EOF
+
+
+
 # Start up the view server
 echo -e '\n\n > Starting the view server:\n'
 
