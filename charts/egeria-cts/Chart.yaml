@@ -4,8 +4,8 @@
 name: egeria-cts
 description: Egeria Conformance Test Suite deployment to Kubernetes
 apiVersion: v2
-version: 3.4.0
-appVersion: 3.4
+version: 3.5.0-prerelease.0
+appVersion: 3.5
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
   - odpi, egeria, cts
@@ -17,6 +17,6 @@ maintainers:
     email: chris@thegrotes.net
 dependencies:
   - name: kafka
-    version: 14.4.1
+    version: 14.9.1
     repository: https://charts.bitnami.com/bitnami
 
