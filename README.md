@@ -36,23 +36,7 @@ To install a chart, a simple example would be our lab chart:
 $ helm install egeria/odpi-egeria-lab lab
 ```
 
-This directory currently contains two helm charts for Egeria, refer to the full source tree for any other additions.
-
-## odpi-egeria-lab
-
-This directory contains the 'lab' helm chart which creates a tutorial environment intended to show how
-Egeria can be used to support the metadata needs of a small, hypothetical, pharmaceutical company known
-as Coco Pharmecuticals. Configuration & demonstration is done through Jupyter Notebooks and Python.
-
-Please refer to [odpi-egeria-lab/README.md] for more detailed information
-
-## egeria-base
-
-This directory contains a simpler helm chart which creates a basic egeria environment with
-a single server preconfigured. This is a simpler environment than we use for coco, but is likely
-useful for experimenting further with Egeria once you understand the tutorials.
-
-Please refer to [egeria-base/README.md] for more detailed information.
+Refer to the **charts** directory for the chart content
 
 ## Additional Kubernetes related content
 
