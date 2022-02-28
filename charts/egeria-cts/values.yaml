@@ -79,17 +79,3 @@ image:
     name: egeria
   configure:
     name: egeria-configure
-
-# --- Kafka Configuration ---
-
-# When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
-# See https://github.com/bitnami/charts/tree/master/bitnami/kafka for more info
-kafka:
-  zookeeper:
-    persistence:
-      enabled: false
-  securityContext:
-    enabled: false
-  persistence:
-    enabled: false
-...

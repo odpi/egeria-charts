@@ -101,29 +101,3 @@ image:
     tag: "3.5.0"
   configure:
     name: egeria-configure
-
-# --- Kafka Configuration ---
-
-# When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
-# See https://github.com/bitnami/charts/tree/master/bitnami/kafka for more info
-kafka:
-    #volumePermissions:
-    #enabled: true
-    securityContext:
-        enabled: false
-    zookeeper:
-        persistence: 
-            enabled: true
-    persistence: 
-        enabled: true
-    logpersistence: 
-        enabled: true
-    #can be enabled if external kafka access is required
-    #service:
-        #nodeport: 30092
-
-# Additional configuration notes:
-#
-# -- We assume we are always providing our own kafka/zookeeper (the VDC chart is an example of this being configurable)
-# -- the kafka topic root is not configurable - may be needed to be configurable if we change the above
-# -- always uses graph repo - inmemory doesn't make sense for a persistent environment
