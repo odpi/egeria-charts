@@ -51,11 +51,15 @@ curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X POST \
 if [ "${TUT_TYPE}" = "native" ]; then
   if [ "${CONNECTOR_PROVIDER}" = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider" ]; then
     curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X POST \
-      "${TUT_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${TUT_SERVER}/local-repository/mode/local-graph-repository" || exit $?
+      "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${TUT_SERVER}/local-repository/mode/local-graph-repository" || exit $?
+  elif [ "${CONNECTOR_PROVIDER}" = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider" ]; then
+      curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X POST \
+        "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${TUT_SERVER}/local-repository/mode/in-memory-repository" || exit $?
   else
     echo "-- Unknown native repository provider: ${CONNECTOR_PROVIDER} -- exiting."
     exit 1
   fi
+
 elif [ "${TUT_TYPE}" = "plugin" ]; then
   curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X POST \
     --header "Content-Type: application/json" \

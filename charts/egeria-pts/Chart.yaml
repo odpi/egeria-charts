@@ -4,7 +4,7 @@
 name: egeria-pts
 description: Egeria Performance Test Suite deployment to Kubernetes
 apiVersion: v2
-version: 3.7.0-prerelease.1
+version: 3.7.0-prerelease.2
 appVersion: 3.7
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
@@ -15,6 +15,8 @@ home: https://github.com/odpi/egeria
 maintainers:
   - name: Christopher Grote
     email: chris@thegrotes.net
+  - name: Nigel Jones
+    email: nigel.l.jones+git@gmail.com
 dependencies:
   - name: strimzi-kafka-operator
     version: 0.28.0
