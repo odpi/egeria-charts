@@ -615,6 +615,28 @@ entries:
   egeria-cts:
   - apiVersion: v2
     appVersion: "3.7"
+    created: "2022-03-28T16:28:44.74949794Z"
+    dependencies:
+    - name: strimzi-kafka-operator
+      repository: https://strimzi.io/charts/
+      version: 0.28.0
+    description: Egeria Conformance Test Suite deployment to Kubernetes
+    digest: 6e95d563692e186b292868cde58e45f3ed194eb09cbd033ea51ab7103ffce2f6
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, cts
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    name: egeria-cts
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/egeria-cts-3.7.0-prerelease.1/egeria-cts-3.7.0-prerelease.1.tgz
+    version: 3.7.0-prerelease.1
+  - apiVersion: v2
+    appVersion: "3.7"
     created: "2022-03-28T08:38:26.475743948Z"
     dependencies:
     - name: strimzi-kafka-operator
@@ -856,6 +878,28 @@ entries:
     - https://github.com/odpi/egeria-charts/releases/download/egeria-cts-3.3-prerelease.0/egeria-cts-3.3-prerelease.0.tgz
     version: 3.3-prerelease.0
   egeria-pts:
+  - apiVersion: v2
+    appVersion: "3.7"
+    created: "2022-03-28T16:28:44.925839509Z"
+    dependencies:
+    - name: strimzi-kafka-operator
+      repository: https://strimzi.io/charts/
+      version: 0.28.0
+    description: Egeria Performance Test Suite deployment to Kubernetes
+    digest: 42d2b5ab7e66d10b3983dda9fa050976108c19804bf18802a9262c1cec5a20ab
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, pts
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    name: egeria-pts
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/egeria-pts-3.7.0-prerelease.1/egeria-pts-3.7.0-prerelease.1.tgz
+    version: 3.7.0-prerelease.1
   - apiVersion: v2
     appVersion: "3.7"
     created: "2022-03-28T08:38:26.618797615Z"
@@ -1815,4 +1859,4 @@ entries:
     urls:
     - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.0.1/odpi-egeria-lab-3.0.1.tgz
     version: 3.0.1
-generated: "2022-03-28T08:38:26.752709077Z"
+generated: "2022-03-28T16:28:44.928416328Z"
