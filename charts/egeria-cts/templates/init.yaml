@@ -40,7 +40,7 @@ spec:
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: SERVICE
-              value: {{ .Release.Name }}-kafka
+              value: {{ .Release.Name }}-strimzi-kafka-bootstrap
       containers:
         - name: init
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\

@@ -75,27 +75,4 @@ imageDefaults:
   tag: 3.6
   pullPolicy: IfNotPresent
 
-# The following section defines all DOCKER images being used by this chart. Normally they should be left as is,
-# but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
-# these can be individually overridden for each image, if desired, by providing a subkey for 'namespace', 'tag' or
-# 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
-# 'docker.io/library' as the registry override, and set namespace to be your user or organization id).
-image:
-  egeria:
-    name: egeria
-  configure:
-    name: egeria-configure
-
-# --- Kafka Configuration ---
-
-# When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
-# See https://github.com/bitnami/charts/tree/master/bitnami/kafka for more info
-kafka:
-  zookeeper:
-    persistence:
-      enabled: false
-  securityContext:
-    enabled: false
-  persistence:
-    enabled: false
 ...
