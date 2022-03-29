@@ -18,8 +18,6 @@ else
   echo ${response}
 fi
 
-echo -e `\n > Pausing for ${START_DELAY} seconds for the PTS server to stabilize...`
-
 sleep ${START_DELAY}
 
 echo -e '\n > Starting the technology under test:\n'

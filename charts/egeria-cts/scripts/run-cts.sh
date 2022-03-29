@@ -18,8 +18,6 @@ else
   echo ${response}
 fi
 
-echo -e `\n > Pausing for ${START_DELAY} seconds for the CTS server to stabilize...`
-
 sleep ${START_DELAY}
 
 # Wait for CTS to stabilize
