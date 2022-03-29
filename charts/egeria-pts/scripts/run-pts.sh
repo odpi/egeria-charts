@@ -18,6 +18,8 @@ else
   echo ${response}
 fi
 
+sleep ${START_DELAY}
+
 echo -e '\n > Starting the technology under test:\n'
 
 response=$(curl -f -k --silent -X POST --max-time 900 \
