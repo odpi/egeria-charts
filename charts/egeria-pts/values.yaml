@@ -7,6 +7,8 @@ egeria:
   user: admin
   cohort: pts
   serverName: pts
+  # Adds a delay between the PTS server being started, and starting the TUT server
+  delay: 10
 
 # --- PTS configuration ---
 # These control the volumetrics of the PTS

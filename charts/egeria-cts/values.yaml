@@ -7,6 +7,8 @@ egeria:
   user: admin
   cohort: cts
   serverName: cts
+  # Adds a delay between the CTS server being started, and starting the TUT server
+  delay: 10
 
 # --- CTS configuration ---
 # "Scale factor" for the CTS (sets a limit on the overall number of records, search results, etc)
