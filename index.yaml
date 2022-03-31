@@ -3,6 +3,28 @@ entries:
   egeria-base:
   - apiVersion: v2
     appVersion: "3.7"
+    created: "2022-03-31T14:56:46.232449478Z"
+    dependencies:
+    - name: strimzi-kafka-operator
+      repository: https://strimzi.io/charts/
+      version: 0.28.0
+    description: Egeria simple deployment (platform, react UI)
+    digest: c116e72d5f97647488f1bd3d707f0c86df2caab4893d17854e0062fde692d374
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, base, simple
+    maintainers:
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: egeria-base
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/egeria-base-3.7.0-prerelease.1/egeria-base-3.7.0-prerelease.1.tgz
+    version: 3.7.0-prerelease.1
+  - apiVersion: v2
+    appVersion: "3.7"
     created: "2022-03-28T08:38:26.322440277Z"
     dependencies:
     - name: strimzi-kafka-operator
@@ -1243,6 +1265,26 @@ entries:
   odpi-egeria-lab:
   - apiVersion: v1
     appVersion: "3.7"
+    created: "2022-03-31T14:56:46.367091277Z"
+    description: Egeria lab environment
+    digest: b1af1e9666d0c9582295efcabdbd9c70a541a10fba8ec1171c89b5367727b182
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, lab, jupyter, notebook
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: odpi-egeria-lab
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.7.0-prerelease.1/odpi-egeria-lab-3.7.0-prerelease.1.tgz
+    version: 3.7.0-prerelease.1
+  - apiVersion: v1
+    appVersion: "3.7"
     created: "2022-03-28T08:38:26.751893977Z"
     description: Egeria lab environment
     digest: 95a86219aeafd330bae098385a80c059509b12bd8e46765621bf977a16f6ac5a
@@ -1935,4 +1977,4 @@ entries:
     urls:
     - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.0.1/odpi-egeria-lab-3.0.1.tgz
     version: 3.0.1
-generated: "2022-03-29T14:53:20.664001639Z"
+generated: "2022-03-31T14:56:46.368315899Z"
