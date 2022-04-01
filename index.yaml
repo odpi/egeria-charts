@@ -3,6 +3,28 @@ entries:
   egeria-base:
   - apiVersion: v2
     appVersion: "3.7"
+    created: "2022-04-01T07:35:30.149887934Z"
+    dependencies:
+    - name: strimzi-kafka-operator
+      repository: https://strimzi.io/charts/
+      version: 0.28.0
+    description: Egeria simple deployment (platform, react UI)
+    digest: e8929544e81ca12d47b20056cbeda0498600d6652eb7aa3ddedab8621ad595e2
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, base, simple
+    maintainers:
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: egeria-base
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/egeria-base-3.7.0/egeria-base-3.7.0.tgz
+    version: 3.7.0
+  - apiVersion: v2
+    appVersion: "3.7"
     created: "2022-03-31T14:56:46.232449478Z"
     dependencies:
     - name: strimzi-kafka-operator
@@ -637,6 +659,30 @@ entries:
   egeria-cts:
   - apiVersion: v2
     appVersion: "3.7"
+    created: "2022-04-01T07:35:30.308005028Z"
+    dependencies:
+    - name: strimzi-kafka-operator
+      repository: https://strimzi.io/charts/
+      version: 0.28.0
+    description: Egeria Conformance Test Suite deployment to Kubernetes
+    digest: 8ae49a2b53144e11b1081b514d0af6e1942f6aea9f22b62c4560d12f0fe07b1b
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, cts
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: egeria-cts
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/egeria-cts-3.7.0/egeria-cts-3.7.0.tgz
+    version: 3.7.0
+  - apiVersion: v2
+    appVersion: "3.7"
     created: "2022-03-29T14:53:20.476065886Z"
     dependencies:
     - name: strimzi-kafka-operator
@@ -952,6 +998,30 @@ entries:
   egeria-pts:
   - apiVersion: v2
     appVersion: "3.7"
+    created: "2022-04-01T07:35:30.453864629Z"
+    dependencies:
+    - name: strimzi-kafka-operator
+      repository: https://strimzi.io/charts/
+      version: 0.28.0
+    description: Egeria Performance Test Suite deployment to Kubernetes
+    digest: 3dea1d8d69ed87022b6948260aa48a3716434d969dac0d40755dc6818c3eed5e
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, pts
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: egeria-pts
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/egeria-pts-3.7.0/egeria-pts-3.7.0.tgz
+    version: 3.7.0
+  - apiVersion: v2
+    appVersion: "3.7"
     created: "2022-03-29T14:53:20.663188839Z"
     dependencies:
     - name: strimzi-kafka-operator
@@ -1263,6 +1333,26 @@ entries:
     - https://github.com/odpi/egeria-charts/releases/download/egeria-pts-3.3-prerelease.0/egeria-pts-3.3-prerelease.0.tgz
     version: 3.3-prerelease.0
   odpi-egeria-lab:
+  - apiVersion: v1
+    appVersion: "3.7"
+    created: "2022-04-01T07:35:30.593325582Z"
+    description: Egeria lab environment
+    digest: c3f250d28b1bea51a63fc8cdc416b4fa20b86539802ddd721191b8de6dd906b6
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, lab, jupyter, notebook
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: odpi-egeria-lab
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.7.0/odpi-egeria-lab-3.7.0.tgz
+    version: 3.7.0
   - apiVersion: v1
     appVersion: "3.7"
     created: "2022-03-31T14:56:46.367091277Z"
@@ -1977,4 +2067,4 @@ entries:
     urls:
     - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.0.1/odpi-egeria-lab-3.0.1.tgz
     version: 3.0.1
-generated: "2022-03-31T14:56:46.368315899Z"
+generated: "2022-04-01T07:35:30.594574992Z"
