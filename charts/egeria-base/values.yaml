@@ -98,6 +98,6 @@ image:
     name: egeria
   presentation:
     name: egeria-react-ui
-    tag: "3.7.0"
+    tag: "3.5.0"
   configure:
     name: egeria-configure
