@@ -4,8 +4,8 @@
 name: egeria-base
 description: Egeria simple deployment (platform, react UI)
 apiVersion: v2
-version: 3.8.0
-appVersion: 3.8
+version: 3.9.0-prerelease.0
+appVersion: 3.9
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
   - odpi, egeria, base, simple
@@ -17,5 +17,5 @@ maintainers:
     email: nigel.l.jones+git@gmail.com
 dependencies:
   - name: strimzi-kafka-operator
-    version: 0.28.0
+    version: 0.29.0
     repository: https://strimzi.io/charts/
