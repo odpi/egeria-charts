@@ -107,3 +107,9 @@ serviceAccount:
 
 persistence:
   enabled: false
+
+# Provide a list of URLs to all files (i.e. jars) that should be downloaded for connectivity, where
+# each item in the list is a dict pair of 'filename' and 'url', e.g.
+# - filename: my-connector-file.jar
+#   url: https://some-location/com?even=with&some-parameters=embedded&for-dynamic-download=true
+downloads:
