@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "egeria-presentation.fullname" . }}
+  labels:
+    {{- include "egeria-presentation.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      name: presentation
+      targetPort: {{ .Values.service.port }}
+  selector:
+    {{- include "egeria-presentation.selectorLabels" . | nindent 4 }}

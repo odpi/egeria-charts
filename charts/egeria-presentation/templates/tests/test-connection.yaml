@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "egeria-presentation.fullname" . }}-test-connection"
+  labels:
+    {{- include "egeria-presentation.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: quay.io/prometheus/busybox
+      command: ['wget']
+      args: ['{{ include "egeria-presentation.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
