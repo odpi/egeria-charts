@@ -34,12 +34,24 @@ spec:
           type: persistent-claim
           size: 5Gi
           deleteClaim: true
+    template:
+      pod:
+        securityContext:
+          runAsUser: 1001
+          runAsGroup: 1001
+          fsGroup: 1001
   zookeeper:
     replicas: 1
     storage:
       type: persistent-claim
       size: 1Gi
       deleteClaim: true
+    template:
+      pod:
+        securityContext:
+          runAsUser: 1001
+          runAsGroup: 1001
+          fsGroup: 1001
   entityOperator:
     topicOperator:
       reconciliationIntervalSeconds: 20
