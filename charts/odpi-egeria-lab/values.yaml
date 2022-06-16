@@ -69,7 +69,6 @@ image:
     name: egeria-configure
   jupyter:
     name: jupyter
-    tag: "latest"
   uistatic:
     name: egeria-ui
     tag: "3.2.0"
