@@ -122,6 +122,10 @@ spec:
         - name: extlib
           configMap:
             name: {{ .Release.Name }}-extlib
+      securityContext:
+        runAsUser: 185
+        runAsGroup: 185
+        fsGroup: 185
   {{ if .Values.egeria.persistence }}
   volumeClaimTemplates:
   - metadata:

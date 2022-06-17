@@ -97,6 +97,7 @@ spec:
               name: {{ .Release.Name }}-dev-data
          {{ end }}
       restartPolicy: Always
+      {{- include "egeria.platformscc" . | nindent 6 }}
   {{ if .Values.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
