@@ -50,7 +50,5 @@ serviceAccountName: {{ template "mychart.serviceAccountName" . }}
 
 {{- define "egeria.platformscc" -}}
 securityContext:
-  runAsUser: 185
-  runAsGroup: 185
-  fsGroup: 185
+  { }
 {{- end }}
