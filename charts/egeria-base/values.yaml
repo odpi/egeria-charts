@@ -101,3 +101,20 @@ image:
     tag: "3.8.0"
   configure:
     name: egeria-configure
+
+# Normally we install the strimzi operator as part of the Chart. However this requires admin permissions, and
+# will create cluster-scoped resources. Set to false to skip this when in a restricted environment, or needing multiple
+# installs of egeria charts in the same cluster. Requires the strimzi operator to be
+# installed on the cluster by an admin, or a prior install
+strimzi:
+  enabled: true
+
+# If you allow (as is default) this chart to install the strimzi operator, this setting will
+# then allow it to work across all namespaces - so for example it will work if installing another
+# version of the chart, as long as that install has strimzi.enabled=false.
+# However it is better to install strimzi manually for these more complex environments, so the default is false
+#
+# helm repo add strimzi https://strimzi.io/charts/
+# helm repo update && helm install strimzi strimzi/strimzi-kafka-operator --set watchAnyNamespace=true
+strimzi-kafka-operator:
+  watchAnyNamespace: false
