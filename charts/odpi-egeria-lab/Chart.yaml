@@ -4,7 +4,7 @@
 name: odpi-egeria-lab
 description: Egeria lab environment
 apiVersion: v1
-version: 3.9.2
+version: 3.9.3
 appVersion: 3.9
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
@@ -21,3 +21,4 @@ dependencies:
   - name: strimzi-kafka-operator
     version: 0.29.0
     repository: https://strimzi.io/charts/
+    condition: strimzi.enabled

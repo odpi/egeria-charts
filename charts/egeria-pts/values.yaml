@@ -77,4 +77,10 @@ imageDefaults:
   tag: 3.9
   pullPolicy: IfNotPresent
 
-...
+# Normally we install the strimzi operator as part of the Chart. However this requires admin permissions, and
+# will create cluster-scoped resources. Set to false to skip this when in a restricted environment, or needing multiple
+# installs of egeria charts in the same cluster. Requires the strimzi operator to be
+# installed on the cluster by an admin, or a prior install
+strimzi:
+  enabled: true
+
