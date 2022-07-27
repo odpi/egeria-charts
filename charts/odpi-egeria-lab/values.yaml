@@ -38,6 +38,13 @@ egeria:
   # Set to 'true' to deploy the Egeria UI, but note the configuration may not work properly
   egeriaui: true
 
+jupyter:
+  # Sleep this long after configuring notebook environment - to aid debug
+  scriptSleepBefore: "0"
+  scriptSleepAfter: "0"
+  # Size for jupyter work
+  storageSize: "1Gi"
+
 debug:
   egeriaJVM: false
 
@@ -68,7 +75,10 @@ image:
   configure:
     name: egeria-configure
   jupyter:
-    name: jupyter
+    registry: docker.io
+    namespace: jupyter
+    name: minimal-notebook
+    tag: "lab-3.4.4"
   uistatic:
     name: egeria-ui
     tag: "3.2.0"

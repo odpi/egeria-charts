@@ -59,16 +59,22 @@ spec:
           image: "{{ if (.Values.image.jupyter.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.jupyter.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.jupyter.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.jupyter.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.jupyter.name }}\
-                  :{{ .Values.image.jupyter.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ (.Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.jupyter.tag | default .Values.egeria.version )))  }}
+                  :{{ .Values.image.jupyter.tag | default "latest" }}"
+          imagePullPolicy: {{ (.Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.jupyter.tag | default "latest" )))  }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
           args:
-            - jupyter
-            - lab
-            - "--NotebookApp.token=''"
-            - "--NotebookApp.iopub_data_rate_limit=1.0e10"
+            - "--group-add=users"
+            - "start-notebook.sh"
+            #- jupyter
+            #- lab
+            #- "--NotebookApp.token=''"
+            #- "--NotebookApp.iopub_data_rate_limit=1.0e10"
+          command:
+            - "tini"
+            - "-g"
+            - "--"
           env:
             - name: corePlatformURL
               value: "https://{{ .Release.Name }}-core:9443"
@@ -86,6 +92,12 @@ spec:
               value: "{{ .Release.Name }}-nginx:443"
             - name: repositoryType
               value: {{ .Values.egeria.repositoryType}}
+            - name: CHOWN_HOME
+              value: "yes"
+            - name: CHOWN_HOME_OPTS
+              value: "-R"
+
+
           ports:
             - containerPort: 8888
           readinessProbe:
@@ -94,8 +106,39 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
+          volumeMounts:
+            - name: notebook-scripts-vol
+              mountPath: /usr/local/bin/before-notebook.d/
+            - name: jupyter-work
+              mountPath: "home/jovyan/work"
           resources: {}
+      volumes:
+        - name: notebook-scripts-vol
+          configMap:
+            name: {{ .Release.Name }}-scripts-configmap
+        - name: jupyter-work
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-jupyter-pvc
       restartPolicy: Always
-
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-jupyter-pvc
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: jupyter
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.jupyter.storageSize | default "1Gi" }}
+{{ if .Values.egeria.storageClass }}
+  storageClassName: {{ .Values.jupyter.StorageClass }}
+{{ end }}
 status: {}
 ...
