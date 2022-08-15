@@ -48,7 +48,6 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
@@ -56,19 +55,14 @@ spec:
     spec:
       containers:
         - name: jupyter
-          image: "{{ if (.Values.image.jupyter.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.jupyter.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.jupyter.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.jupyter.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+          image: "{{ (.Values.image.jupyter.registry | default .Values.imageDefaults.registry) }}/\
+                  {{ (.Values.image.jupyter.namespace | default .Values.imageDefaults.namespace) }}/\
                   {{ .Values.image.jupyter.name }}\
-                  :{{ .Values.image.jupyter.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ (.Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.jupyter.tag | default .Values.egeria.version )))  }}
+                  :{{ .Values.image.jupyter.tag | default "latest" }}"
+          imagePullPolicy: {{ (.Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.jupyter.tag | default "latest" )))  }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
-          args:
-            - jupyter
-            - lab
-            - "--NotebookApp.token=''"
-            - "--NotebookApp.iopub_data_rate_limit=1.0e10"
           env:
             - name: corePlatformURL
               value: "https://{{ .Release.Name }}-core:9443"
@@ -86,6 +80,17 @@ spec:
               value: "{{ .Release.Name }}-nginx:443"
             - name: repositoryType
               value: {{ .Values.egeria.repositoryType}}
+            - name: CHOWN_HOME
+              value: "yes"
+            - name: CHOWN_HOME_OPTS
+              value: "-R"
+            #- name: GEN_CERT
+            #  value: "YES" 
+            - name: DOCKER_STACKS_JUPYTER_CMD
+              value: "lab --notebook-dir=/home/jovyan/work"
+            # Contains the truststore from Egeria self-signed certs, in .pem format
+            #- name: REQUESTS_CA_BUNDLE
+            #  value: "/home/jovyan/ssl/truststore.pem"
           ports:
             - containerPort: 8888
           readinessProbe:
@@ -94,8 +99,44 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
+          volumeMounts:
+            - mountPath: /home/jovyan/work
+              name: jupyter-work
+            - name: notebook-scripts-vol
+              mountPath: "/usr/local/bin/before-notebook.d"
+            #- name: ssl-vol
+            #  mountPath: "/home/jovyan/ssl"
           resources: {}
+      volumes:
+        - name: notebook-scripts-vol
+          configMap:
+            name: {{ .Release.Name }}-scripts-configmap
+        #- name: ssl-vol
+        #  configMap:
+        #    name: {{ .Release.Name }}-ssl-configmap
+        - name: jupyter-work
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-jupyter-pvc
       restartPolicy: Always
-
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-jupyter-pvc
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: jupyter
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.jupyter.storageSize | default "1Gi" }}
+{{ if .Values.egeria.storageClass }}
+  storageClassName: {{ .Values.jupyter.StorageClass }}
+{{ end }}
 status: {}
 ...
