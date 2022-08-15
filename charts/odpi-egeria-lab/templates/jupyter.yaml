@@ -84,8 +84,8 @@ spec:
               value: "yes"
             - name: CHOWN_HOME_OPTS
               value: "-R"
-            #- name: GEN_CERT
-            #  value: "YES" 
+            - name: GEN_CERT
+              value: "YES"
             - name: DOCKER_STACKS_JUPYTER_CMD
               value: "lab --notebook-dir=/home/jovyan/work"
             # Contains the truststore from Egeria self-signed certs, in .pem format
