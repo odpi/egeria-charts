@@ -75,10 +75,10 @@ image:
   configure:
     name: egeria-configure
   jupyter:
-    registry: docker.io
-    namespace: jupyter
-    name: minimal-notebook
-    tag: "lab-3.4.4"
+    #registry: docker.io
+    #namespace: jupyter
+    name: jupyter
+    tag: "lab-3.4.5"
   uistatic:
     name: egeria-ui
     tag: "3.2.0"
