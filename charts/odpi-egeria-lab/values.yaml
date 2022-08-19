@@ -38,6 +38,12 @@ egeria:
   # Set to 'true' to deploy the Egeria UI, but note the configuration may not work properly
   egeriaui: true
 
+# Additional connectors/libraries to be made available in egeria server chassis containers
+# This is just an example. You can have a list of connectors
+#downloads:
+  #- url: https://search.maven.org/remotecontent?filepath=org/odpi/egeria/egeria-connector-xtdb/3.9/egeria-connector-xtdb-3.9-jar-with-dependencies.jar
+  #  filename: egeria-connector-xtdb-3.9-jar-with-dependencies.jar
+
 jupyter:
   # Sleep this long after configuring notebook environment - to aid debug
   scriptSleepBefore: "0"

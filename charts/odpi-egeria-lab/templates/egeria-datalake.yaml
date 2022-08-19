@@ -37,7 +37,6 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  creationTimestamp: null
   name: {{ include "myapp.fullname" . }}-datalake
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
@@ -56,13 +55,36 @@ spec:
       app.kubernetes.io/component: datalake
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: datalake
     spec:
-      {{- include "egeria.security" . | nindent 6 }}
+    {{- include "egeria.security" . | nindent 6 }}
+      volumes:
+        - name: egeria-connector-volume
+          emptyDir: {}
+{{ if .Values.downloads }}
+      initContainers:
+        - name: init-connector
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          command:
+            - "/bin/bash"
+            - "-c"
+            - >
+                cd /opt/egeria/connectors &&
+{{ range .Values.downloads }}
+                curl --location {{ .url | quote }} --output {{ .filename | quote }} &&
+{{ end }}
+                echo "Downloads complete."
+          volumeMounts:
+            - mountPath: /opt/egeria/connectors
+              name: egeria-connector-volume
+{{ end }}
       containers:
         - name: egeria
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -78,6 +100,8 @@ spec:
             - name: JAVA_DEBUG
               value:  "true"
             {{ end }}
+            - name: "LOADER_PATH"
+              value: "/deployments/server/lib,/opt/egeria/connectors"
           ports:
             - containerPort: 9443
           {{ if .Values.debug.egeriaJVM }}
@@ -90,11 +114,14 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
-          {{ if .Values.persistence.enabled }}
           volumeMounts:
+          {{ if .Values.persistence.enabled }}
             - mountPath: "/deployments/data"
               name: {{ .Release.Name }}-datalake-data
           {{ end }}
+            - mountPath: /opt/egeria/connectors
+              name: egeria-connector-volume
+              readOnly: true
       restartPolicy: Always
       {{- include "egeria.platformscc" . | nindent 6 }}
   {{ if .Values.persistence.enabled }}

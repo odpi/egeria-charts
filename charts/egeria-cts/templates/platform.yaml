@@ -108,5 +108,4 @@ spec:
               name: egeria-connector-volume
               readOnly: true
 
-status: {}
 ...
