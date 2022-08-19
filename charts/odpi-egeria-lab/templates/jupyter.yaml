@@ -29,7 +29,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   name: {{ include "myapp.fullname" . }}-jupyter
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
@@ -138,5 +137,4 @@ spec:
 {{ if .Values.egeria.storageClass }}
   storageClassName: {{ .Values.jupyter.StorageClass }}
 {{ end }}
-status: {}
 ...
