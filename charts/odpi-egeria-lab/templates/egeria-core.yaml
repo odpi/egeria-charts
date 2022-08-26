@@ -64,7 +64,7 @@ spec:
       volumes:
         - name: egeria-connector-volume
           emptyDir: {}
-{{ if .Values.downloads }}
+{{ if .Values.extralibs }}
       initContainers:
         - name: init-connector
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -76,13 +76,13 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
-                cd /opt/egeria/connectors &&
-{{ range .Values.downloads }}
+                cd /deployments/server/extralib &&
+{{ range .Values.extralibs }}
                 curl --location {{ .url | quote }} --output {{ .filename | quote }} &&
 {{ end }}
                 echo "Downloads complete."
           volumeMounts:
-            - mountPath: /opt/egeria/connectors
+            - mountPath: /deployments/server/extralib
               name: egeria-connector-volume
 {{ end }}
       containers:
@@ -101,7 +101,7 @@ spec:
               value:  "true"
             {{ end }}
             - name: "LOADER_PATH"
-              value: "/deployments/server/lib,/opt/egeria/connectors"
+              value: "/deployments/server/extralib,/deployments/server/lib"
           ports:
             - containerPort: 9443
           {{ if .Values.debug.egeriaJVM }}
@@ -119,7 +119,7 @@ spec:
             - mountPath: "/deployments/data"
               name: {{ .Release.Name }}-core-data
           {{ end }}
-            - mountPath: /opt/egeria/connectors
+            - mountPath: /deployments/server/extralib
               name: egeria-connector-volume
               readOnly: true
       restartPolicy: Always
