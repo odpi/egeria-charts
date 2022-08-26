@@ -61,7 +61,7 @@ spec:
         app.kubernetes.io/component: platform
     spec:
     {{- include "egeria.security" . | nindent 6 }}
-{{ if .Values.downloads }}
+{{ if .Values.extralibs }}
       initContainers:
         - name: init-connector
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -73,13 +73,13 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
-              cd /opt/egeria/connectors &&
-{{ range .Values.downloads }}
+              cd  /deployments/server/extralib &&
+{{ range .Values.extralibs }}
               curl --location {{ .url | quote }} --output {{ .filename | quote }} &&
 {{ end }}
               echo "Downloads complete."
           volumeMounts:
-            - mountPath: /opt/egeria/connectors
+            - mountPath:  /deployments/server/extralib
               name: egeria-connector-volume
 {{ end }}
       containers:
@@ -136,7 +136,7 @@ spec:
           {{ end }}
             - name: extlib
               mountPath: /extlib
-            - mountPath: /opt/egeria/connectors
+            - mountPath:  /deployments/server/extralib
               name: egeria-connector-volume
               readOnly: true
       restartPolicy: Always
