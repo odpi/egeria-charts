@@ -29,6 +29,12 @@ egeria:
   # will be done either if set to false. Defaults to true
   config: true
 
+# Additional connectors/libraries to be made available in egeria server chassis containers
+# This is just an example. You can have a list of connectors
+#downloads:
+#- url: https://search.maven.org/remotecontent?filepath=org/odpi/egeria/egeria-connector-xtdb/3.9/egeria-connector-xtdb-3.9-jar-with-dependencies.jar
+#  filename: egeria-connector-xtdb-3.9-jar-with-dependencies.jar
+
 # --- Additional environment variables - inserted directly into configmap. Can use helm template directives
 #extraEnv: |
 #  VAR1: value1
