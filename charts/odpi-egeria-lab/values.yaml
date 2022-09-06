@@ -50,6 +50,11 @@ jupyter:
   scriptSleepAfter: "0"
   # Size for jupyter work
   storageSize: "1Gi"
+  # If assigned, will use the 'password' entry as the name of the secret to seed the Jupyter password
+  # to create: kubectl create secret generic jupyter-lab-secret --from-literal=password='s3cr3t!'
+  # tokenSecret:
+  # If passwordSecret not set, but passwordPlain is, we use this as cleartext **INSECURE**
+  # tokenPlain:
 
 debug:
   egeriaJVM: false

@@ -87,6 +87,18 @@ spec:
               value: "YES"
             - name: DOCKER_STACKS_JUPYTER_CMD
               value: "lab --notebook-dir=/home/jovyan/work"
+            # If value not passed, a password will be generated, otherwise get from configmap (and must exist)
+            {{ if .Values.jupyter.tokenSecret }}
+            - name: JUPYTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.jupyter.tokenSecret }}
+                  key: password
+                  optional: false
+            {{ else if .Values.jupyter.tokenPlain }}
+            - name: JUPYTER_TOKEN
+              value: {{ .Values.jupyter.tokenPlain }}
+            {{ end }}
             # Contains the truststore from Egeria self-signed certs, in .pem format
             #- name: REQUESTS_CA_BUNDLE
             #  value: "/home/jovyan/ssl/truststore.pem"
