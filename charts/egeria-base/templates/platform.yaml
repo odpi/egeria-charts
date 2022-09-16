@@ -17,7 +17,7 @@ spec:
   ports:
     - port: 9443
       targetPort: 9443
-      {{- if ( eq  .Values.service.type "NodePort" ) -}}
+      {{- if ( eq  .Values.service.type "NodePort" ) }}
       nodePort: {{ .Values.service.nodeport.platform }}
       {{- end }}
   {{ if .Values.egeria.debug }}
