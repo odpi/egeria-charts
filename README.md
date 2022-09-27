@@ -33,7 +33,7 @@ egeria/odpi-egeria-lab	3.1.0        	           	Egeria lab environment
 To install a chart, a simple example would be our lab chart:
 
 ```shell
-$ helm install egeria/odpi-egeria-lab lab
+$ helm install lab egeria/odpi-egeria-lab
 ```
 
 Refer to the **charts** directory for the chart content
