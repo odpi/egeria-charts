@@ -89,7 +89,7 @@ image:
     #registry: docker.io
     #namespace: jupyter
     name: jupyter
-    tag: "lab-3.4.7"
+    tag: "lab-3.5.0"
   uistatic:
     name: egeria-ui
     tag: "3.2.2"
