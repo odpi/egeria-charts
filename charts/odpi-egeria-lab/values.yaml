@@ -31,7 +31,7 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: "3.12"
+  version: "3.13"
   #repositoryType: "local-graph-repository"
   repositoryType: "in-memory-repository"
   # See https://github.com/odpi/egeria-charts/issues/56 for status of the Egeria UI (polymer) in this environment
@@ -89,7 +89,7 @@ image:
     #registry: docker.io
     #namespace: jupyter
     name: jupyter
-    tag: "lab-3.4.7"
+    tag: "lab-3.5.0"
   uistatic:
     name: egeria-ui
     tag: "3.2.2"
