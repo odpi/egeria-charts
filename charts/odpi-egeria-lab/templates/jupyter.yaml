@@ -87,6 +87,11 @@ spec:
               value: "YES"
             - name: DOCKER_STACKS_JUPYTER_CMD
               value: "lab --notebook-dir=/home/jovyan/work"
+            # If value specified, we will checkout this tag if it exists
+            {{ if .Values.jupyter.gitTagForNotebooks }}
+            - name: GIT_TAG_NOTEBOOKS
+              value: {{ .Values.jupyter.gitTagForNotebooks }}
+            {{ end }}
             # If value not passed, a password will be generated, otherwise get from configmap (and must exist)
             {{ if .Values.jupyter.tokenSecret }}
             - name: JUPYTER_TOKEN

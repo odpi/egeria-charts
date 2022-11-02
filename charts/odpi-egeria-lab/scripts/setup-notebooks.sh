@@ -33,6 +33,12 @@ then
        fix-permissions $CONDA_DIR && \
        fix-permissions /home/$NB_USER
 
+  # We also checkout the requested tag if specified - but only during initial setup
+  if [ ! -z ${GIT_TAG_NOTEBOOKS} ]
+  then
+    git fetch
+    git checkout ${GIT_TAG_NOTEBOOKS}
+  fi
 else
   echo "Found git repo in ${LOCATION}, leaving as-is. update manually with 'git pull' or save work"
 

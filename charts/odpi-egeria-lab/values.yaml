@@ -55,6 +55,8 @@ jupyter:
   # tokenSecret:
   # If passwordSecret not set, but passwordPlain is, we use this as cleartext **INSECURE**
   # tokenPlain:
+  # Git tag to checkout in the egeria-jupyter repo
+  gitTagForNotebooks: "main"
 
 debug:
   egeriaJVM: false
