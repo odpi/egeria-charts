@@ -1,4 +1,4 @@
-ODPi Egeria
+LF AI & Data Egeria
 ---
 
 Egeria base environment has now been deployed to Kubernetes.
@@ -11,8 +11,8 @@ By default a single platform is created using the latest release of Egeria, with
 metadata server 'mds1' and a view server 'view1'. The UI organization name is 'org'.
 A job is started to perform this configuration and may take up to 10 minutes to complete.
 
-Please provide any feeback via a github issue at https://github.com/odpi/egeria or 
-join us on slack via https://http://slack.lfai.foundation
+Please provide any feeback via a github issue at https://github.com/odpi/egeria-charts or
+join us on slack via https://slack.lfaidata.foundation
 
 - The ODPi Egeria team
 
