@@ -45,23 +45,21 @@ then
 
   echo "-- Cloning from ${GITREPO} into ${LOCATION} ..."
   cd ${LOCATION}/.. || return
-  git clone --depth 1 "${GITREPO}" "${LOCATION}"
+  git clone "${GITREPO}" "${LOCATION}"
   cd "${LOCATION}" || return
-  git pull
   # We also checkout the requested tag if specified - but only during initial setup
   echo "-- Switching to requested git tag "
   if [ -n "${GIT_TAG_NOTEBOOKS}" ]
   then
-    git fetch
-    git checkout "${GIT_TAG_NOTEBOOKS}"
+    git checkout "${GIT_TAG_NOTEBOOKS}" || return
   fi
   # Mark as done (this is only for the content written to our persistent volume, ie git contents)
-  mkdir -p touch "$STATUS"
+  touch "$STATUS"
 fi
 
 # Install additional packages if we've just pulled from git
 echo "-- Installing extra conda packages"
-conda install --yes --file "${LOCATION}/requirements.txt"
+conda install --yes --file "${LOCATION}/requirements.txt" 
 
 # Pause for debugging
 if [ -n "$SCRIPT_SLEEP_AFTER" ]; then
