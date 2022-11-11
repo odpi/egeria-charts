@@ -11,7 +11,7 @@
 echo "-- Setting up Egeria notebook environment --"
 
 # Pause for debugging
-if [ ! -z "$SCRIPT_SLEEP_BEFORE" ]; then
+if [ -n "$SCRIPT_SLEEP_BEFORE" ]; then
   echo "-- Sleeping for $SCRIPT_SLEEP_BEFORE seconds"
   sleep "$SCRIPT_SLEEP_BEFORE"
 fi
@@ -50,7 +50,7 @@ then
   git pull
   # We also checkout the requested tag if specified - but only during initial setup
   echo "-- Switching to requested git tag "
-  if [ ! -z "${GIT_TAG_NOTEBOOKS}" ]
+  if [ -n "${GIT_TAG_NOTEBOOKS}" ]
   then
     git fetch
     git checkout "${GIT_TAG_NOTEBOOKS}"
@@ -64,7 +64,7 @@ echo "-- Installing extra conda packages"
 conda install --yes --file "${LOCATION}/requirements.txt"
 
 # Pause for debugging
-if [ ! -z "$SCRIPT_SLEEP_AFTER" ]; then
+if [ -n "$SCRIPT_SLEEP_AFTER" ]; then
   echo "-- Sleeping for $SCRIPT_SLEEP_AFTER seconds"
   sleep "$SCRIPT_SLEEP_AFTER"
 fi
