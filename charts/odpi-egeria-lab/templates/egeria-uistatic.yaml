@@ -130,6 +130,8 @@ spec:
               value: "https://{{ .Release.Name }}-ui:8443"
             - name: REACT_APP_API_URL
               value: "https://{{ .Release.Name }}-ui:8443"
+            - name: UI_API
+              value: "https://{{ .Release.Name }}-ui:8443"
       restartPolicy: Always
       volumes:
         - name: template-vol

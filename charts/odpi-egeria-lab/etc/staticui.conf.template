@@ -11,7 +11,15 @@ server {
     root /var/www/;
     index index.html;
 
-    # Force all paths to load either itself (js files) or go through index.html.
+    location /api {
+        proxy_pass ${UI_API};
+        proxy_set_header Host $http_host;
+        proxy_ssl_verify       off;
+        proxy_ssl_session_reuse on;
+        proxy_ssl_server_name on;
+    }
+
+    # Force all other paths to load either itself (js files) or go through index.html.
     location / {
         try_files $uri /index.html;
     }
