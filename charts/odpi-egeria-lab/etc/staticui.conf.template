@@ -2,8 +2,11 @@
 # Copyright Contributors to the Egeria project
 
 server {
-    listen 8080;
-    server_name _;
+    listen 8443 ssl default_server;
+    server_name           _;
+    ssl_certificate       /etc/nginx/ssl/tls.crt;
+    ssl_certificate_key   /etc/nginx/ssl/tls.key;
+    ssl_password_file     /etc/nginx/pass/pass.txt;
 
     root /var/www/;
     index index.html;
