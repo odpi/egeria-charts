@@ -123,7 +123,6 @@ spec:
               name: egeria-connector-volume
               readOnly: true
       restartPolicy: Always
-      {{- include "egeria.platformscc" . | nindent 6 }}
   {{ if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:

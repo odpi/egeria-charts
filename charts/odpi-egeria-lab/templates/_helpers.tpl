@@ -47,8 +47,3 @@ Create the name of the service account to use
 {{- define "egeria.security" -}}
 serviceAccountName: {{ template "mychart.serviceAccountName" . }}
 {{- end }}
-
-{{- define "egeria.platformscc" -}}
-securityContext:
-  { }
-{{- end }}
