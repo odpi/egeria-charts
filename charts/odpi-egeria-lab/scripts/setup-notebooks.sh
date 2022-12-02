@@ -38,8 +38,7 @@ then
 
   # Cleanup any partial setup
   echo "-- Cleaning up from any prior partial setup"
-  rm -fr "${LOCATION}/lost+found"
-  rm -fr "${LOCATION}/.git"
+  rm -fr "${LOCATION}/" || true
 
   # Shallow clone - just to get latest files, not history
 
