@@ -6,7 +6,8 @@
 egeria:
   # Set to INFO, WARNING, DEBUG if needed
   logging: 
-  version: "3.13"
+  version: "3.14"
+  # repositoryType: "in-memory-repository"
   repositoryType: "local-graph-repository"
   debug: false
   persistence: true

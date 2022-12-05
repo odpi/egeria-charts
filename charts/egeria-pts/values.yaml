@@ -74,7 +74,7 @@ resources:
 imageDefaults:
   registry: quay.io
   namespace: odpi
-  tag: "3.13"
+  tag: "3.14"
   pullPolicy: IfNotPresent
 
 # Normally we install the strimzi operator as part of the Chart. However this requires admin permissions, and
