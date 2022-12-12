@@ -6,8 +6,9 @@
 egeria:
   # Set to INFO, WARNING, DEBUG if needed
   logging: 
-  version: "3.13"
-  repositoryType: "local-graph-repository"
+  version: "3.14"
+  # repositoryType: "local-graph-repository"
+  repositoryType: "in-memory-repository"
   debug: false
   persistence: true
   # The userid used for admin ops (no security enabled by default)

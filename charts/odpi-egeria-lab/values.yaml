@@ -31,7 +31,7 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: "3.13"
+  version: "3.14"
   #repositoryType: "local-graph-repository"
   repositoryType: "in-memory-repository"
   # See https://github.com/odpi/egeria-charts/issues/56 for status of the Egeria UI (polymer) in this environment
@@ -57,7 +57,7 @@ jupyter:
   # tokenPlain:
   # ----
   # Git tag to checkout in the egeria-jupyter repo
-  gitTagForNotebooks: "v313"
+  gitTagForNotebooks: "main"
 
 debug:
   egeriaJVM: false
