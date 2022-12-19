@@ -14,16 +14,18 @@ spec:
         port: 9092
         type: internal
         tls: false
+{{ if .Values.strimzi.externalListener.enabled }}
       - name: external
         port: 9094
         type: nodeport
         tls: false
         configuration:
           bootstrap:
-            nodePort: {{ .Values.strimzi.bootstrapNodePort }}
+            nodePort: {{ .Values.strimzi.externalListener.bootstrapNodePort }}
           brokers:
           - broker: 0
-            advertisedHost: {{ .Values.strimzi.advertisedHost }}
+            advertisedHost: {{ .Values.strimzi.externalListener.advertisedHost }}
+{{ end }}
     config:
       offsets.topic.replication.factor: 1
       transaction.state.log.replication.factor: 1
