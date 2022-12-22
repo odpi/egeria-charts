@@ -4,7 +4,7 @@
 name: odpi-egeria-lab
 description: Egeria lab environment
 apiVersion: v2
-version: 3.14.0-prerelease.1
+version: 3.14.0
 appVersion: "3.14"
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
