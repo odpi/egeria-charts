@@ -131,3 +131,8 @@ strimzi:
 # helm repo update && helm install strimzi strimzi/strimzi-kafka-operator --set watchAnyNamespace=true
 strimzi-kafka-operator:
   watchAnyNamespace: false
+
+# Allows to deploy the presentation (react ui) seperately
+# Defaults to false
+egeria-presentation:
+  enabled: false

@@ -1,0 +1,17 @@
+# Copyright © 2023 Atruvia AG <opensource@atruvia.de> as contributor to the ODPi Egeria project.
+---
+apiVersion: v2
+name: egeria-presentation
+description: A Helm chart for Egeria presentation (react UI) deployment
+type: application
+version: 3.15.0-prerelease.0
+appVersion: "3.15"
+icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+keywords:
+  - odpi, egeria, ui, react, presentation
+sources:
+  - https://github.com/odpi/egeria
+home: https://github.com/odpi/egeria
+maintainers:
+  - name: Tunç Taylan Turunç
+    email: tunc_taylan.turunc@atruvia.de

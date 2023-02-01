@@ -2,7 +2,7 @@
 # Copyright Contributors to the Egeria project.
 ---
 name: egeria-base
-description: Egeria simple deployment (platform, react UI)
+description: A Helm chart for Egeria simple platform deployment
 apiVersion: v2
 version: 3.15.0
 appVersion: "3.15"
@@ -20,3 +20,8 @@ dependencies:
     version: 0.33.0
     repository: https://strimzi.io/charts/
     condition: strimzi.enabled
+  - name: egeria-presentation
+    version: 3.15.0-prerelease.0
+    # TODO change to official chart repository
+    repository: "file://../egeria-presentation"
+    condition: egeria-presentation.enabled
