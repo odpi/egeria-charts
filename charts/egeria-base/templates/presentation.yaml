@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
+{{ if not (index .Values "egeria-react-ui" "enabled") }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -95,3 +96,4 @@ spec:
       restartPolicy: Always
 
 ...
+{{ end }}
