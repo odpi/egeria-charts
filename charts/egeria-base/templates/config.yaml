@@ -5,12 +5,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "myapp.name" . }}-config
+  name: {{ include "egeria-base.name" . }}-config
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
   annotations:
     {{ if .Values.options.jobs.config.usehook }}
     "helm.sh/hook": post-install
@@ -22,7 +22,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/name: {{ include "egeria-base.name" . }}
     spec:
       {{- include "egeria.security" . | nindent 6 }}
       restartPolicy: OnFailure

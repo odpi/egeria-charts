@@ -3,13 +3,13 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "myapp.name" -}}
+{{- define "egeria-cts.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "myapp.chart" -}}
+{{- define "egeria-cts.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}

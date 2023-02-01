@@ -5,8 +5,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: platform
@@ -29,7 +29,7 @@ spec:
       {{- end }}
   {{ end }}
   selector:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: platform
 ...
@@ -37,10 +37,10 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "myapp.name" . }}-platform
+  name: {{ include "egeria-base.name" . }}-platform
   labels:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: platform
@@ -50,13 +50,13 @@ spec:
   serviceName: {{ .Release.Name }}-platform
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/name: {{ include "egeria-base.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/component: platform
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/name: {{ include "egeria-base.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: platform
     spec:

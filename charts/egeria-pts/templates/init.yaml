@@ -5,8 +5,8 @@ kind: Job
 metadata:
   name: {{ .Release.Name }}-init
   labels:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-pts.name" . }}
+    helm.sh/chart: {{ include "egeria-pts.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: init
@@ -17,7 +17,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/name: {{ include "egeria-pts.name" . }}
         app.kubernetes.io/component: init
     spec:
       serviceAccountName: {{ .Release.Name }}-pts

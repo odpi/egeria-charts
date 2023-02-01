@@ -5,12 +5,12 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: egeria-rbac
-  name: {{ include "myapp.name" . }}-api-role
+  name: {{ include "egeria-base.name" . }}-api-role
   namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups: [""]
@@ -21,12 +21,12 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: egeria-rbac
-  name: {{ include "myapp.name" . }}-api-role-binding
+  name: {{ include "egeria-base.name" . }}-api-role-binding
   namespace: {{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
@@ -35,5 +35,5 @@ subjects:
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
-  name: {{ include "myapp.name" . }}-api-role
+  name: {{ include "egeria-base.name" . }}-api-role
 {{ end }}
