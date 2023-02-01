@@ -51,6 +51,16 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Generate the ConfigMap name for referencing in the subcharts
+*/}}
+{{- define "egeria-base.configMapName" -}}
+{{- printf "%s-env" .Release.Name -}}
+{{- end -}}
+{{/*
+End of generating the ConfigMap name for referencing in the subcharts
+*/}}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "egeria-react-ui.serviceAccountName" -}}
