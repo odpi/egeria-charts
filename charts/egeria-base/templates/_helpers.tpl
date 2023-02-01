@@ -35,7 +35,7 @@ Create chart name and version as used by the chart label.
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "mychart.serviceAccountName" -}}
+{{- define "egeria-base.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
     {{ default (include "egeria-base.name" .) .Values.serviceAccount.name }}
 {{- else -}}
@@ -43,8 +43,18 @@ Create the name of the service account to use
 {{- end -}}
 {{- end -}}
 
+{{/*
+Generate the ConfigMap name for referencing in the subcharts
+*/}}
+{{- define "egeria-base.configMapName" -}}
+{{- printf "%s-env" .Release.Name -}}
+{{- end -}}
+{{/*
+End of generating the ConfigMap name for referencing in the subcharts
+*/}}
+
 
 {{- define "egeria.security" -}}
-serviceAccountName: {{ template "mychart.serviceAccountName" . }}
+serviceAccountName: {{ template "egeria-base.serviceAccountName" . }}
 
 {{- end }}
