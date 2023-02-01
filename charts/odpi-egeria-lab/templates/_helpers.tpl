@@ -35,7 +35,7 @@ Create chart name and version as used by the chart label.
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "mychart.serviceAccountName" -}}
+{{- define "egeria-base.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
     {{ default (include "odpi-egeria-lab.name" .) .Values.serviceAccount.name }}
 {{- else -}}
@@ -45,5 +45,5 @@ Create the name of the service account to use
 
 
 {{- define "egeria.security" -}}
-serviceAccountName: {{ template "mychart.serviceAccountName" . }}
+serviceAccountName: {{ template "egeria-base.serviceAccountName" . }}
 {{- end }}
