@@ -134,5 +134,5 @@ strimzi-kafka-operator:
 
 # Allows to deploy the presentation (react ui) seperately
 # Defaults to false
-egeria-presentation:
+egeria-react-ui:
   enabled: false
