@@ -48,14 +48,14 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: egeria-react-ui-example.local
+    - host: egeria-react-ui.local
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
-  #      - chart-example.local
+  #      - egeria-react-ui.local
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
