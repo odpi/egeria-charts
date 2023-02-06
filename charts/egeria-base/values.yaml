@@ -136,3 +136,8 @@ strimzi-kafka-operator:
 # Defaults to false
 egeria-react-ui:
   enabled: false
+
+# Allows to deploy the sample integration lineage event driven connector (egeria-lineage) seperately
+# Defaults to false
+egeria-lineage:
+  enabled: false
