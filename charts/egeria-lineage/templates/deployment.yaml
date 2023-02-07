@@ -38,7 +38,7 @@ spec:
                 name: {{ include "egeria-base.configMapName" . }}
           env:
             - name: EGERIA_LINEAGE_TOPIC_NAME
-              value: {{ .Values.lineage.metadataTopic.name }}
+              value: {{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}
             - name: EGERIA_LINEAGE_CONSUMER_ID
               value: {{ .Values.lineage.consumerId }}
           ports:

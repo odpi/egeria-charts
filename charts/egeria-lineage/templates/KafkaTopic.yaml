@@ -2,11 +2,11 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: {{ .Values.lineage.metadataTopic.name }}
+  name: {{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}
   labels:
     strimzi.io/cluster: {{ include "egeria-base.KafkaClusterName" . }}
 spec:
-  partitions: {{ .Values.lineage.metadataTopic.partitions }}
-  replicas: {{ .Values.lineage.metadataTopic.replicas }}
+  partitions: {{ .Values.lineage.topic.options.partitions }}
+  replicas: {{ .Values.lineage.topic.options.replicas }}
   config:
-    retention.ms: {{ .Values.lineage.metadataTopic.config.retention.ms }}
+    retention.ms: {{ .Values.lineage.topic.options.config.retention.ms }}

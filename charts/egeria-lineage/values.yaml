@@ -107,14 +107,17 @@ lineage:
   # Defaults to true
   config: true
   version: "3.15"
-  metadataTopic:
-    name: metadaten
-    replicas: 1
-    partitions: 1
-    config:
-      retention:
-        ms: "604800000"
-  consumerId: itg
+  # this topic will be created using the strimzi CRD
+  topic:
+    name: metadata
+    prefix: eventdriven
+    options:
+      replicas: 1
+      partitions: 1
+      config:
+        retention:
+          ms: "604800000"
+  consumerId: metadata.consumer
 
 nodeSelector: {}
 
