@@ -30,7 +30,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
-    name: {{ template "mychart.serviceAccountName" . }}
+    name: {{ template "egeria-lineage.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role

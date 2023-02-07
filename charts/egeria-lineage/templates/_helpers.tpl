@@ -35,9 +35,6 @@ Common labels
 */}}
 {{- define "egeria-lineage.labels" -}}
 helm.sh/chart: {{ include "egeria-lineage.chart" . }}
-app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{ include "egeria-lineage.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
