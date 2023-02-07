@@ -68,7 +68,7 @@ spec:
       volumes:
         - name: scripts-vol
           configMap:
-            name: {{ .Release.Name }}-scripts-configmap
+            name: {{ include "egeria-lineage.name" . }}-scripts-configmap
   # Keep trying quite a few times to aid in debugging
   backoffLimit: {{ .Values.options.jobs.config.backOffLimit }}
   {{ end }}

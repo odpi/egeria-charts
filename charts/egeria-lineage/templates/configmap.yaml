@@ -9,6 +9,6 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: scripts
-  name: {{ .Release.Name }}-scripts-configmap
+  name: {{ include "egeria-lineage.name" . }}-scripts-configmap
 data:
 {{ (.Files.Glob "scripts/config-lineage1.sh").AsConfig | indent 2 }}
