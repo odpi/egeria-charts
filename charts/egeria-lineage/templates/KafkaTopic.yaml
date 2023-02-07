@@ -1,0 +1,12 @@
+# Source: topics/templates/kafkaTopic.yaml
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: {{ .Values.lineage.metadataTopic.name }}
+  labels:
+    strimzi.io/cluster: {{ include "egeria-base.KafkaClusterName" . }}
+spec:
+  partitions: {{ .Values.lineage.metadataTopic.partitions }}
+  replicas: {{ .Values.lineage.metadataTopic.replicas }}
+  config:
+    retention.ms: {{ .Values.lineage.metadataTopic.config.retention.ms }}
