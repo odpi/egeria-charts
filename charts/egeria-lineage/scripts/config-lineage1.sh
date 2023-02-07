@@ -1,23 +1,23 @@
 # 1. Update the server type name for lineage1
 echo -e '\n\n > Update the server type name for lineage1:\n'
-curl -k --request POST "${EGERIA_OMAG_SERVER_URL}/open-metadata/admin-services/users/${EGERIA_LINEAGE_USER}/servers/${EGERIA_LINEAGE_SERVER}/server-type?typeName=Integration%20Daemon" \
+curl -k --request POST "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-type?typeName=Integration%20Daemon" \
 --data-raw ''
 
 # 2. Configure the integration services audit log
 echo -e '\n\n > Configure the default audit log:\n'
-curl -k --request POST "${EGERIA_OMAG_SERVER_URL}/open-metadata/admin-services/users/${EGERIA_LINEAGE_USER}/servers/${EGERIA_LINEAGE_SERVER}/audit-log-destinations/default" \
+curl -k --request POST "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/audit-log-destinations/default" \
 --header 'Content-Type: application/json' \
 
 # 3. Configure the sample lineage integrator service
 echo -e '\n\n > Configure the sample lineage integrator service:\n'
-curl -k --request POST "${EGERIA_OMAG_SERVER_URL}/open-metadata/admin-services/users/${EGERIA_LINEAGE_USER}/servers/${EGERIA_LINEAGE_SERVER}/integration-services/lineage-integrator" \
+curl -k --request POST "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/integration-services/lineage-integrator" \
 --header 'Content-Type: application/json' \
 --data @- <<EOF
 {
 	"class": "IntegrationServiceRequestBody",
-	"omagserverPlatformRootURL": "{EGERIA_OMAG_SERVER_URL}",
+	"omagserverPlatformRootURL": "{EGERIA_ENDPOINT}",
 	"omagserverName": "${EGERIA_OMAG_SERVER_NAME}",
-	"connectorUserId": "${EGERIA_LINEAGE_USER}",
+	"connectorUserId": "${EGERIA_USER}",
 	"integrationConnectorConfigs": [
 		{
 			"class": "IntegrationConnectorConfig",
@@ -74,5 +74,5 @@ EOF
 
 # 4. Start the Lineage Integration sample server
 echo -e '\n\n > Start the Lineage Integration sample server:\n'
-curl -k --request POST "${EGERIA_OMAG_SERVER_URL}/open-metadata/admin-services/users/${EGERIA_LINEAGE_USER}/servers/${EGERIA_LINEAGE_SERVER}/instance" \
+curl -k --request POST "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance" \
 --data-raw ''
