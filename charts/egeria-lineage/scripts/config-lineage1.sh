@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
 
 printf "\n\n-- Needed environment variables --\n"
-printf "EGERIA_ENDPOINT=%s\n" "${EGERIA_ENDPOINT}"
 printf "EGERIA_USER=%s\n" "${EGERIA_USER}"
-printf "EGERIA_SERVER=%s\n" "${EGERIA_SERVER}"
-printf "EGERIA_LINEAGE_TOPIC_NAME=%s\n" "${EGERIA_LINEAGE_TOPIC_NAME}"
 printf "KAFKA_ENDPOINT=%s\n" "${KAFKA_ENDPOINT}"
+printf "EGERIA_LINEAGE_SERVER_NAME=%s\n" "${EGERIA_LINEAGE_SERVER_NAME}"
+printf "EGERIA_LINEAGE_TOPIC_NAME=%s\n" "${EGERIA_LINEAGE_TOPIC_NAME}"
 printf "EGERIA_LINEAGE_CONSUMER_ID=%s\n" "${EGERIA_LINEAGE_CONSUMER_ID}"
+printf "EGERIA_LINEAGE_ENDPOINT=%s\n" "${EGERIA_LINEAGE_ENDPOINT}"
 printf "\n\n-- End of Needed environment variables --\n"
 
 # 1. Update the server type name for lineage1
 printf "\n\n > Update the server type name for lineage1:\n"
-curl -k --request POST "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-type?typeName=Integration%20Daemon" --data-raw ''
+curl -k --request POST "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/server-type?typeName=Integration%20Daemon" --data-raw ''
 
 # 2. Configure the integration services audit log
 if [[ "$?" == 0 ]]; then {
     printf "\n\nUpdating the server type name succesful!\n"
     printf "\n\n > Configure the default audit log:\n"
-    curl -k --request POST "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/audit-log-destinations/default" --header 'Content-Type: application/json'
+    curl -k --request POST "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/audit-log-destinations/default" --header 'Content-Type: application/json'
 } else {
     printf "\n\nUpdating the server type name failed!\n"
     exit 255
@@ -27,11 +27,11 @@ if [[ "$?" == 0 ]]; then {
 if [[ "$?" == 0 ]]; then {
     printf "\n\nConfiguring the integration services audit log succesful!\n"
     printf "\n\n > Configure the sample lineage integrator service:\n"
-    curl -k --request POST "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/integration-services/lineage-integrator" --header 'Content-Type: application/json' --data @- <<EOF
+    curl -k --request POST "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/integration-services/lineage-integrator" --header 'Content-Type: application/json' --data @- <<EOF
 {
     "class": "IntegrationServiceRequestBody",
-    "omagserverPlatformRootURL": "{EGERIA_ENDPOINT}",
-    "omagserverName": "${EGERIA_SERVER}",
+    "omagserverPlatformRootURL": "${EGERIA_LINEAGE_ENDPOINT}",
+    "omagserverName": "${EGERIA_LINEAGE_SERVER_NAME}",
     "connectorUserId": "${EGERIA_USER}",
     "integrationConnectorConfigs": [
         {
@@ -95,7 +95,7 @@ EOF
 if [[ "$?" == 0 ]]; then {
     printf "\n\nConfigure the sample lineage integrator service successful!\n"
     printf "\n\n > Start the Lineage Integration sample server:\n"
-    curl -k --request POST "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance" --data-raw ''
+    curl -k --request POST "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/instance" --data-raw ''
 } else {
     printf "\n\nConfigure the sample lineage integrator service failed!\n"
     exit 255

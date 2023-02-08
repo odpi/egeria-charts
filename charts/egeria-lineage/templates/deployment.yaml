@@ -41,6 +41,10 @@ spec:
               value: {{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}
             - name: EGERIA_LINEAGE_CONSUMER_ID
               value: {{ .Values.lineage.consumerId }}
+            - name: EGERIA_LINEAGE_SERVER_NAME
+              value: {{ .Values.lineage.serverName }}
+            - name: EGERIA_LINEAGE_ENDPOINT
+              value: https://{{ .Release.Name }}-{{ .Chart.Name }}:{{ .Values.service.port }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
