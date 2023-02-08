@@ -159,7 +159,7 @@ spec:
         requests:
           storage: {{ .Values.egeria.storageSize}}
       {{ if .Values.egeria.storageClass }}
-      storageClassName: {{ .Values.egeria.StorageClass }}
+      storageClassName: {{ .Values.egeria.storageClass }}
       {{ end }}
   {{ end }}
 ...
