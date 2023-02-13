@@ -117,10 +117,38 @@ image:
 # You are able to externalize the Kafka access by changing the externalListener options.
 strimzi:
   enabled: true
-  externalListener:
-    enabled: true
-    advertisedHost: localhost
-    bootstrapNodePort: 32000
+  kafka:
+    listeners:
+      external:
+        enabled: true
+        advertisedHost: localhost
+        bootstrapNodePort: 32000
+    config:
+      autoCreateTopics: false
+    topics:
+      name:
+        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.omrstopic.instances
+        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.omrstopic.types
+        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.omrstopic.registration
+        - egeria.omag.server.#{serverName}#.omas.subjectarea.outtopic
+        - egeria.omag.server.#{serverName}#.omas.securityofficer.outtopic
+        - egeria.omag.server.#{serverName}#.omas.assetmanager.outtopic
+        - egeria.omag.server.#{serverName}#.omas.itinfrastructure.outtopic
+        - egeria.omag.server.#{serverName}#.omas.communityprofile.outtopic
+        - egeria.omag.server.#{serverName}#.omas.assetowner.outtopic
+        - egeria.omag.server.#{serverName}#.omas.dataengine.intopic
+        - egeria.omag.server.#{serverName}#.omas.digitalarchitecture.outtopic
+        - egeria.omag.server.#{serverName}#.omas.stewardshipaction.outtopic
+        - egeria.omag.server.#{serverName}#.omas.assetlineage.outtopic
+        - egeria.omag.server.#{serverName}#.omas.assetconsumer.outtopic
+        - egeria.omag.server.#{serverName}#.omas.securitymanager.intopic
+        - egeria.omag.server.#{serverName}#.omas.governanceengine.outtopic
+        - egeria.omag.server.#{serverName}#.omas.analyticsmodeling.outtopic
+        - egeria.omag.server.#{serverName}#.omas.securitymanager.outtopic
+        - egeria.omag.server.#{serverName}#.omas.datamanager.outtopic
+      spec:
+        partitions: 1
+        replicas: 1
 
 # If you allow (as is default) this chart to install the strimzi operator, this setting will
 # then allow it to work across all namespaces - so for example it will work if installing another

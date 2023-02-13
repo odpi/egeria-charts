@@ -44,6 +44,13 @@ Create the name of the service account to use
 {{- end -}}
 
 {{/*
+Create the name of the kafka cluster name
+*/}}
+{{- define "egeria-base.KafkaClusterName" -}}
+{{- printf "%s-strimzi" .Release.Name -}}
+{{- end -}}
+
+{{/*
 Generate the ConfigMap name for referencing in the subcharts
 */}}
 {{- define "egeria-base.configMapName" -}}
