@@ -1,5 +1,6 @@
+{{ if not (index .Values "strimzi" "kafka" "config" "autoCreateTopics") }}
 {{ $cohortName := $.Values.egeria.cohort }}
-{{ $omasServerName := $.Values.egeria.serverName }}
+{{ $omasServerName := $.Values.global.egeria.serverName }}
 {{ $kafkaCluster := include "egeria-base.KafkaClusterName" . }}
 {{ $partitions := $.Values.strimzi.kafka.topics.spec.partitions }}
 {{ $replicas := $.Values.strimzi.kafka.topics.spec.replicas }}
@@ -15,3 +16,4 @@ spec:
   replicas: {{ $replicas }}
 ---
 {{- end}}
+{{ end }}
