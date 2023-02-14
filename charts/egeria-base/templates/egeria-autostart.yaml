@@ -14,5 +14,5 @@ data:
   # Server autostart
   # When initially created this is set to the null list - so no servers are auto started.
   # However after configuration completes, we will set this via a job,
-  # STARTUP_SERVER_LIST: {{ .Values.egeria.serverName }},{{ .Values.egeria.viewServerName }}
+  # STARTUP_SERVER_LIST: {{ .Values.global.egeria.serverName }},{{ .Values.egeria.viewServerName }}
   STARTUP_SERVER_LIST: ""

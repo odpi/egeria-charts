@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-printf "\n\n-- Needed environment variables --\n"
+printf "\n\n-- Needed environment variables from egeria-base --\n"
 printf "EGERIA_USER=%s\n" "${EGERIA_USER}"
 printf "KAFKA_ENDPOINT=%s\n" "${KAFKA_ENDPOINT}"
+printf "EGERIA_ENDPOINT=%s\n" "${EGERIA_ENDPOINT}"
+printf "EGERIA_SERVER=%s\n" "${EGERIA_SERVER}"
+printf "\n\n-- Needed environment variables from egeria-lineage --\n"
 printf "EGERIA_LINEAGE_SERVER_NAME=%s\n" "${EGERIA_LINEAGE_SERVER_NAME}"
 printf "EGERIA_LINEAGE_TOPIC_NAME=%s\n" "${EGERIA_LINEAGE_TOPIC_NAME}"
 printf "EGERIA_LINEAGE_CONSUMER_ID=%s\n" "${EGERIA_LINEAGE_CONSUMER_ID}"
@@ -30,8 +33,8 @@ if [[ "$?" == 0 ]]; then {
     curl -k --request POST "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/integration-services/lineage-integrator" --header 'Content-Type: application/json' --data @- <<EOF
 {
     "class": "IntegrationServiceRequestBody",
-    "omagserverPlatformRootURL": "${EGERIA_LINEAGE_ENDPOINT}",
-    "omagserverName": "${EGERIA_LINEAGE_SERVER_NAME}",
+    "omagserverPlatformRootURL": "${EGERIA_ENDPOINT}",
+    "omagserverName": "${EGERIA_SERVER}",
     "connectorUserId": "${EGERIA_USER}",
     "integrationConnectorConfigs": [
         {

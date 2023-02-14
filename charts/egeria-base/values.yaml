@@ -2,6 +2,14 @@
 # Copyright Contributors to the Egeria project.
 ---
 
+# --- Global configuration for subcharts ---
+global:
+  egeria:
+    # The userid used for admin ops (no security enabled by default)
+    user: garygeeke
+    # The name of the servers to provision on the platform
+    serverName: mds1
+
 # --- General Egeria configuration ---
 egeria:
   # Set to INFO, WARNING, DEBUG if needed
@@ -11,10 +19,6 @@ egeria:
   repositoryType: "in-memory-repository"
   debug: false
   persistence: true
-  # The userid used for admin ops (no security enabled by default)
-  user: garygeeke
-  # The name of the servers to provision on the platform
-  serverName: mds1
   viewServerName: view1
   # Organization name for multi-tenant UI
   viewOrg: org
@@ -115,6 +119,7 @@ image:
 # installed on the cluster by an admin, or a prior install
 # If strimzi is installed, a Kafka cluster is also configured. 
 # You are able to externalize the Kafka access by changing the externalListener options.
+# if autoCreateTopics is set to false, the list of topics will be generated via strimzi CRDs 
 strimzi:
   enabled: true
   kafka:
@@ -124,27 +129,27 @@ strimzi:
         advertisedHost: localhost
         bootstrapNodePort: 32000
     config:
-      autoCreateTopics: false
+      autoCreateTopics: true
     topics:
       name:
         - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.omrstopic.instances
         - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.omrstopic.types
         - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.omrstopic.registration
-        - egeria.omag.server.#{serverName}#.omas.subjectarea.outtopic
-        - egeria.omag.server.#{serverName}#.omas.securityofficer.outtopic
         - egeria.omag.server.#{serverName}#.omas.assetmanager.outtopic
+        - egeria.omag.server.#{serverName}#.omas.securityofficer.outtopic
         - egeria.omag.server.#{serverName}#.omas.itinfrastructure.outtopic
         - egeria.omag.server.#{serverName}#.omas.communityprofile.outtopic
-        - egeria.omag.server.#{serverName}#.omas.assetowner.outtopic
         - egeria.omag.server.#{serverName}#.omas.dataengine.intopic
         - egeria.omag.server.#{serverName}#.omas.digitalarchitecture.outtopic
+        - egeria.omag.server.#{serverName}#.omas.assetowner.outtopic
         - egeria.omag.server.#{serverName}#.omas.stewardshipaction.outtopic
         - egeria.omag.server.#{serverName}#.omas.assetlineage.outtopic
-        - egeria.omag.server.#{serverName}#.omas.assetconsumer.outtopic
-        - egeria.omag.server.#{serverName}#.omas.securitymanager.intopic
-        - egeria.omag.server.#{serverName}#.omas.governanceengine.outtopic
         - egeria.omag.server.#{serverName}#.omas.analyticsmodeling.outtopic
+        - egeria.omag.server.#{serverName}#.omas.assetconsumer.outtopic
+        - egeria.omag.server.#{serverName}#.omas.governanceengine.outtopic
         - egeria.omag.server.#{serverName}#.omas.securitymanager.outtopic
+        - egeria.omag.server.#{serverName}#.omas.securitymanager.intopic
+        - egeria.omag.server.#{serverName}#.omas.subjectarea.outtopic
         - egeria.omag.server.#{serverName}#.omas.datamanager.outtopic
       spec:
         partitions: 1

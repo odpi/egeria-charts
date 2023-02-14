@@ -59,7 +59,7 @@ spec:
           # Is pod ready to service network requests - it will pause (for replicas, others will take the load)
           readinessProbe:
             httpGet:
-              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/servers/{{ .Values.egeria.serverName }}/status
+              path: /open-metadata/platform-services/users/{{ .Values.global.egeria.user }}/server-platform/servers/{{ .Values.global.egeria.serverName }}/status
               port: 9443
               scheme: HTTPS
             periodSeconds: 10
@@ -67,7 +67,7 @@ spec:
           # Is pod doing useful work - if not we will restart it
           livenessProbe:
             httpGet:
-              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/servers/{{ .Values.egeria.serverName }}/status
+              path: /open-metadata/platform-services/users/{{ .Values.global.egeria.user }}/server-platform/servers/{{ .Values.global.egeria.serverName }}/status
               port: 9443
               scheme: HTTPS
             periodSeconds: 10
