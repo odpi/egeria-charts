@@ -8,12 +8,13 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: {{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}
+  name: {{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower }}
   labels:
     strimzi.io/cluster: {{ $kafkaCluster }}
 spec:
   partitions: {{ $partitions }}
   replicas: {{ $replicas }}
+  topicName: {{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}
 ---
 {{- end}}
 {{ end }}

@@ -132,25 +132,25 @@ strimzi:
       autoCreateTopics: true
     topics:
       name:
-        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.omrstopic.instances
-        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.omrstopic.types
-        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.omrstopic.registration
-        - egeria.omag.server.#{serverName}#.omas.assetmanager.outtopic
-        - egeria.omag.server.#{serverName}#.omas.securityofficer.outtopic
-        - egeria.omag.server.#{serverName}#.omas.itinfrastructure.outtopic
-        - egeria.omag.server.#{serverName}#.omas.communityprofile.outtopic
-        - egeria.omag.server.#{serverName}#.omas.dataengine.intopic
-        - egeria.omag.server.#{serverName}#.omas.digitalarchitecture.outtopic
-        - egeria.omag.server.#{serverName}#.omas.assetowner.outtopic
-        - egeria.omag.server.#{serverName}#.omas.stewardshipaction.outtopic
-        - egeria.omag.server.#{serverName}#.omas.assetlineage.outtopic
-        - egeria.omag.server.#{serverName}#.omas.analyticsmodeling.outtopic
-        - egeria.omag.server.#{serverName}#.omas.assetconsumer.outtopic
-        - egeria.omag.server.#{serverName}#.omas.governanceengine.outtopic
-        - egeria.omag.server.#{serverName}#.omas.securitymanager.outtopic
-        - egeria.omag.server.#{serverName}#.omas.securitymanager.intopic
-        - egeria.omag.server.#{serverName}#.omas.subjectarea.outtopic
-        - egeria.omag.server.#{serverName}#.omas.datamanager.outtopic
+        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.instances
+        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.registration
+        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.types
+        - egeria.omag.server.#{serverName}#.omas.analyticsmodeling.outTopic
+        - egeria.omag.server.#{serverName}#.omas.assetconsumer.outTopic
+        - egeria.omag.server.#{serverName}#.omas.assetlineage.outTopic
+        - egeria.omag.server.#{serverName}#.omas.assetmanager.outTopic
+        - egeria.omag.server.#{serverName}#.omas.assetowner.outTopic
+        - egeria.omag.server.#{serverName}#.omas.communityprofile.outTopic
+        - egeria.omag.server.#{serverName}#.omas.dataengine.inTopic
+        - egeria.omag.server.#{serverName}#.omas.datamanager.outTopic
+        - egeria.omag.server.#{serverName}#.omas.digitalarchitecture.outTopic
+        - egeria.omag.server.#{serverName}#.omas.governanceengine.outTopic
+        - egeria.omag.server.#{serverName}#.omas.itinfrastructure.outTopic
+        - egeria.omag.server.#{serverName}#.omas.securitymanager.inTopic
+        - egeria.omag.server.#{serverName}#.omas.securitymanager.outTopic
+        - egeria.omag.server.#{serverName}#.omas.securityofficer.outTopic
+        - egeria.omag.server.#{serverName}#.omas.stewardshipaction.outTopic
+        - egeria.omag.server.#{serverName}#.omas.subjectarea.outTopic
       spec:
         partitions: 1
         replicas: 1
