@@ -62,7 +62,7 @@ spec:
             - -exc
             - |
               while [[ $(kubectl get job {{ include "egeria-base.JobName" . }}-config -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}') != "True" ]]; do { 
-                printf "Waiting for job \"{{ include "egeria-base.JobName" . }}-config\" to complete...\n" && sleep 1;
+                printf "Waiting for job \"{{ include "egeria-base.JobName" . }}-config\" to complete...\n" && sleep 10;
               } done 
       containers:
         - name: initialize
