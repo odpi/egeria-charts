@@ -54,6 +54,16 @@ spec:
           env:
             - name: SERVICE
               value: {{ .Release.Name }}-strimzi-kafka-bootstrap
+        - name: wait-for-egeria-base-configuration
+          image: bitnami/kubectl
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -exc
+            - |
+              while [[ $(kubectl get job {{ include "egeria-base.JobName" . }}-config -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}') != "True" ]]; do { 
+                printf "Waiting for job \"{{ include "egeria-base.JobName" . }}-config\" to complete...\n" && sleep 1;
+              } done 
       containers:
         - name: initialize
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\

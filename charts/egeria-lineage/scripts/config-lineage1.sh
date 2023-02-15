@@ -12,9 +12,6 @@ printf "EGERIA_LINEAGE_CONSUMER_ID=%s\n" "${EGERIA_LINEAGE_CONSUMER_ID}"
 printf "EGERIA_LINEAGE_ENDPOINT=%s\n" "${EGERIA_LINEAGE_ENDPOINT}"
 printf "\n\n-- End of Needed environment variables --\n"
 
-# TODO: replace this, as wait for the successful configuration of egeria-base in the config-job
-sleep 120
-
 # 1. Update the server type name for lineage1
 printf "\n\n > Update the server type name for lineage1:\n"
 curl -k --request POST "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/server-type?typeName=Integration%20Daemon" --data-raw ''
