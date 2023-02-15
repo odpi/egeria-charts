@@ -1,3 +1,4 @@
+{{ if not .Values.global.kafka.external }}
 # SPDX-License-Identifier: Apache-2.0
   # Copyright Contributors to the Egeria project.
 ---
@@ -55,3 +56,4 @@ spec:
       reconciliationIntervalSeconds: 5
     userOperator: 
       reconciliationIntervalSeconds: 20
+{{ end }}

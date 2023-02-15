@@ -9,6 +9,11 @@ global:
     user: garygeeke
     # The name of the servers to provision on the platform
     serverName: mds1
+  kafka:
+    # if an external kafka cluster in another namespace should be used (defaults to false)
+    external: false
+    namespace: default
+    clusterName: kafka-strimzi
 
 # --- General Egeria configuration ---
 egeria:
