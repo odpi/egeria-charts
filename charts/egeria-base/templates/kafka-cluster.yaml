@@ -52,6 +52,6 @@ spec:
       deleteClaim: true
   entityOperator:
     topicOperator:
-      reconciliationIntervalSeconds: 20
+      reconciliationIntervalSeconds: 5
     userOperator: 
       reconciliationIntervalSeconds: 20
