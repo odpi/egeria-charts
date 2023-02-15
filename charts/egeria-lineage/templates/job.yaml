@@ -11,12 +11,12 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ include "egeria-lineage.chart" . }}
     app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
+{{ if .Values.options.jobs.config.usehook }}
   annotations:
-    {{ if .Values.options.jobs.config.usehook }}
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": "{{ if .Values.options.jobs.config.jobdelete }} hook-succeeded , {{ end }} before-hook-creation"
-    {{ end }}
+{{ end }}
 spec:
   template:
     metadata:
