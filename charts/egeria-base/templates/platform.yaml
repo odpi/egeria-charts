@@ -94,11 +94,11 @@ spec:
                 name: {{ .Release.Name }}-env
             - configMapRef:
                 name: {{ .Release.Name }}-autostart
+          {{ if .Values.egeria.debug }}
           env:
-            {{ if .Values.egeria.debug }}
             - name: JAVA_DEBUG
               value:  "true"
-            {{ end }}
+          {{ end }}
           ports:
             - containerPort: 9443
           {{ if .Values.egeria.debug }}
