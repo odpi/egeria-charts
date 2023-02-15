@@ -55,8 +55,9 @@ spec:
             - name: SERVICE
               value: {{ .Release.Name }}-strimzi-kafka-bootstrap
         - name: wait-for-egeria-base-configuration
-          image: bitnami/kubectl
-          imagePullPolicy: IfNotPresent
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  bitnami/kubectl:latest"
+          imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.lineage.version )))  }}
           command:
             - /bin/sh
             - -exc
