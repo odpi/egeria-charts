@@ -18,6 +18,9 @@ image:
   project: egeria
   configure:
     name: egeria-configure
+  kubectl:
+    name: "bitnami/kubectl"
+    tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
