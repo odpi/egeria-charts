@@ -14,6 +14,15 @@ global:
     external: false
     namespace: default
     clusterName: kafka-strimzi
+    externalBootstrap: strimzi-kafka-external-bootstrap
+  image:
+    configure:
+      name: egeria-configure
+    kubectl:
+      # corporate proxy or nexus server
+      registry: docker.io/library
+      name: "bitnami/kubectl"
+      tag: "latest"
 
 # --- General Egeria configuration ---
 egeria:
@@ -115,11 +124,6 @@ image:
   presentation:
     name: egeria-react-ui
     tag: "3.8.0"
-  configure:
-    name: egeria-configure
-  kubectl:
-    name: "bitnami/kubectl"
-    tag: "latest"
 
 # Normally we install the strimzi operator as part of the Chart. However this requires admin permissions, and
 # will create cluster-scoped resources. Set to false to skip this when in a restricted environment, or needing multiple

@@ -64,11 +64,11 @@ spec:
 {{ if .Values.extralibs }}
       initContainers:
         - name: init-connector
-          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.configure.name }}\
-                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
-          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           command:
             - "/bin/bash"
             - "-c"

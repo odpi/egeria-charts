@@ -16,11 +16,6 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
   project: egeria
-  configure:
-    name: egeria-configure
-  kubectl:
-    name: "bitnami/kubectl"
-    tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""

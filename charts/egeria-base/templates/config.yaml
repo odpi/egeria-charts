@@ -28,29 +28,42 @@ spec:
       restartPolicy: OnFailure
       initContainers:
         - name: wait-for-egeria
-          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.configure.name }}\
-                  :{{ .Values.image.configure.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.egeria.version )))  }}
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.egeria.version }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
           env:
             - name: SERVICE
               value: {{ .Release.Name }}-platform
         - name: wait-for-kafka
-          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.configure.name }}\
-                  :{{ .Values.image.configure.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.egeria.version )))  }}
+          {{- if .Values.global.kafka.external }}
+          image: "{{ .Values.global.image.kubectl.registry }}/{{ .Values.global.image.kubectl.name }}:{{ .Values.global.image.kubectl.tag }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              until [ "$(kubectl get kafkas.kafka.strimzi.io -n {{ .Values.global.kafka.namespace }} {{ .Values.global.kafka.clusterName }} -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
+                printf "Waiting for kafka cluster \"{{ .Values.global.kafka.clusterName }}\" to get ready...\n"
+                sleep 10
+              done 
+          {{- else }}
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.egeria.version }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
           env:
             - name: SERVICE
               value: {{ .Release.Name }}-strimzi-kafka-bootstrap
+          {{- end }}
         {{- if not (index .Values "strimzi" "kafka" "config" "autoCreateTopics") }}
         {{- $cohortName := $.Values.egeria.cohort }}
         {{- $omasServerName := $.Values.global.egeria.serverName }}
         - name: wait-for-kafka-topics
-          image: "{{ .Values.image.kubectl.name }}:{{ .Values.image.kubectl.tag }}"
-          imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.egeria.version )))  }}
+          image: "{{ .Values.global.image.kubectl.registry }}/{{ .Values.global.image.kubectl.name }}:{{ .Values.global.image.kubectl.tag }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
           command:
             - /bin/sh
             - -c
@@ -65,11 +78,11 @@ spec:
         {{- end }}
       containers:
         - name: initialize
-          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.configure.name }}\
-                  :{{ .Values.image.configure.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.egeria.version )))  }}
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.egeria.version }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-env
