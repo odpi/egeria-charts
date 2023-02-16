@@ -16,11 +16,6 @@ rules:
   - apiGroups: [""]
     resources: ["endpoints","pods","services","configmaps"]
     verbs: ["get", "list", "watch","patch"]
-{{ if .Values.strimzi.enabled }}
-  - apiGroups: ["kafka.strimzi.io"]
-    resources: ["kafkatopics"]
-    verbs: ["get"]
-{{ end }}
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -41,4 +36,26 @@ roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
   name: {{ include "egeria-base.name" . }}-api-role
+{{ if .Values.global.kafka.external }}
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: egeria-rbac
+  name: {{ include "egeria-base.name" . }}-strimzi-role-binding
+  namespace: {{ .Values.global.kafka.namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "egeria-base.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: strimzi-view
+{{ end }}
 {{ end }}
