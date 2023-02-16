@@ -5,8 +5,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "odpi-egeria-lab.name" . }}
-    helm.sh/chart: {{ include "odpi-egeria-lab.chart" . }}
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: uistatic-nginx-conf
@@ -42,8 +42,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "odpi-egeria-lab.name" . }}
-    helm.sh/chart: {{ include "odpi-egeria-lab.chart" . }}
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: uistatic
@@ -58,7 +58,7 @@ spec:
       nodePort: {{ .Values.service.nodeport.uistatic }}
       {{- end }}
   selector:
-    app.kubernetes.io/name: {{ include "odpi-egeria-lab.name" . }}
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: uistatic
 ...
@@ -66,10 +66,10 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "odpi-egeria-lab.fullname" . }}-uistatic
+  name: {{ include "myapp.fullname" . }}-uistatic
   labels:
-    app.kubernetes.io/name: {{ include "odpi-egeria-lab.name" . }}
-    helm.sh/chart: {{ include "odpi-egeria-lab.chart" . }}
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: uistatic
@@ -78,14 +78,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "odpi-egeria-lab.name" . }}
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/component: uistatic
   strategy: {}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "odpi-egeria-lab.name" . }}
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: uistatic
     spec:
@@ -137,8 +137,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "odpi-egeria-lab.name" . }}
-    helm.sh/chart: {{ include "odpi-egeria-lab.chart" . }}
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: etc
