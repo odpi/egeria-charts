@@ -45,6 +45,24 @@ spec:
           env:
             - name: SERVICE
               value: {{ .Release.Name }}-strimzi-kafka-bootstrap
+        {{- if not (index .Values "strimzi" "kafka" "config" "autoCreateTopics") }}
+        {{- $cohortName := $.Values.egeria.cohort }}
+        {{- $omasServerName := $.Values.global.egeria.serverName }}
+        - name: wait-for-kafka-topics
+          image: "{{ .Values.image.kubectl.name }}:{{ .Values.image.kubectl.tag }}"
+          imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.egeria.version )))  }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+        {{- range $topicName := $.Values.strimzi.kafka.topics.name }}
+              printf "Checking the kafka topic \"{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\"\n"
+              until [ "$(kubectl get kafkatopics.kafka.strimzi.io "{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower}}" -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
+                printf "Waiting for kafka topic \"{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\" to get ready...\n"
+                sleep 1
+              done
+        {{- end}}
+        {{- end }}
       containers:
         - name: initialize
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\

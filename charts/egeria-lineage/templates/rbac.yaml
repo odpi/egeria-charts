@@ -16,6 +16,9 @@ rules:
   - apiGroups: [""]
     resources: ["endpoints","pods","services","configmaps"]
     verbs: ["get", "list", "watch","patch"]
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get"]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1

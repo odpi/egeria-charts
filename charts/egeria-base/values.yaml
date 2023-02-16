@@ -117,6 +117,9 @@ image:
     tag: "3.8.0"
   configure:
     name: egeria-configure
+  kubectl:
+    name: "bitnami/kubectl"
+    tag: "latest"
 
 # Normally we install the strimzi operator as part of the Chart. However this requires admin permissions, and
 # will create cluster-scoped resources. Set to false to skip this when in a restricted environment, or needing multiple
