@@ -67,9 +67,23 @@ Generate names of the referenced objects in the subcharts (ConfigMap, Kafka, etc
 {{- define "egeria-base.configMapName" -}}
 {{- printf "%s-env" .Release.Name -}}
 {{- end -}}
+
 {{- define "egeria-base.KafkaClusterName" -}}
+{{- if .Values.global.kafka.external -}}
+{{ printf "%s" .Values.global.kafka.clusterName }}
+{{- else -}}
 {{- printf "%s-strimzi" .Release.Name -}}
 {{- end -}}
+{{- end -}}
+
+{{- define "egeria-base.KafkaClusterNamespace" -}}
+{{- if .Values.global.kafka.external -}}
+{{- printf "%s" .Values.global.kafka.namespace -}}
+{{- else -}}
+{{- printf "%s" .Release.Namespace -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "egeria-base.JobName" -}}
 {{- printf "%s-config"  .Release.Name -}}
 {{- end -}}

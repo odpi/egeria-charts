@@ -52,6 +52,7 @@ spec:
             - /bin/sh
             - -c
             - |
+              printf "Checking the job \"{{ include "egeria-base.JobName" . }}\"...\n"
               until [ "$(kubectl get job {{ include "egeria-base.JobName" . }} -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}')" = "True" ]; do
                 printf "Waiting for job \"{{ include "egeria-base.JobName" . }}\" to complete...\n"
                 sleep 10

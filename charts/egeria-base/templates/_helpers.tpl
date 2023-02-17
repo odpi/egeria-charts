@@ -47,7 +47,22 @@ Create the name of the service account to use
 Create the name of the kafka cluster name
 */}}
 {{- define "egeria-base.KafkaClusterName" -}}
+{{- if .Values.global.kafka.external -}}
+{{- printf "%s" .Values.global.kafka.clusterName -}}
+{{- else -}}
 {{- printf "%s-strimzi" .Release.Name -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create the name of the kafka cluster name
+*/}}
+{{- define "egeria-base.KafkaClusterNamespace" -}}
+{{- if .Values.global.kafka.external -}}
+{{- printf "%s" .Values.global.kafka.namespace -}}
+{{- else -}}
+{{- printf "%s" .Release.Namespace -}}
+{{- end -}}
 {{- end -}}
 
 {{/*

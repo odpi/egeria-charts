@@ -44,8 +44,9 @@ spec:
             - /bin/sh
             - -c
             - |
-              until [ "$(kubectl get kafkas.kafka.strimzi.io -n {{ .Values.global.kafka.namespace }} {{ .Values.global.kafka.clusterName }} -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
-                printf "Waiting for kafka cluster \"{{ .Values.global.kafka.clusterName }}\" to get ready...\n"
+              printf "Checking the kafka cluster \"{{ include "egeria-base.KafkaClusterName" . }}\"...\n"
+              until [ "$(kubectl get kafkas.kafka.strimzi.io -n {{ include "egeria-base.KafkaClusterNamespace" . }} {{ include "egeria-base.KafkaClusterName" . }} -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
+                printf "Waiting for kafka cluster \"{{ include "egeria-base.KafkaClusterName" . }}\" to get ready...\n"
                 sleep 10
               done 
           {{- else }}
@@ -61,6 +62,7 @@ spec:
         {{- if not (index .Values "strimzi" "kafka" "config" "autoCreateTopics") }}
         {{- $cohortName := $.Values.egeria.cohort }}
         {{- $omasServerName := $.Values.global.egeria.serverName }}
+        {{- $kafkaClusterNamespace := include "egeria-base.KafkaClusterNamespace" . }}
         - name: wait-for-kafka-topics
           image: "{{ .Values.global.image.kubectl.registry }}/{{ .Values.global.image.kubectl.name }}:{{ .Values.global.image.kubectl.tag }}"
           imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
@@ -70,7 +72,7 @@ spec:
             - |
         {{- range $topicName := $.Values.strimzi.kafka.topics.name }}
               printf "Checking the kafka topic \"{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\"\n"
-              until [ "$(kubectl get kafkatopics.kafka.strimzi.io "{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower}}" -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
+              until [ "$(kubectl get kafkatopics.kafka.strimzi.io -n {{ $kafkaClusterNamespace }} "{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower}}" -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
                 printf "Waiting for kafka topic \"{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\" to get ready...\n"
                 sleep 1
               done
