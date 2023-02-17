@@ -13,6 +13,8 @@ global:
     # if an external kafka cluster in another namespace should be used (defaults to false)
     external: false
     namespace: default
+    # if an external kafka cluster is used (external: true), this name defines the clustername
+    # otherwise (external: false) it is the "Release.Name"-strimzi (as default value)
     clusterName: kafka-strimzi
     externalBootstrap: strimzi-kafka-external-bootstrap
   image:
@@ -20,7 +22,7 @@ global:
       name: egeria-configure
     kubectl:
       # corporate proxy or nexus server
-      registry: docker.io/library
+      registry: docker.io
       name: "bitnami/kubectl"
       tag: "latest"
 
