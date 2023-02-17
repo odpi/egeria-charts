@@ -188,3 +188,8 @@ egeria-react-ui:
 # Defaults to false
 egeria-lineage:
   enabled: false
+
+# --- Override values ---
+# These are used to override name of the egeria deployment in the helpers template
+fullnameOverride:
+nameOverride:
