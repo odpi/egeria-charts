@@ -1,6 +1,6 @@
+{{ if .Values.rbac.create }}
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
-{{ if .Values.rbac.create }}
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -16,6 +16,7 @@ rules:
   - apiGroups: [""]
     resources: ["endpoints","pods","services","configmaps"]
     verbs: ["get", "list", "watch","patch"]
+{{ if not .Values.global.kafka.external }}
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
@@ -32,6 +33,7 @@ rules:
   - apiGroups: ["kafka.strimzi.io"]
     resources: ["kafkas", "kafkas/status", "kafkatopics", "kafkatopics/status"]
     verbs: ["get"]
+{{ end }}
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -68,8 +70,15 @@ subjects:
   - kind: ServiceAccount
     name: {{ template "egeria-base.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
+{{- if .Values.global.kafka.external }}
+roleRef:
+  kind: {{ .Values.global.kafka.roleRef.kind }}
+  apiGroup: {{ .Values.global.kafka.roleRef.apiGroup }}
+  name: {{ .Values.global.kafka.roleRef.name }}
+{{- else }}
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
   name: {{ include "egeria-base.name" . }}-strimzi-role
+{{- end }}
 {{ end }}

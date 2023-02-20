@@ -5,18 +5,19 @@
 {{ $kafkaClusterNamespace := include "egeria-base.KafkaClusterNamespace" . }}
 {{ $partitions := $.Values.strimzi.kafka.topics.spec.partitions }}
 {{ $replicas := $.Values.strimzi.kafka.topics.spec.replicas }}
+{{ $baseTopicName := $.Values.egeria.baseTopicName }}
 {{- range $topicName := $.Values.strimzi.kafka.topics.name }}
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: {{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower }}
-  namespace: {{ $kafkaClusterNamespace }}
+  name: {{ $baseTopicName | lower }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower }}
+  namespace: {{ $kafkaClusterNamespace | lower }}
   labels:
-    strimzi.io/cluster: {{ $kafkaCluster }}
+    strimzi.io/cluster: {{ $kafkaCluster | lower }}
 spec:
   partitions: {{ $partitions }}
   replicas: {{ $replicas }}
-  topicName: {{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}
+  topicName: {{ $baseTopicName }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}
 ---
 {{- end}}
 {{ end }}

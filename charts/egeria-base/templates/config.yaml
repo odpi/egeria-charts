@@ -63,6 +63,7 @@ spec:
         {{- $cohortName := $.Values.egeria.cohort }}
         {{- $omasServerName := $.Values.global.egeria.serverName }}
         {{- $kafkaClusterNamespace := include "egeria-base.KafkaClusterNamespace" . }}
+        {{- $baseTopicName := $.Values.egeria.baseTopicName }}
         - name: wait-for-kafka-topics
           image: "{{ .Values.global.image.kubectl.registry }}/{{ .Values.global.image.kubectl.name }}:{{ .Values.global.image.kubectl.tag }}"
           imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
@@ -71,9 +72,9 @@ spec:
             - -c
             - |
         {{- range $topicName := $.Values.strimzi.kafka.topics.name }}
-              printf "Checking the kafka topic \"{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\"\n"
-              until [ "$(kubectl get kafkatopics.kafka.strimzi.io -n {{ $kafkaClusterNamespace }} "{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower}}" -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
-                printf "Waiting for kafka topic \"{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\" to get ready...\n"
+              printf "Checking the kafka topic \"{{ $baseTopicName }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\"\n"
+              until [ "$(kubectl get kafkatopics.kafka.strimzi.io -n {{ $kafkaClusterNamespace | lower }} {{ $baseTopicName | lower }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower }} -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
+                printf "Waiting for kafka topic \"{{ $baseTopicName }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\" to get ready...\n"
                 sleep 1
               done
         {{- end}}

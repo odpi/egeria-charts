@@ -17,6 +17,13 @@ global:
     # otherwise (external: false) it is the "Release.Name"-strimzi (as default value)
     clusterName: kafka-strimzi
     externalBootstrap: strimzi-kafka-external-bootstrap
+    # When using an external kafka cluster in another namespace, this defines the needed Role
+    # to be used in a RoleBinding, that is needed to check (get) the following strimzi resources:
+    # ["kafkas", "kafkas/status", "kafkatopics", "kafkatopics/status"]
+    roleRef:
+      kind: ClusterRole
+      apiGroup: rbac.authorization.k8s.io
+      name: strimzi-view
   image:
     configure:
       name: egeria-configure
@@ -49,6 +56,10 @@ egeria:
   # if the configuration is not actually performed. Note that no autostart setup
   # will be done either if set to false. Defaults to true
   config: true
+  # Ability to customize internal topic names, for instance including a prefix to
+  # use in enterprise environments. Defaults to egeria.omag
+  # Refer to https://egeria-project.org/connectors/resource/kafka-open-metadata-topic-connector/?h=base_topic_name#topic-creation
+  baseTopicName: egeria.omag
 
 # Additional connectors/libraries to be made available in egeria server chassis containers
 # This is just an example. You can have a list of connectors
@@ -57,6 +68,7 @@ extralibs:
 #  filename: egeria-connector-xtdb-3.9-jar-with-dependencies.jar
 
 # --- Additional environment variables - inserted directly into configmap. Can use helm template directives
+extraEnv:
 #extraEnv: |
 #  VAR1: value1
 #  VAR2: value2
@@ -146,25 +158,25 @@ strimzi:
       autoCreateTopics: true
     topics:
       name:
-        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.instances
-        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.registration
-        - egeria.omag.openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.types
-        - egeria.omag.server.#{serverName}#.omas.analyticsmodeling.outTopic
-        - egeria.omag.server.#{serverName}#.omas.assetconsumer.outTopic
-        - egeria.omag.server.#{serverName}#.omas.assetlineage.outTopic
-        - egeria.omag.server.#{serverName}#.omas.assetmanager.outTopic
-        - egeria.omag.server.#{serverName}#.omas.assetowner.outTopic
-        - egeria.omag.server.#{serverName}#.omas.communityprofile.outTopic
-        - egeria.omag.server.#{serverName}#.omas.dataengine.inTopic
-        - egeria.omag.server.#{serverName}#.omas.datamanager.outTopic
-        - egeria.omag.server.#{serverName}#.omas.digitalarchitecture.outTopic
-        - egeria.omag.server.#{serverName}#.omas.governanceengine.outTopic
-        - egeria.omag.server.#{serverName}#.omas.itinfrastructure.outTopic
-        - egeria.omag.server.#{serverName}#.omas.securitymanager.inTopic
-        - egeria.omag.server.#{serverName}#.omas.securitymanager.outTopic
-        - egeria.omag.server.#{serverName}#.omas.securityofficer.outTopic
-        - egeria.omag.server.#{serverName}#.omas.stewardshipaction.outTopic
-        - egeria.omag.server.#{serverName}#.omas.subjectarea.outTopic
+        - openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.instances
+        - openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.registration
+        - openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.types
+        - server.#{serverName}#.omas.analyticsmodeling.outTopic
+        - server.#{serverName}#.omas.assetconsumer.outTopic
+        - server.#{serverName}#.omas.assetlineage.outTopic
+        - server.#{serverName}#.omas.assetmanager.outTopic
+        - server.#{serverName}#.omas.assetowner.outTopic
+        - server.#{serverName}#.omas.communityprofile.outTopic
+        - server.#{serverName}#.omas.dataengine.inTopic
+        - server.#{serverName}#.omas.datamanager.outTopic
+        - server.#{serverName}#.omas.digitalarchitecture.outTopic
+        - server.#{serverName}#.omas.governanceengine.outTopic
+        - server.#{serverName}#.omas.itinfrastructure.outTopic
+        - server.#{serverName}#.omas.securitymanager.inTopic
+        - server.#{serverName}#.omas.securitymanager.outTopic
+        - server.#{serverName}#.omas.securityofficer.outTopic
+        - server.#{serverName}#.omas.stewardshipaction.outTopic
+        - server.#{serverName}#.omas.subjectarea.outTopic
       spec:
         partitions: 1
         replicas: 1
