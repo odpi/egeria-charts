@@ -44,7 +44,7 @@ Create the name of the service account to use
 {{- end -}}
 
 {{/*
-Create the name of the kafka cluster name
+Generate the names of the kafka resources (cluster, namespace, bootstrap)
 */}}
 {{- define "egeria-base.KafkaClusterName" -}}
 {{- if .Values.global.kafka.external -}}
@@ -54,9 +54,6 @@ Create the name of the kafka cluster name
 {{- end -}}
 {{- end -}}
 
-{{/*
-Create the name of the kafka cluster name
-*/}}
 {{- define "egeria-base.KafkaClusterNamespace" -}}
 {{- if .Values.global.kafka.external -}}
 {{- printf "%s" .Values.global.kafka.namespace -}}
@@ -64,6 +61,17 @@ Create the name of the kafka cluster name
 {{- printf "%s" .Release.Namespace -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "egeria-base.KafkaClusterEndpoint" -}}
+{{- if .Values.global.kafka.external -}}
+{{- printf "%s:9092" .Values.global.kafka.externalBootstrap -}}
+{{- else -}}
+{{- printf "%s-strimzi-kafka-bootstrap:9092" .Release.Name -}}
+{{- end -}}
+{{- end -}}
+{{/*
+End of generating the names of the kafka resources (cluster, namespace, bootstrap)
+*/}}
 
 {{/*
 Generate the ConfigMap name for referencing in the subcharts
