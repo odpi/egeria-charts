@@ -29,7 +29,7 @@ printf -- "-- Configuring platform with required servers\n"
 
 # Set the URL root
 printf "\n\n > Setting server URL root:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -42,7 +42,7 @@ fi
 
 # Setup the event bus
 printf "\n\n > Setting up event bus:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus?topicURLRoot=${BASE_TOPIC_NAME}" \
   --data @- << EOF | cut -d "}" -f2
@@ -68,7 +68,7 @@ fi
 
 # Enable all the access services (we will adjust this later)
 printf "\n\n > Enabling all access services:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/access-services?serviceMode=ENABLED" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -81,7 +81,7 @@ fi
 
 # Use a local graph repo
 printf "\n\n > Use a local graph repo:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/local-graph-repository" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -94,7 +94,7 @@ fi
 
 # Configure the cohort membership
 printf "\n\n > Configuring cohort membership:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/cohorts/${EGERIA_COHORT}" | cut -d "}" -f2)
 	
 if [ "${RC}" -eq 200 ]; then
@@ -107,7 +107,7 @@ fi
 
 # Start up the server
 printf "\n\n > Starting the server:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST --max-time 900 \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST --max-time 900 \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -122,7 +122,7 @@ fi
 
 # Set the URL root
 printf "\n\n > Setting view server URL root:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -135,7 +135,7 @@ fi
 
 # Setup the event bus
 printf "\n\n > Setting up event bus:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/event-bus?topicURLRoot=${BASE_TOPIC_NAME}" \
   --data @- << EOF | cut -d "}" -f2
@@ -161,7 +161,7 @@ fi
 
 # Set as view server
 printf "\n\n > Set as view server:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/server-type?typeName=View%20Server" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -175,7 +175,7 @@ fi
 # Configure the view server cohort membership
 printf "\n\n > Configuring cohort membership:\n"
 
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/cohorts/${EGERIA_COHORT}" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -189,7 +189,7 @@ fi
 # Configure the view services
 printf "\n\n > Setting up Glossary Author:\n"
 
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/glossary-author" \
   --data @- << EOF | cut -d "}" -f2
@@ -213,7 +213,7 @@ fi
 # Setting up TEX
 printf "\n\n > Setting up TEX:\n"
 
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/tex" \
   --data @- << EOF | cut -d "}" -f2
@@ -256,7 +256,7 @@ fi
 
 # Setting up REX
 printf "\n\n > Setting up REX:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/rex" \
   --data @- << EOF | cut -d "}" -f2
@@ -300,7 +300,7 @@ fi
 # Setting up DINO
 printf "\n\n > Setting up DINO:\n"
 
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/dino" \
   --data @- << EOF | cut -d "}" -f2
@@ -352,7 +352,7 @@ fi
 # Setting up Server Author
 printf "\n\n > Setting up Server Author:\n"
 
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/view-services/server-author" \
   --data @- << EOF | cut -d "}" -f2
@@ -387,7 +387,7 @@ fi
 # Start up the view server
 printf "\n\n > Starting the view server:\n"
 
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST --max-time 900 \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST --max-time 900 \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/instance" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -407,7 +407,7 @@ token="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
 namespace="$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)"
 cacert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 
-RC=$(curl -s -o /dev/null -w "%{http_code}" \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" \
   -X PATCH \
   -d @- \
   -H "Authorization: Bearer $token" \
