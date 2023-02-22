@@ -20,12 +20,6 @@ dependencies:
     version: 0.33.0
     repository: https://strimzi.io/charts/
     condition: strimzi.enabled
-  - name: egeria-react-ui
-    version: 3.15.0
-    # TODO change to official chart repository
-    # repository: https://odpi.github.io/egeria-charts
-    repository: "file://../egeria-react-ui"
-    condition: egeria-react-ui.enabled
   - name: egeria-lineage
     version: 3.15.0
     # TODO change to official chart repository
