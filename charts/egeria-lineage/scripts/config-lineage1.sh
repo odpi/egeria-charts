@@ -19,7 +19,7 @@ printf -- "-- Configuring the sample lineage connector\n"
 
 # 1. Update the server type name for EGERIA_LINEAGE_SERVER_NAME
 printf "\n\n > Update the server type name for \"%s\":\n" "${EGERIA_LINEAGE_SERVER_NAME}"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/server-type?typeName=Integration%20Daemon" --data-raw '' | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -32,7 +32,7 @@ fi
 
 # 2. Configure the integration services audit log
 printf "\n\n > Configure the default audit log:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/audit-log-destinations/default" --header 'Content-Type: application/json' | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
@@ -45,7 +45,7 @@ fi
 
 # 3. Configure the sample lineage integrator service
 printf "\n\n > Configure the sample lineage integrator service:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin \
   --header "Content-Type: application/json" \
   "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/integration-services/lineage-integrator" \
   --header 'Content-Type: application/json' \
@@ -121,7 +121,7 @@ fi
 
 # 4. Start the Lineage Integration sample server
 printf "\n\n > Start the Lineage Integration sample server:\n"
-RC=$(curl -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
+RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/instance" --data-raw '' | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
