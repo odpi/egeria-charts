@@ -64,7 +64,7 @@ Generate the names of the kafka resources (cluster, namespace, bootstrap)
 
 {{- define "egeria-base.KafkaClusterEndpoint" -}}
 {{- if .Values.global.kafka.external -}}
-{{- printf "%s:9092" .Values.global.kafka.externalBootstrap -}}
+{{- printf "%s:%s" .Values.global.kafka.externalBootstrap .Values.global.kafka.listenerPort -}}
 {{- else -}}
 {{- printf "%s-strimzi-kafka-bootstrap:9092" .Release.Name -}}
 {{- end -}}

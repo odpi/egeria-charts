@@ -17,7 +17,7 @@ spec:
         tls: false
 {{ if .Values.strimzi.kafka.listeners.external.enabled }}
       - name: external
-        port: 9094
+        port: {{ .Values.global.kafka.listenerPort }}
         type: nodeport
         tls: false
         configuration:

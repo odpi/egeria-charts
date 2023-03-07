@@ -17,6 +17,7 @@ global:
     # otherwise (external: false) it is the "Release.Name"-strimzi (as default value)
     clusterName: kafka-strimzi
     externalBootstrap: strimzi-kafka-external-bootstrap
+    listenerPort: "9094"
     # When using an external kafka cluster in another namespace, this defines the needed Role
     # to be used in a RoleBinding, that is needed to check (get) the following strimzi resources:
     # ["kafkas", "kafkas/status", "kafkatopics", "kafkatopics/status"]
@@ -24,6 +25,17 @@ global:
       kind: ClusterRole
       apiGroup: rbac.authorization.k8s.io
       name: strimzi-view
+    userName: egeria
+    # security (SSL) settings for kafka, defaults to false
+    security:
+      enabled: false
+      protocol: SSL
+      keystoreLocation: keystore.jks
+      keystorePassword: keystore.pass
+      truststoreLocation: truststore.jks
+      truststorePassword: truststore.pass
+      secretTag: f5899c937d
+
   image:
     configure:
       name: egeria-configure

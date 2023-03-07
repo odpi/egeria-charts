@@ -13,19 +13,64 @@
 # exit when any command fails
 set -e
 
+# Creates the post data for the event bus according to kafka security (KAFKA_SECURITY_ENABLED)
+generatePostData() {
+  if [ "${KAFKA_SECURITY_ENABLED}" = "true" ]; then
+    cat << EOF
+{
+  "producer": {
+    "bootstrap.servers": "${KAFKA_ENDPOINT}",
+    "security.protocol": "${KAFKA_SECURITY_PROTOCOL}",
+    "ssl.keystore.location": "${KAFKA_SECURITY_KEYSTORE_LOCATION}",
+    "ssl.keystore.password": "${KAFKA_SECURITY_KEYSTORE_PASSWORD}",
+    "ssl.truststore.location": "${KAFKA_SECURITY_TRUSTSTORE_LOCATION}",
+    "ssl.truststore.password": "${KAFKA_SECURITY_TRUSTSTORE_PASSWORD}"
+  }, 
+  "consumer": {
+    "bootstrap.servers": "${KAFKA_ENDPOINT}",
+    "security.protocol": "${KAFKA_SECURITY_PROTOCOL}",
+    "ssl.keystore.location": "${KAFKA_SECURITY_KEYSTORE_LOCATION}",
+    "ssl.keystore.password": "${KAFKA_SECURITY_KEYSTORE_PASSWORD}",
+    "ssl.truststore.location": "${KAFKA_SECURITY_TRUSTSTORE_LOCATION}",
+    "ssl.truststore.password": "${KAFKA_SECURITY_TRUSTSTORE_PASSWORD}"
+  } 
+}
+EOF
+  else
+    cat << EOF
+{
+  "producer": {
+    "bootstrap.servers": "${KAFKA_ENDPOINT}"
+  },
+  "consumer": {
+    "bootstrap.servers": "${KAFKA_ENDPOINT}"
+  }
+}
+EOF
+  fi
+}
+
 printf -- "-- Needed environment variables from egeria-base --\n"
 printf "EGERIA_ENDPOINT=%s\n" "${EGERIA_ENDPOINT}"
 printf "EGERIA_USER=%s\n" "${EGERIA_USER}"
 printf "EGERIA_SERVER=%s\n" "${EGERIA_SERVER}"
 printf "BASE_TOPIC_NAME=%s\n" "${BASE_TOPIC_NAME}"
-printf "KAFKA_ENDPOINT=%s\n" "${KAFKA_ENDPOINT}"
 printf "EGERIA_COHORT=%s\n" "${EGERIA_COHORT}"
 printf "VIEW_SERVER=%s\n" "${VIEW_SERVER}"
 printf "STARTUP_CONFIGMAP=%s\n" "${STARTUP_CONFIGMAP}"
 printf "POSTCONFIG_STARTUP_SERVER_LIST=%s\n" "${POSTCONFIG_STARTUP_SERVER_LIST}"
+printf "KAFKA_ENDPOINT=%s\n" "${KAFKA_ENDPOINT}"
+if [ "${KAFKA_SECURITY_ENABLED}" = "true" ]; then
+  printf "KAFKA_SECURITY_PROTOCOL=%s\n" "${KAFKA_SECURITY_PROTOCOL}"
+  printf "KAFKA_SECURITY_KEYSTORE_LOCATION=%s\n" "${KAFKA_SECURITY_KEYSTORE_LOCATION}"
+  printf "KAFKA_SECURITY_KEYSTORE_PASSWORD=%s\n" "${KAFKA_SECURITY_KEYSTORE_PASSWORD}"
+  printf "KAFKA_SECURITY_TRUSTSTORE_LOCATION=%s\n" "${KAFKA_SECURITY_TRUSTSTORE_LOCATION}"
+  printf "KAFKA_SECURITY_TRUSTSTORE_PASSWORD=%s\n" "${KAFKA_SECURITY_TRUSTSTORE_PASSWORD}"
+fi
 printf -- "-- End of Needed environment variables --\n\n"
 
 printf -- "-- Configuring platform with required servers\n"
+
 
 # Set the URL root
 printf "\n\n > Setting server URL root:\n"
@@ -45,18 +90,7 @@ printf "\n\n > Setting up event bus:\n"
 RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus?topicURLRoot=${BASE_TOPIC_NAME}" \
-  --data @- << EOF | cut -d "}" -f2
-{
-  "producer": {
-    "bootstrap.servers": "${KAFKA_ENDPOINT}"
-  },
-  "consumer": {
-    "bootstrap.servers": "${KAFKA_ENDPOINT}"
-  }
-}
-EOF
-
-)
+  --data "$(generatePostData)" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
   printf "Setting up event bus successful.\n"
@@ -138,18 +172,7 @@ printf "\n\n > Setting up event bus:\n"
 RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin -X POST \
   --header "Content-Type: application/json" \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${VIEW_SERVER}/event-bus?topicURLRoot=${BASE_TOPIC_NAME}" \
-  --data @- << EOF | cut -d "}" -f2
-{
-  "producer": {
-    "bootstrap.servers": "${KAFKA_ENDPOINT}"
-  },
-  "consumer": {
-    "bootstrap.servers": "${KAFKA_ENDPOINT}"
-  }
-}
-EOF
-
-)
+  --data "$(generatePostData)" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
   printf "Setting up event bus successful.\n"
