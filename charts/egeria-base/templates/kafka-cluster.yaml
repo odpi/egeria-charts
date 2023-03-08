@@ -31,7 +31,7 @@ spec:
       offsets.topic.replication.factor: 1
       transaction.state.log.replication.factor: 1
       transaction.state.log.min.isr: 1
-      auto.create.topics.enable: "{{ .Values.strimzi.kafka.config.autoCreateTopics }}"
+      auto.create.topics.enable: "{{ .Values.global.kafka.config.autoCreateTopics }}"
     readinessProbe:
       initialDelaySeconds: 15
       timeoutSeconds: 5

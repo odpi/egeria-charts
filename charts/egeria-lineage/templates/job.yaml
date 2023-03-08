@@ -57,6 +57,20 @@ spec:
                 printf "Waiting for job \"{{ include "egeria-base.JobName" . }}\" to complete...\n"
                 sleep 10
               done 
+        {{- if not (index .Values "global" "kafka" "config" "autoCreateTopics") }}
+        - name: wait-for-the-kafka-topic
+          image: "{{ .Values.global.image.kubectl.registry }}/{{ .Values.global.image.kubectl.name }}:{{ .Values.global.image.kubectl.tag }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.lineage.version )))  }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              printf "Checking the kafka topic \"{{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}\"\n"
+              until [ "$(kubectl get kafkatopics.kafka.strimzi.io -n {{ include "egeria-base.KafkaClusterNamespace" . | lower }} {{ .Values.lineage.topic.prefix | lower }}.{{ .Values.lineage.topic.name | lower }} -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
+                printf "Waiting for kafka topic \"{{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}\" to get ready...\n"
+                sleep 1
+              done
+        {{- end }}
       containers:
         - name: initialize
           image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\

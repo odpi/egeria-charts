@@ -1,3 +1,4 @@
+{{ if not .Values.global.kafka.config.autoCreateTopics }}
 # Source: topics/templates/kafkaTopic.yaml
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -12,3 +13,4 @@ spec:
   topicName: {{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}
   config:
     retention.ms: {{ .Values.lineage.topic.options.config.retention.ms }}
+{{ end }}

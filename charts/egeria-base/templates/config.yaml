@@ -59,7 +59,7 @@ spec:
             - name: SERVICE
               value: {{ .Release.Name }}-strimzi-kafka-bootstrap
           {{- end }}
-        {{- if not (index .Values "strimzi" "kafka" "config" "autoCreateTopics") }}
+        {{- if not (index .Values "global" "kafka" "config" "autoCreateTopics") }}
         {{- $cohortName := $.Values.egeria.cohort }}
         {{- $omasServerName := $.Values.global.egeria.serverName }}
         {{- $kafkaClusterNamespace := include "egeria-base.KafkaClusterNamespace" . }}

@@ -1,4 +1,4 @@
-{{ if not (index .Values "strimzi" "kafka" "config" "autoCreateTopics") }}
+{{ if not (index .Values "global" "kafka" "config" "autoCreateTopics") }}
 {{ $cohortName := $.Values.egeria.cohort }}
 {{ $omasServerName := $.Values.global.egeria.serverName }}
 {{ $kafkaCluster := include "egeria-base.KafkaClusterName" . }}

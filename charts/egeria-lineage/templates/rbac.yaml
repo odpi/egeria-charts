@@ -1,6 +1,6 @@
+{{ if .Values.rbac.create }}
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
-{{ if .Values.rbac.create }}
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -19,6 +19,24 @@ rules:
   - apiGroups: ["batch"]
     resources: ["jobs"]
     verbs: ["get"]
+{{ if not .Values.global.kafka.external }}
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
+    helm.sh/chart: {{ include "egeria-lineage.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: egeria-rbac
+  name: {{ include "egeria-lineage.name" . }}-strimzi-role
+  namespace: {{ include "egeria-base.KafkaClusterNamespace" . }}
+rules:
+  - apiGroups: ["kafka.strimzi.io"]
+    resources: ["kafkas", "kafkas/status", "kafkatopics", "kafkatopics/status"]
+    verbs: ["get"]
+{{ end }}
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -39,4 +57,31 @@ roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
   name: {{ include "egeria-lineage.name" . }}-api-role
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
+    helm.sh/chart: {{ include "egeria-lineage.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: egeria-rbac
+  name: {{ include "egeria-lineage.name" . }}-strimzi-role-binding
+  namespace: {{ include "egeria-base.KafkaClusterNamespace" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "egeria-lineage.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- if .Values.global.kafka.external }}
+roleRef:
+  kind: {{ .Values.global.kafka.roleRef.kind }}
+  apiGroup: {{ .Values.global.kafka.roleRef.apiGroup }}
+  name: {{ .Values.global.kafka.roleRef.name }}
+{{- else }}
+roleRef:
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+  name: {{ include "egeria-lineage.name" . }}-strimzi-role
+{{- end }}
 {{ end }}

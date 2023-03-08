@@ -2,6 +2,32 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  egeria:
+    # The userid used for admin ops (no security enabled by default)
+    user: garygeeke
+  kafka:
+    # if autoCreateTopics is set to false, the needed topics will be generated via strimzi CRDs
+    config:
+      autoCreateTopics: true
+    external: false
+    security:
+      enabled: false
+      protocol: SSL
+      keystoreLocation: keystore.jks
+      keystorePassword: keystore.pass
+      truststoreLocation: truststore.jks
+      truststorePassword: truststore.pass
+      secretTag: f5899c937d
+  image:
+    configure:
+      name: egeria-configure
+    kubectl:
+      # corporate proxy or nexus server
+      registry: docker.io
+      name: "bitnami/kubectl"
+      tag: "latest"
+
 replicaCount: 1
 
 
