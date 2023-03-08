@@ -10,6 +10,11 @@ global:
     # The name of the servers to provision on the platform
     serverName: mds1
   kafka:
+    # if autoCreateTopics is set to false, the needed topics will be generated via strimzi CRDs
+    config:
+      autoCreateTopics: true
+    # consumerGroupID defines the consumer group id, if not set it defaults to local server id
+    consumerGroupID: ""
     # if an external kafka cluster in another namespace should be used (defaults to false)
     external: false
     namespace: default
@@ -157,7 +162,7 @@ image:
 # installed on the cluster by an admin, or a prior install
 # If strimzi is installed, a Kafka cluster is also configured. 
 # You are able to externalize the Kafka access by changing the externalListener options.
-# if autoCreateTopics is set to false, the list of topics will be generated via strimzi CRDs 
+# if global.kafka.config.autoCreateTopics is set to false, the list of topics will be generated via strimzi CRDs 
 strimzi:
   enabled: true
   kafka:
@@ -166,8 +171,6 @@ strimzi:
         enabled: true
         advertisedHost: localhost
         bootstrapNodePort: 32000
-    config:
-      autoCreateTopics: true
     topics:
       name:
         - openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.instances

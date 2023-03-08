@@ -3,80 +3,11 @@
 # exit when any command fails
 set -e
 
-# Creates the post data for the event bus according to kafka security (KAFKA_SECURITY_ENABLED)
+# Creates the post data for the event bus according to 
+# kafka security (KAFKA_SECURITY_ENABLED) and consumer group id (KAFKA_CONSUMER_GROUP_ID)
+# inspired by https://stackoverflow.com/a/17032673/20379936
 generatePostData() {
-  if [ "${KAFKA_SECURITY_ENABLED}" = "true" ]; then
-    cat << EOF
-{
-  "class": "IntegrationServiceRequestBody",
-  "omagserverPlatformRootURL": "${EGERIA_ENDPOINT}",
-  "omagserverName": "${EGERIA_SERVER}",
-  "connectorUserId": "${EGERIA_USER}",
-  "integrationConnectorConfigs": [
-    {
-    "class": "IntegrationConnectorConfig",
-    "connectorId": "ba6dc870-2303-48fc-8611-d50b49706f48",
-    "connectorName": "LineageIntegrator",
-    "metadataSourceQualifiedName": "TestMetadataSourceQualifiedName",
-    "connection": {
-      "class": "VirtualConnection",
-      "headerVersion": 0,
-      "qualifiedName": "Egeria:IntegrationConnector:Lineage:OpenLineageEventReceiverConnection",
-      "connectorType": {
-        "class": "ConnectorType",
-        "headerVersion": 0,
-        "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.integration.lineage.sample.SampleLineageEventReceiverIntegrationProvider"
-      },
-      "embeddedConnections": [
-        {
-          "class": "EmbeddedConnection",
-          "headerVersion": 0,
-          "position": 0,
-          "embeddedConnection": {
-            "class": "Connection",
-            "headerVersion": 0,
-            "qualifiedName": "Kafka Open Metadata Topic Connector for sample lineage",
-            "connectorType": {
-              "class": "ConnectorType",
-              "headerVersion": 0,
-              "connectorProviderClassName": "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider"
-            },
-            "endpoint": {
-              "class": "Endpoint",
-              "headerVersion": 0,
-              "address": "${EGERIA_LINEAGE_TOPIC_NAME}"
-            },
-            "configurationProperties": {
-              "producer": {
-                "bootstrap.servers": "${KAFKA_ENDPOINT}",
-                "security.protocol": "${KAFKA_SECURITY_PROTOCOL}",
-                "ssl.keystore.location": "${KAFKA_SECURITY_KEYSTORE_LOCATION}",
-                "ssl.keystore.password": "${KAFKA_SECURITY_KEYSTORE_PASSWORD}",
-                "ssl.truststore.location": "${KAFKA_SECURITY_TRUSTSTORE_LOCATION}",
-                "ssl.truststore.password": "${KAFKA_SECURITY_TRUSTSTORE_PASSWORD}"
-              },
-              "local.server.id": "${EGERIA_LINEAGE_CONSUMER_ID}",
-              "consumer": {
-                "bootstrap.servers": "${KAFKA_ENDPOINT}",
-                "security.protocol": "${KAFKA_SECURITY_PROTOCOL}",
-                "ssl.keystore.location": "${KAFKA_SECURITY_KEYSTORE_LOCATION}",
-                "ssl.keystore.password": "${KAFKA_SECURITY_KEYSTORE_PASSWORD}",
-                "ssl.truststore.location": "${KAFKA_SECURITY_TRUSTSTORE_LOCATION}",
-                "ssl.truststore.password": "${KAFKA_SECURITY_TRUSTSTORE_PASSWORD}"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "refreshTimeInterval": 0,
-    "usesBlockingCalls": false
-    }
-  ]
-}
-EOF
-  else
-    cat << EOF
+  cat << EOF
 {
   "class": "IntegrationServiceRequestBody",
   "omagserverPlatformRootURL": "${EGERIA_ENDPOINT}",
@@ -135,8 +66,37 @@ EOF
   ]
 }
 EOF
-  fi
 }
+
+consumer=$(jq -n --arg bootstrap.servers "${KAFKA_ENDPOINT}" '$ARGS.named')
+producer=$(jq -n --arg bootstrap.servers "${KAFKA_ENDPOINT}" '$ARGS.named')
+
+if [ "${KAFKA_SECURITY_ENABLED}" = "true" ]; then
+  consumer=$(echo $consumer | \
+    jq --arg security.protocol "${KAFKA_SECURITY_PROTOCOL}" \
+    --arg ssl.keystore.location "${KAFKA_SECURITY_KEYSTORE_LOCATION}" \
+    --arg ssl.keystore.password "${KAFKA_SECURITY_KEYSTORE_PASSWORD}" \
+    --arg ssl.truststore.location "${KAFKA_SECURITY_TRUSTSTORE_LOCATION}" \
+    --arg ssl.truststore.password "${KAFKA_SECURITY_TRUSTSTORE_PASSWORD}" \
+    '. += $ARGS.named')
+  producer=$(echo $producer | \
+    jq --arg security.protocol "${KAFKA_SECURITY_PROTOCOL}" \
+    --arg ssl.keystore.location "${KAFKA_SECURITY_KEYSTORE_LOCATION}" \
+    --arg ssl.keystore.password "${KAFKA_SECURITY_KEYSTORE_PASSWORD}" \
+    --arg ssl.truststore.location "${KAFKA_SECURITY_TRUSTSTORE_LOCATION}" \
+    --arg ssl.truststore.password "${KAFKA_SECURITY_TRUSTSTORE_PASSWORD}" \
+    '. += $ARGS.named')
+fi
+
+if [ ! -z "${KAFKA_CONSUMER_GROUP_ID}" ]; then
+  consumer=$(echo $consumer | jq --arg group.id "${KAFKA_CONSUMER_GROUP_ID}" '. += $ARGS.named')
+fi
+
+configurationProperties=$(jq -n --argjson producer "$producer" \
+  --argjson consumer "$consumer" \
+  '$ARGS.named')
+
+postData=$(generatePostData | jq --argjson configurationProperties "$configurationProperties" '.integrationConnectorConfigs[].connection.embeddedConnections[].embeddedConnection.configurationProperties |= $ARGS.named')
 
 printf -- "-- Needed environment variables from egeria-base --\n"
 printf "EGERIA_USER=%s\n" "${EGERIA_USER}"
@@ -146,9 +106,9 @@ printf "KAFKA_ENDPOINT=%s\n" "${KAFKA_ENDPOINT}"
 if [ "${KAFKA_SECURITY_ENABLED}" = "true" ]; then
   printf "KAFKA_SECURITY_PROTOCOL=%s\n" "${KAFKA_SECURITY_PROTOCOL}"
   printf "KAFKA_SECURITY_KEYSTORE_LOCATION=%s\n" "${KAFKA_SECURITY_KEYSTORE_LOCATION}"
-  printf "KAFKA_SECURITY_KEYSTORE_PASSWORD=%s\n" "${KAFKA_SECURITY_KEYSTORE_PASSWORD}"
+  printf "KAFKA_SECURITY_KEYSTORE_PASSWORD=%s\n" "\${KAFKA_SECURITY_KEYSTORE_PASSWORD}"
   printf "KAFKA_SECURITY_TRUSTSTORE_LOCATION=%s\n" "${KAFKA_SECURITY_TRUSTSTORE_LOCATION}"
-  printf "KAFKA_SECURITY_TRUSTSTORE_PASSWORD=%s\n" "${KAFKA_SECURITY_TRUSTSTORE_PASSWORD}"
+  printf "KAFKA_SECURITY_TRUSTSTORE_PASSWORD=%s\n" "\${KAFKA_SECURITY_TRUSTSTORE_PASSWORD}"
 fi
 printf -- "-- Needed environment variables from egeria-lineage --\n"
 printf "EGERIA_LINEAGE_SERVER_NAME=%s\n" "${EGERIA_LINEAGE_SERVER_NAME}"
@@ -191,7 +151,7 @@ RC=$(curl -k -s -o /dev/null -w "%{http_code}" --basic admin:admin \
   --header "Content-Type: application/json" \
   "${EGERIA_LINEAGE_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_LINEAGE_SERVER_NAME}/integration-services/lineage-integrator" \
   --header 'Content-Type: application/json' \
-  --data "$(generatePostData)" | cut -d "}" -f2)
+  --data "$postData" | cut -d "}" -f2)
 
 if [ "${RC}" -eq 200 ]; then
   printf "Configuring the sample lineage integrator service successful.\n"
