@@ -15,53 +15,53 @@ generatePostData() {
   "connectorUserId": "${EGERIA_USER}",
   "integrationConnectorConfigs": [
     {
-    "class": "IntegrationConnectorConfig",
-    "connectorId": "ba6dc870-2303-48fc-8611-d50b49706f48",
-    "connectorName": "LineageIntegrator",
-    "metadataSourceQualifiedName": "TestMetadataSourceQualifiedName",
-    "connection": {
-      "class": "VirtualConnection",
-      "headerVersion": 0,
-      "qualifiedName": "Egeria:IntegrationConnector:Lineage:OpenLineageEventReceiverConnection",
-      "connectorType": {
-        "class": "ConnectorType",
+      "class": "IntegrationConnectorConfig",
+      "connectorId": "ba6dc870-2303-48fc-8611-d50b49706f48",
+      "connectorName": "LineageIntegrator",
+      "metadataSourceQualifiedName": "TestMetadataSourceQualifiedName",
+      "connection": {
+        "class": "VirtualConnection",
         "headerVersion": 0,
-        "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.integration.lineage.sample.SampleLineageEventReceiverIntegrationProvider"
-      },
-      "embeddedConnections": [
-        {
-          "class": "EmbeddedConnection",
+        "qualifiedName": "Egeria:IntegrationConnector:Lineage:OpenLineageEventReceiverConnection",
+        "connectorType": {
+          "class": "ConnectorType",
           "headerVersion": 0,
-          "position": 0,
-          "embeddedConnection": {
-            "class": "Connection",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.integration.lineage.sample.SampleLineageEventReceiverIntegrationProvider"
+        },
+        "embeddedConnections": [
+          {
+            "class": "EmbeddedConnection",
             "headerVersion": 0,
-            "qualifiedName": "Kafka Open Metadata Topic Connector for sample lineage",
-            "connectorType": {
-              "class": "ConnectorType",
+            "position": 0,
+            "embeddedConnection": {
+              "class": "Connection",
               "headerVersion": 0,
-              "connectorProviderClassName": "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider"
-            },
-            "endpoint": {
-              "class": "Endpoint",
-              "headerVersion": 0,
-              "address": "${EGERIA_LINEAGE_TOPIC_NAME}"
-            },
-            "configurationProperties": {
-              "producer": {
-                "bootstrap.servers": "${KAFKA_ENDPOINT}"
+              "qualifiedName": "Kafka Open Metadata Topic Connector for sample lineage",
+              "connectorType": {
+                "class": "ConnectorType",
+                "headerVersion": 0,
+                "connectorProviderClassName": "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider"
               },
-              "local.server.id": "${EGERIA_LINEAGE_CONSUMER_ID}",
-              "consumer": {
-                "bootstrap.servers": "${KAFKA_ENDPOINT}"
+              "endpoint": {
+                "class": "Endpoint",
+                "headerVersion": 0,
+                "address": "${EGERIA_LINEAGE_TOPIC_NAME}"
+              },
+              "configurationProperties": {
+                "producer": {
+                  "bootstrap.servers": "${KAFKA_ENDPOINT}"
+                },
+                "local.server.id": "${EGERIA_LINEAGE_CONSUMER_ID}",
+                "consumer": {
+                  "bootstrap.servers": "${KAFKA_ENDPOINT}"
+                }
               }
             }
           }
-        }
-      ]
-    },
-    "refreshTimeInterval": 0,
-    "usesBlockingCalls": false
+        ]
+      },
+      "refreshTimeInterval": 0,
+      "usesBlockingCalls": false
     }
   ]
 }
@@ -92,11 +92,10 @@ if [ ! -z "${KAFKA_CONSUMER_GROUP_ID}" ]; then
   consumer=$(echo $consumer | jq --arg group.id "${KAFKA_CONSUMER_GROUP_ID}" '. += $ARGS.named')
 fi
 
-configurationProperties=$(jq -n --argjson producer "$producer" \
+postData=$(generatePostData | jq --argjson producer "$producer" \
+  --arg "local.server.id" "${EGERIA_LINEAGE_CONSUMER_ID}" \
   --argjson consumer "$consumer" \
-  '$ARGS.named')
-
-postData=$(generatePostData | jq --argjson configurationProperties "$configurationProperties" '.integrationConnectorConfigs[].connection.embeddedConnections[].embeddedConnection.configurationProperties |= $ARGS.named')
+  '.integrationConnectorConfigs[].connection.embeddedConnections[].embeddedConnection.configurationProperties |= $ARGS.named')
 
 printf -- "-- Needed environment variables from egeria-base --\n"
 printf "EGERIA_USER=%s\n" "${EGERIA_USER}"
