@@ -74,10 +74,14 @@ End of generating the names of the kafka resources (cluster, namespace, bootstra
 */}}
 
 {{/*
-Generate the ConfigMap name for referencing in the subcharts
+Generate names of the referenced objects in the subcharts
 */}}
 {{- define "egeria-base.configMapName" -}}
 {{- printf "%s-env" .Release.Name -}}
+{{- end -}}
+
+{{- define "egeria-base.JobName" -}}
+{{- printf "%s-config" .Release.Name -}}
 {{- end -}}
 {{/*
 End of generating the ConfigMap name for referencing in the subcharts

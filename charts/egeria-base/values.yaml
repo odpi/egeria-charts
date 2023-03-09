@@ -210,6 +210,8 @@ strimzi-kafka-operator:
 # Defaults to false
 egeria-lineage:
   enabled: false
+lineage:
+  serverName: cocoMDS1
 
 # --- Override values ---
 # These are used to override name of the egeria deployment in the helpers template

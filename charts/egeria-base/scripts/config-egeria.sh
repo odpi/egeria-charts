@@ -415,41 +415,5 @@ else
 	exit 1
 fi
 
-# Enabling autostart by updating the configmap
-# This can only be done AFTER the server is correctly configured, otherwise it will prevent platform startup
-
-printf "\n\n > Enabling auto-start for the configured servers\n"
-
-token="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
-namespace="$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)"
-cacert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-
-RC=$(curl -k -s -o /dev/null -w "%{http_code}" \
-  -X PATCH \
-  -d @- \
-  -H "Authorization: Bearer $token" \
-  -H 'Accept: application/json' \
-  -H 'Content-Type: application/strategic-merge-patch+json' \
-  https://kubernetes.default.svc/api/v1/namespaces/$namespace/configmaps/$STARTUP_CONFIGMAP << EOF |cut -d "}" -f2
-{
-  "kind": "ConfigMap",
-  "apiVersion": "v1",
-  "data":
-  {
-    "STARTUP_SERVER_LIST": "$POSTCONFIG_STARTUP_SERVER_LIST"
-  }
-}
-EOF
-
-)
-
-if [ "${RC}" -eq 200 ]; then
-  printf "Enabling auto-start for the configured servers successful.\n"
-  unset RC
-else
-	printf "\n\nEnabling auto-start for the configured servers failed.\n"
-	exit 1
-fi
-
 printf -- "-- End of configuration\n"
 exit 0

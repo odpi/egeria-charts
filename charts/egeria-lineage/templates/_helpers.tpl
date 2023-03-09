@@ -87,6 +87,10 @@ Generate names of the referenced objects in the subcharts (ConfigMap, Kafka, etc
 {{- define "egeria-base.JobName" -}}
 {{- printf "%s-config" .Release.Name -}}
 {{- end -}}
+
+{{- define "egeria-lineage.JobName" -}}
+{{- printf "%s-config" (include "egeria-lineage.name" .) -}}
+{{- end -}}
 {{/*
 End of generating the ConfigMap name for referencing in the subcharts
 */}}

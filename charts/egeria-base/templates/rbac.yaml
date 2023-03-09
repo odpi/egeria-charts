@@ -16,6 +16,9 @@ rules:
   - apiGroups: [""]
     resources: ["endpoints","pods","services","configmaps"]
     verbs: ["get", "list", "watch","patch"]
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get"]
 {{ if not .Values.global.kafka.external }}
 ---
 kind: Role
