@@ -104,6 +104,8 @@ spec:
               value: "/deployments/server/extralib,/deployments/server/lib"
             - name: JAVA_OPTS_APPEND
               value: {{ .Values.egeria.core.jvmopts | quote }}
+            - name: JAVA_MAX_MEM_RATIO
+              value: "80"
           ports:
             - containerPort: 9443
           {{ if .Values.debug.egeriaJVM }}

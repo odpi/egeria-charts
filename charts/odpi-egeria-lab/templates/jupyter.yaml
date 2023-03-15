@@ -107,8 +107,6 @@ spec:
             # Contains the truststore from Egeria self-signed certs, in .pem format
             #- name: REQUESTS_CA_BUNDLE
             #  value: "/home/jovyan/ssl/truststore.pem"
-            - name: JAVA_OPTS_APPEND
-              value: {{ .Values.jupyter.jvmopts | quote }}
           ports:
             - containerPort: 8888
           readinessProbe:
