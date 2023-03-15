@@ -82,7 +82,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
-          resources: {}
+          resources: {{ toYaml .Values.egeria.ui.resources | nindent 12 }}
           env:
             - name: "OMAS_SERVER_NAME"
               value: "cocoMDS1"
@@ -100,6 +100,8 @@ spec:
             {{ end }}
             - name: "JAVA_APP_JAR"
               value: "user-interface/ui-chassis-spring-{{ .Values.egeria.version}}.jar"
+            - name: JAVA_OPTS_APPEND
+              value: {{ .Values.egeria.ui.jvmopts | quote }}
       restartPolicy: Always
 
 ...

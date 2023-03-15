@@ -103,6 +103,8 @@ spec:
             {{ end }}
             - name: "LOADER_PATH"
               value: "/deployments/server/extralib,/deployments/server/lib"
+            - name: JAVA_OPTS_APPEND
+              value: {{ .Values.egeria.factory.jvmopts | quote }}
           ports:
             - containerPort: 9443
             {{ if .Values.debug.egeriaJVM }}
@@ -114,7 +116,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
-          resources: {}
+          resources: {{ toYaml .Values.egeria.factory.resources | nindent 12 }}
           volumeMounts:
           {{ if .Values.persistence.enabled }}
             - mountPath: "/deployments/data"

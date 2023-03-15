@@ -31,12 +31,96 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: "3.15"
+  version: "4.0-SNAPSHOT"
   #repositoryType: "local-graph-repository"
   repositoryType: "in-memory-repository"
   # See https://github.com/odpi/egeria-charts/issues/56 for status of the Egeria UI (polymer) in this environment
   # Set to 'true' to deploy the Egeria UI, but note the configuration may not work properly
   egeriaui: true
+
+  # Container specific -- including fine grained control of memory limits
+  # Note that by default 'jvmopts' is not set as this will be set automatically when using the Egeria base container, based off the memory limits
+  # This is done by JAVA_MAX_MEM_RATIO=80 in the templates
+  # Best practice is to not overcommit, especially memory, so limits-requests set same. In some cases the request can be set lower
+  core:
+    #jvmopts: "-Xms500m -Xmx1024m"
+    #jvmopts: "-XX:MinRAMPercentage=10 -XX:MaxRAMPercentage=80"
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 2000m
+        memory: 1Gi
+  datalake:
+    #jvmopts: "-Xms500m -Xmx1024m"
+    #jvmopts: "-XX:MinRAMPercentage=10 -XX:MaxRAMPercentage=80"
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 2Gi
+  dev:
+    #jvmopts: "-Xms500m -Xmx1024m"
+    #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 500m
+        memory: 1Gi
+  factory:
+    #jvmopts: "-Xms250m -Xmx512m"
+    #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
+    resources:
+      limits:
+        cpu: 250m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 1Gi
+  ui:
+    #jvmopts: "-Xms512m -Xmx1024m"
+    #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+  uistatic:
+    #jvmopts: "-Xms128m -Xmx512m"
+    #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  presentation:
+    #jvmopts: "-Xms250m -Xmx512m"
+    #jvmopts: "-XX:MinRAMPercentage=25 -XX:MaxRAMPercentage=80"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 768Mi
+      requests:
+        cpu: 100m
+        memory: 768Mi
+
+nginx:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
 
 # Additional connectors/libraries to be made available in egeria server chassis containers
 # This is just an example. You can have a list of connectors
@@ -57,8 +141,35 @@ jupyter:
   # tokenPlain:
   # ----
   # Git tag to checkout in the egeria-jupyter repo
-  gitTagForNotebooks: "v315"
+  gitTagForNotebooks: "main"
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 2Gi
 
+# Strimzi is used to setup an operator which will manage the custom resource we define.
+# These entries are used to define that custom resource
+kafka:
+  replicas: 1
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 1Gi
+zookeeper:
+  replicas: 1
+  resources:
+    limits:
+      cpu: 500m
+      memory: 750Mi
+    requests:
+      cpu: 100m
+      memory: 750Mi
 debug:
   egeriaJVM: false
 
@@ -137,3 +248,5 @@ persistence:
 # installed on the cluster by an admin, or a prior install
 strimzi:
   enabled: true
+
+

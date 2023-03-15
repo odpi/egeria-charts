@@ -108,7 +108,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
-          resources: {}
+          resources: {{ toYaml .Values.nginx.resources | nindent 12 }}
           env:
             - name: UI_STATIC
               value: http://{{ .Release.Name }}-uistatic:8080
@@ -116,6 +116,8 @@ spec:
               value: https://{{ .Release.Name }}-ui:8443
             - name: NGINX_SERVER_NAME
               value: {{ .Release.Name}}-nginx
+            - name: JAVA_OPTS_APPEND
+              value: {{ .Values.nginx.jvmopts | quote }}
           volumeMounts:
             - name: template-vol
               mountPath: /etc/nginx/templates
