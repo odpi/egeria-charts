@@ -32,14 +32,14 @@ spec:
           type: persistent-claim
           size: 5Gi
           deleteClaim: true
-    resources: {{ .Values.kafka.resources | toYaml | nindent 6 }}}
+    resources: {{ .Values.kafka.resources | toYaml | nindent 6 }}
   zookeeper:
     replicas: {{ .Values.zookeeper.replicas }}
     storage:
       type: persistent-claim
       size: 1Gi
       deleteClaim: true
-    resources: {{ .Values.zookeeper.resources | toYaml | nindent 6 }}}
+    resources: {{ .Values.zookeeper.resources | toYaml | nindent 6 }}
   entityOperator:
     topicOperator:
       reconciliationIntervalSeconds: 20
