@@ -141,7 +141,7 @@ jupyter:
   # tokenPlain:
   # ----
   # Git tag to checkout in the egeria-jupyter repo
-  gitTagForNotebooks: "v315"
+  gitTagForNotebooks: "main"
   resources:
     limits:
       cpu: 1000m
