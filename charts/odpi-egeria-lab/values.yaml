@@ -50,8 +50,8 @@ egeria:
         cpu: 2000m
         memory: 2Gi
       requests:
-        cpu: 2000m
-        memory: 1Gi
+        cpu: 500m
+        memory: 2Gi
   datalake:
     #jvmopts: "-Xms500m -Xmx1024m"
     #jvmopts: "-XX:MinRAMPercentage=10 -XX:MaxRAMPercentage=80"
@@ -60,18 +60,18 @@ egeria:
         cpu: 2000m
         memory: 2Gi
       requests:
-        cpu: 250m
+        cpu: 500m
         memory: 2Gi
   dev:
     #jvmopts: "-Xms500m -Xmx1024m"
     #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
     resources:
       limits:
-        cpu: 1000m
-        memory: 1Gi
+        cpu: 2000m
+        memory: 2Gi
       requests:
         cpu: 500m
-        memory: 1Gi
+        memory: 2Gi
   factory:
     #jvmopts: "-Xms250m -Xmx512m"
     #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
