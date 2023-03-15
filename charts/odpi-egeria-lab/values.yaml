@@ -38,6 +38,82 @@ egeria:
   # Set to 'true' to deploy the Egeria UI, but note the configuration may not work properly
   egeriaui: true
 
+  # Container specific -- including fine grained control of memory limits
+  # Note that by default 'jvmopts' is not set as this will be set automatically when using the Egeria base container, based off the memory limits
+  core:
+    #jvmopts: "-Xms500m -Xmx1024m"
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 1Gi
+  datalake:
+    #jvmopts: "-Xms500m -Xmx1024m"
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 1Gi
+  dev:
+    #jvmopts: "-Xms500m -Xmx1024m"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 500m
+        memory: 500Mi
+  factory:
+    #jvmopts: "-Xms250m -Xmx512m"
+    resources:
+      limits:
+        cpu: 250m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 768Mi
+  ui:
+    #jvmopts: "-Xms512m -Xmx1024m"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 768Mi
+  uistatic:
+    #jvmopts: "-Xms128m -Xmx512m"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+  presentation:
+    #jvmopts: "-Xms250m -Xmx512m"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+      requests:
+        cpu: 100m
+        memory: 1Gi
+
+nginx:
+  #jvmopts: "-Xms64m -Xmx256m"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
 # Additional connectors/libraries to be made available in egeria server chassis containers
 # This is just an example. You can have a list of connectors
 #extralibs:
@@ -58,7 +134,35 @@ jupyter:
   # ----
   # Git tag to checkout in the egeria-jupyter repo
   gitTagForNotebooks: "v315"
+  jvmopts: "-Xms500m -Xmx1024m"
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
 
+# Strimzi is used to setup an operator which will manage the custom resource we define.
+# These entries are used to define that custom resource
+kafka:
+  replicas: 1
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 500Mi
+zookeeper:
+  replicas: 1
+  resources:
+    limits:
+      cpu: 500m
+      memory: 750Mi
+    requests:
+      cpu: 100m
+      memory: 350Mi
 debug:
   egeriaJVM: false
 
@@ -137,3 +241,5 @@ persistence:
 # installed on the cluster by an admin, or a prior install
 strimzi:
   enabled: true
+
+

@@ -104,10 +104,13 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
-          resources: {}
+          resources: {{ toYaml .Values.egeria.uistatic.resources | nindent 12 }}
           #env:
           #  - name: EGERIA_PRESENTATIONSERVER_SERVER_coco
           #    value: "{\"remoteServerName\":\"cocoView1\",\"remoteURL\":\"https://{{ .Release.Name }}-datalake:9443\"}"
+          env:
+            - name: JAVA_OPTS_APPEND
+              value: {{ .Values.egeria.uistatic.jvmopts | quote }}
           volumeMounts:
             - name: template-vol
               mountPath: /etc/nginx/templates

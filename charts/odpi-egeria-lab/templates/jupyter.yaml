@@ -107,6 +107,8 @@ spec:
             # Contains the truststore from Egeria self-signed certs, in .pem format
             #- name: REQUESTS_CA_BUNDLE
             #  value: "/home/jovyan/ssl/truststore.pem"
+            - name: JAVA_OPTS_APPEND
+              value: {{ .Values.jupyter.jvmopts | quote }}
           ports:
             - containerPort: 8888
           readinessProbe:
@@ -122,7 +124,7 @@ spec:
               mountPath: "/usr/local/bin/before-notebook.d"
             #- name: ssl-vol
             #  mountPath: "/home/jovyan/ssl"
-          resources: {}
+          resources: {{ toYaml .Values.jupyter.resources | nindent 12 }}
       volumes:
         - name: notebook-scripts-vol
           configMap:
