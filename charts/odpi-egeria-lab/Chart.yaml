@@ -19,6 +19,6 @@ maintainers:
     email: nigel.l.jones+git@gmail.com
 dependencies:
   - name: strimzi-kafka-operator
-    version: 0.33.2
+    version: 0.34.0
     repository: https://strimzi.io/charts/
     condition: strimzi.enabled

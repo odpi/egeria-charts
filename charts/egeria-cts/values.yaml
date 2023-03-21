@@ -68,7 +68,7 @@ resources:
 imageDefaults:
   registry: quay.io
   namespace: odpi
-  tag: "3.15"
+  tag: "4.0-SNAPSHOT"
   pullPolicy: IfNotPresent
 
 # The following section defines all DOCKER images being used by this chart. Normally they should be left as is,

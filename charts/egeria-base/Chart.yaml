@@ -4,8 +4,8 @@
 name: egeria-base
 description: A Helm chart for Egeria simple platform deployment
 apiVersion: v2
-version: 3.15.0
-appVersion: "3.15"
+version: 4.0-prerelease.0
+appVersion: "4.0"
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
   - odpi, egeria, base, simple
@@ -17,12 +17,11 @@ maintainers:
     email: nigel.l.jones+git@gmail.com
 dependencies:
   - name: strimzi-kafka-operator
-    version: 0.33.0
+    version: 0.34.0
     repository: https://strimzi.io/charts/
     condition: strimzi.enabled
-  - name: egeria-lineage
-    version: 3.15.0
-    # TODO change to official chart repository
-    # repository: https://odpi.github.io/egeria-charts
-    repository: "file://../egeria-lineage"
-    condition: egeria-lineage.enabled
+  # TODO - reinstate dependencies after initial publish
+  #- name: egeria-lineage
+  #  version: 4.0-prerelease.0
+  #  repository: https://odpi.github.io/egeria-charts
+  #  condition: egeria-lineage.enabled

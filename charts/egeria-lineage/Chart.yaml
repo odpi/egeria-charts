@@ -4,8 +4,8 @@ apiVersion: v2
 name: egeria-lineage
 description: A Helm chart for the egeria integration lineage event driven connector sample
 type: application
-version: 3.15.0
-appVersion: "3.15"
+version: 4.0-prerelease.0
+appVersion: "4.0"
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
   - odpi, egeria, base, simple, event, driven, lineage, sample, atruvia
@@ -19,8 +19,6 @@ maintainers:
     email: tunc_taylan.turunc@atruvia.de
 dependencies:
   - name: egeria-base
-    version: 3.15.0
-    # TODO change to official chart repository
-    # repository: https://odpi.github.io/egeria-charts
-    repository: "file://../egeria-base"
+    version: 4.0-prerelease.0
+    repository: https://odpi.github.io/egeria-charts
     condition: egeria-base.enabled
