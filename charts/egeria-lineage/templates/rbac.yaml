@@ -5,12 +5,12 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
-    helm.sh/chart: {{ include "egeria-base.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
+    helm.sh/chart: {{ include "egeria-lineage.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: egeria-rbac
-  name: {{ include "egeria-base.name" . }}-api-role
+  name: {{ include "egeria-lineage.name" . }}-api-role
   namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups: [""]
@@ -25,12 +25,12 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
-    helm.sh/chart: {{ include "egeria-base.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
+    helm.sh/chart: {{ include "egeria-lineage.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: egeria-rbac
-  name: {{ include "egeria-base.name" . }}-strimzi-role
+  name: {{ include "egeria-lineage.name" . }}-strimzi-role
   namespace: {{ include "egeria-base.KafkaClusterNamespace" . }}
 rules:
   - apiGroups: ["kafka.strimzi.io"]
@@ -42,36 +42,36 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
-    helm.sh/chart: {{ include "egeria-base.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
+    helm.sh/chart: {{ include "egeria-lineage.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: egeria-rbac
-  name: {{ include "egeria-base.name" . }}-api-role-binding
+  name: {{ include "egeria-lineage.name" . }}-api-role-binding
   namespace: {{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
-    name: {{ template "egeria-base.serviceAccountName" . }}
+    name: {{ template "egeria-lineage.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
-  name: {{ include "egeria-base.name" . }}-api-role
+  name: {{ include "egeria-lineage.name" . }}-api-role
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
-    helm.sh/chart: {{ include "egeria-base.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
+    helm.sh/chart: {{ include "egeria-lineage.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: egeria-rbac
-  name: {{ include "egeria-base.name" . }}-strimzi-role-binding
+  name: {{ include "egeria-lineage.name" . }}-strimzi-role-binding
   namespace: {{ include "egeria-base.KafkaClusterNamespace" . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ template "egeria-base.serviceAccountName" . }}
+    name: {{ template "egeria-lineage.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 {{- if .Values.global.kafka.external }}
 roleRef:
@@ -82,6 +82,6 @@ roleRef:
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
-  name: {{ include "egeria-base.name" . }}-strimzi-role
+  name: {{ include "egeria-lineage.name" . }}-strimzi-role
 {{- end }}
 {{ end }}

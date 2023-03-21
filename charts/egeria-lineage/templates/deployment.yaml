@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "egeria-lineage.fullname" . }}
+  labels:
+    {{- include "egeria-lineage.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "egeria-lineage.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "egeria-lineage.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "egeria-lineage.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "egeria-base.configMapName" . }}
+          env:
+            - name: EGERIA_LINEAGE_TOPIC_NAME
+              value: {{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}
+            - name: EGERIA_LINEAGE_CONSUMER_ID
+              value: {{ .Values.lineage.consumerId }}
+            - name: EGERIA_LINEAGE_SERVER_NAME
+              value: {{ .Values.lineage.serverName }}
+            - name: EGERIA_LINEAGE_ENDPOINT
+              value: https://{{ .Release.Name }}-{{ .Chart.Name }}:{{ .Values.service.port }}
+            {{- if .Values.global.kafka.security.enabled }}
+            - name: "KAFKA_SECURITY_ENABLED"
+              value: "{{ .Values.global.kafka.security.enabled }}"
+            - name: "KAFKA_SECURITY_PROTOCOL"
+              value: {{ .Values.global.kafka.security.protocol }}
+            - name: "KAFKA_SECURITY_KEYSTORE_LOCATION"
+              value: /jks/{{ .Values.global.kafka.security.keystoreLocation }}
+            - name: "KAFKA_SECURITY_TRUSTSTORE_LOCATION"
+              value: /jks/{{ .Values.global.kafka.security.truststoreLocation }}
+            - name: "KAFKA_SECURITY_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                  key: {{ .Values.global.kafka.security.keystorePassword }}
+            - name: "KAFKA_SECURITY_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                  key: {{ .Values.global.kafka.security.truststorePassword }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          # No other checks until this passes
+          startupProbe:
+            tcpSocket:
+              port: 9443
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 25
+          # Is pod ready to service network requests - it will pause (for replicas, others will take the load)
+          readinessProbe:
+            httpGet:
+              path: /open-metadata/platform-services/users/{{ .Values.global.egeria.user }}/server-platform/servers/{{ .Values.global.egeria.serverName }}/status
+              port: 9443
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          # Is pod doing useful work - if not we will restart it
+          livenessProbe:
+            httpGet:
+              path: /open-metadata/platform-services/users/{{ .Values.global.egeria.user }}/server-platform/servers/{{ .Values.global.egeria.serverName }}/status
+              port: 9443
+              scheme: HTTPS
+            periodSeconds: 10
+            failureThreshold: 6
+          {{- if .Values.global.kafka.security.enabled }}
+          volumeMounts:
+            - mountPath: /jks
+              name: jks
+              readOnly: true
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.global.kafka.security.enabled }}
+      volumes:
+        - name: jks
+          secret:
+            secretName: "jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}"
+            items:
+            - key: {{ .Values.global.kafka.security.keystoreLocation }}
+              path: {{ .Values.global.kafka.security.keystoreLocation }}
+            - key: {{ .Values.global.kafka.security.truststoreLocation }}
+              path: {{ .Values.global.kafka.security.truststoreLocation }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

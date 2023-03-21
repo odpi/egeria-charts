@@ -5,8 +5,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: presentation
@@ -21,7 +21,7 @@ spec:
       nodePort: {{ .Values.service.nodeport.presentation }}
       {{- end }}
   selector:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: presentation
 ...
@@ -29,26 +29,25 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "myapp.name" . }}-presentation
+  name: {{ include "egeria-base.name" . }}-presentation
   labels:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: presentation
-
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/name: {{ include "egeria-base.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/component: presentation
   strategy: {}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/name: {{ include "egeria-base.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: presentation
     spec:
@@ -89,9 +88,40 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
-          envFrom:
-            - configMapRef:
-                name: {{ .Release.Name }}-env
+      {{- if .Values.global.kafka.security.enabled }}
+          volumeMounts:
+          - name: jks
+            mountPath: /jks
+            readOnly: true
+          env:
+          - name: "KAFKA_SECURITY_ENABLED"
+            value: "{{ .Values.global.kafka.security.enabled }}"
+          - name: "KAFKA_SECURITY_PROTOCOL"
+            value: {{ .Values.global.kafka.security.protocol }}
+          - name: "KAFKA_SECURITY_KEYSTORE_LOCATION"
+            value: /jks/{{ .Values.global.kafka.security.keystoreLocation }}
+          - name: "KAFKA_SECURITY_TRUSTSTORE_LOCATION"
+            value: /jks/{{ .Values.global.kafka.security.truststoreLocation }}
+          - name: "KAFKA_SECURITY_KEYSTORE_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                key: {{ .Values.global.kafka.security.keystorePassword }}
+          - name: "KAFKA_SECURITY_TRUSTSTORE_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                key: {{ .Values.global.kafka.security.truststorePassword }}
+      volumes:
+        - name: jks
+          secret:
+            secretName: "jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}"
+            items:
+            - key: {{ .Values.global.kafka.security.keystoreLocation }}
+              path: {{ .Values.global.kafka.security.keystoreLocation }}
+            - key: {{ .Values.global.kafka.security.truststoreLocation }}
+              path: {{ .Values.global.kafka.security.truststoreLocation }}
+      {{- end }}
       restartPolicy: Always
 
 ...

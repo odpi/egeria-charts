@@ -39,3 +39,6 @@ requirements.lock
 
 # MacOS special files
 .DS_Store
+
+# rendered helm templates
+output

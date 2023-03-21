@@ -2,19 +2,63 @@
 # Copyright Contributors to the Egeria project.
 ---
 
+# --- Global configuration for subcharts ---
+global:
+  egeria:
+    # The userid used for admin ops (no security enabled by default)
+    user: garygeeke
+    # The name of the servers to provision on the platform
+    serverName: mds1
+  kafka:
+    # if autoCreateTopics is set to false, the needed topics will be generated via strimzi CRDs
+    config:
+      autoCreateTopics: true
+    # consumerGroupID defines the consumer group id, if not set it defaults to local server id
+    consumerGroupID: ""
+    # if an external kafka cluster in another namespace should be used (defaults to false)
+    external: false
+    namespace: default
+    # if an external kafka cluster is used (external: true), this name defines the clustername
+    # otherwise (external: false) it is the "Release.Name"-strimzi (as default value)
+    clusterName: kafka-strimzi
+    externalBootstrap: strimzi-kafka-external-bootstrap
+    listenerPort: "9094"
+    # When using an external kafka cluster in another namespace, this defines the needed Role
+    # to be used in a RoleBinding, that is needed to check (get) the following strimzi resources:
+    # ["kafkas", "kafkas/status", "kafkatopics", "kafkatopics/status"]
+    roleRef:
+      kind: ClusterRole
+      apiGroup: rbac.authorization.k8s.io
+      name: strimzi-view
+    userName: egeria
+    # security (SSL) settings for kafka, defaults to false
+    security:
+      enabled: false
+      protocol: SSL
+      keystoreLocation: keystore.jks
+      keystorePassword: keystore.pass
+      truststoreLocation: truststore.jks
+      truststorePassword: truststore.pass
+      secretTag: f5899c937d
+
+  image:
+    configure:
+      name: egeria-configure
+    kubectl:
+      # corporate proxy or nexus server
+      registry: docker.io
+      name: "bitnami/kubectl"
+      tag: "latest"
+
 # --- General Egeria configuration ---
 egeria:
   # Set to INFO, WARNING, DEBUG if needed
   logging: 
-  version: "3.15"
+  version: "4.0-SNAPSHOT"
   # repositoryType: "local-graph-repository"
   repositoryType: "in-memory-repository"
   debug: false
   persistence: true
-  # The userid used for admin ops (no security enabled by default)
-  user: garygeeke
-  # The name of the servers to provision on the platform
-  serverName: mds1
   viewServerName: view1
   # Organization name for multi-tenant UI
   viewOrg: org
@@ -29,14 +73,19 @@ egeria:
   # if the configuration is not actually performed. Note that no autostart setup
   # will be done either if set to false. Defaults to true
   config: true
+  # Ability to customize internal topic names, for instance including a prefix to
+  # use in enterprise environments. Defaults to egeria.omag
+  # Refer to https://egeria-project.org/connectors/resource/kafka-open-metadata-topic-connector/?h=base_topic_name#topic-creation
+  baseTopicName: egeria.omag
 
 # Additional connectors/libraries to be made available in egeria server chassis containers
 # This is just an example. You can have a list of connectors
-#extralibs:
+extralibs:
 #- url: https://search.maven.org/remotecontent?filepath=org/odpi/egeria/egeria-connector-xtdb/3.9/egeria-connector-xtdb-3.9-jar-with-dependencies.jar
 #  filename: egeria-connector-xtdb-3.9-jar-with-dependencies.jar
 
 # --- Additional environment variables - inserted directly into configmap. Can use helm template directives
+extraEnv:
 #extraEnv: |
 #  VAR1: value1
 #  VAR2: value2
@@ -106,15 +155,46 @@ image:
   presentation:
     name: egeria-react-ui
     tag: "3.8.0"
-  configure:
-    name: egeria-configure
 
 # Normally we install the strimzi operator as part of the Chart. However this requires admin permissions, and
 # will create cluster-scoped resources. Set to false to skip this when in a restricted environment, or needing multiple
 # installs of egeria charts in the same cluster. Requires the strimzi operator to be
 # installed on the cluster by an admin, or a prior install
+# If strimzi is installed, a Kafka cluster is also configured. 
+# You are able to externalize the Kafka access by changing the externalListener options.
+# if global.kafka.config.autoCreateTopics is set to false, the list of topics will be generated via strimzi CRDs 
 strimzi:
   enabled: true
+  kafka:
+    listeners:
+      external:
+        enabled: true
+        advertisedHost: localhost
+        bootstrapNodePort: 32000
+    topics:
+      name:
+        - openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.instances
+        - openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.registration
+        - openmetadata.repositoryservices.cohort.#{cohortName}#.OMRSTopic.types
+        - server.#{serverName}#.omas.analyticsmodeling.outTopic
+        - server.#{serverName}#.omas.assetconsumer.outTopic
+        - server.#{serverName}#.omas.assetlineage.outTopic
+        - server.#{serverName}#.omas.assetmanager.outTopic
+        - server.#{serverName}#.omas.assetowner.outTopic
+        - server.#{serverName}#.omas.communityprofile.outTopic
+        - server.#{serverName}#.omas.dataengine.inTopic
+        - server.#{serverName}#.omas.datamanager.outTopic
+        - server.#{serverName}#.omas.digitalarchitecture.outTopic
+        - server.#{serverName}#.omas.governanceengine.outTopic
+        - server.#{serverName}#.omas.itinfrastructure.outTopic
+        - server.#{serverName}#.omas.securitymanager.inTopic
+        - server.#{serverName}#.omas.securitymanager.outTopic
+        - server.#{serverName}#.omas.securityofficer.outTopic
+        - server.#{serverName}#.omas.stewardshipaction.outTopic
+        - server.#{serverName}#.omas.subjectarea.outTopic
+      spec:
+        partitions: 1
+        replicas: 1
 
 # If you allow (as is default) this chart to install the strimzi operator, this setting will
 # then allow it to work across all namespaces - so for example it will work if installing another
@@ -125,3 +205,15 @@ strimzi:
 # helm repo update && helm install strimzi strimzi/strimzi-kafka-operator --set watchAnyNamespace=true
 strimzi-kafka-operator:
   watchAnyNamespace: false
+
+# Allows to deploy the sample integration lineage event driven connector (egeria-lineage) seperately
+# Defaults to false
+egeria-lineage:
+  enabled: false
+lineage:
+  serverName: cocoMDS1
+
+# --- Override values ---
+# These are used to override name of the egeria deployment in the helpers template
+fullnameOverride:
+nameOverride:

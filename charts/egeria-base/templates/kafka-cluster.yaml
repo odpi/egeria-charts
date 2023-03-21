@@ -1,3 +1,4 @@
+{{ if not .Values.global.kafka.external }}
 # SPDX-License-Identifier: Apache-2.0
   # Copyright Contributors to the Egeria project.
 ---
@@ -14,11 +15,23 @@ spec:
         port: 9092
         type: internal
         tls: false
+{{ if .Values.strimzi.kafka.listeners.external.enabled }}
+      - name: external
+        port: {{ .Values.global.kafka.listenerPort }}
+        type: nodeport
+        tls: false
+        configuration:
+          bootstrap:
+            nodePort: {{ .Values.strimzi.kafka.listeners.external.bootstrapNodePort }}
+          brokers:
+          - broker: 0
+            advertisedHost: {{ .Values.strimzi.kafka.listeners.external.advertisedHost }}
+{{ end }}
     config:
       offsets.topic.replication.factor: 1
       transaction.state.log.replication.factor: 1
       transaction.state.log.min.isr: 1
-      auto.create.topics.enable: "true"
+      auto.create.topics.enable: "{{ .Values.global.kafka.config.autoCreateTopics }}"
     readinessProbe:
       initialDelaySeconds: 15
       timeoutSeconds: 5
@@ -40,6 +53,7 @@ spec:
       deleteClaim: true
   entityOperator:
     topicOperator:
-      reconciliationIntervalSeconds: 20
+      reconciliationIntervalSeconds: 5
     userOperator: 
       reconciliationIntervalSeconds: 20
+{{ end }}

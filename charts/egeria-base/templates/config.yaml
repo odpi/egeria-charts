@@ -5,53 +5,87 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "myapp.name" . }}-config
+  name: {{ include "egeria-base.JobName" . }}
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+{{ if .Values.options.jobs.config.usehook }}
   annotations:
-    {{ if .Values.options.jobs.config.usehook }}
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": "{{ if .Values.options.jobs.config.jobdelete }} hook-succeeded , {{ end }} before-hook-creation"
-    {{ end }}
+{{ end }}
 spec:
   template:
     metadata:
       labels:
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/name: {{ include "egeria-base.name" . }}
     spec:
       {{- include "egeria.security" . | nindent 6 }}
       restartPolicy: OnFailure
       initContainers:
         - name: wait-for-egeria
-          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.configure.name }}\
-                  :{{ .Values.image.configure.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.egeria.version )))  }}
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.egeria.version }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
           env:
             - name: SERVICE
               value: {{ .Release.Name }}-platform
         - name: wait-for-kafka
-          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.configure.name }}\
-                  :{{ .Values.image.configure.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.egeria.version )))  }}
+          {{- if .Values.global.kafka.external }}
+          image: "{{ .Values.global.image.kubectl.registry }}/{{ .Values.global.image.kubectl.name }}:{{ .Values.global.image.kubectl.tag }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              printf "Checking the kafka cluster \"{{ include "egeria-base.KafkaClusterName" . }}\"...\n"
+              until [ "$(kubectl get kafkas.kafka.strimzi.io -n {{ include "egeria-base.KafkaClusterNamespace" . }} {{ include "egeria-base.KafkaClusterName" . }} -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
+                printf "Waiting for kafka cluster \"{{ include "egeria-base.KafkaClusterName" . }}\" to get ready...\n"
+                sleep 10
+              done 
+          {{- else }}
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.egeria.version }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
           env:
             - name: SERVICE
               value: {{ .Release.Name }}-strimzi-kafka-bootstrap
+          {{- end }}
+        {{- if not (index .Values "global" "kafka" "config" "autoCreateTopics") }}
+        {{- $cohortName := $.Values.egeria.cohort }}
+        {{- $omasServerName := $.Values.global.egeria.serverName }}
+        {{- $kafkaClusterNamespace := include "egeria-base.KafkaClusterNamespace" . }}
+        {{- $baseTopicName := $.Values.egeria.baseTopicName }}
+        - name: wait-for-kafka-topics
+          image: "{{ .Values.global.image.kubectl.registry }}/{{ .Values.global.image.kubectl.name }}:{{ .Values.global.image.kubectl.tag }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+        {{- range $topicName := $.Values.strimzi.kafka.topics.name }}
+              printf "Checking the kafka topic \"{{ $baseTopicName }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\"\n"
+              until [ "$(kubectl get kafkatopics.kafka.strimzi.io -n {{ $kafkaClusterNamespace | lower }} {{ $baseTopicName | lower }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower }} -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
+                printf "Waiting for kafka topic \"{{ $baseTopicName }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}\" to get ready...\n"
+                sleep 1
+              done
+        {{- end}}
+        {{- end }}
       containers:
         - name: initialize
-          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.configure.name }}\
-                  :{{ .Values.image.configure.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ (.Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.image.configure.tag | default .Values.egeria.version )))  }}
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.egeria.version }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.egeria.version )))  }}
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-env
@@ -60,10 +94,44 @@ spec:
           volumeMounts:
           - name: scripts-vol
             mountPath: /scripts
+          {{- if .Values.global.kafka.security.enabled }}
+          - name: jks
+            mountPath: /jks
+            readOnly: true
+          env:
+          - name: "KAFKA_SECURITY_ENABLED"
+            value: "{{ .Values.global.kafka.security.enabled }}"
+          - name: "KAFKA_SECURITY_PROTOCOL"
+            value: {{ .Values.global.kafka.security.protocol }}
+          - name: "KAFKA_SECURITY_KEYSTORE_LOCATION"
+            value: /jks/{{ .Values.global.kafka.security.keystoreLocation }}
+          - name: "KAFKA_SECURITY_TRUSTSTORE_LOCATION"
+            value: /jks/{{ .Values.global.kafka.security.truststoreLocation }}
+          - name: "KAFKA_SECURITY_KEYSTORE_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                key: {{ .Values.global.kafka.security.keystorePassword }}
+          - name: "KAFKA_SECURITY_TRUSTSTORE_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                key: {{ .Values.global.kafka.security.truststorePassword }}
+          {{- end }}
       volumes:
         - name: scripts-vol
           configMap:
             name: {{ .Release.Name }}-scripts-configmap
+        {{- if .Values.global.kafka.security.enabled }}
+        - name: jks
+          secret:
+            secretName: "jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}"
+            items:
+            - key: {{ .Values.global.kafka.security.keystoreLocation }}
+              path: {{ .Values.global.kafka.security.keystoreLocation }}
+            - key: {{ .Values.global.kafka.security.truststoreLocation }}
+              path: {{ .Values.global.kafka.security.truststoreLocation }}
+        {{- end }}
   # Keep trying quite a few times to aid in debugging
   backoffLimit: {{ .Values.options.jobs.config.backOffLimit }}
   {{ end }}

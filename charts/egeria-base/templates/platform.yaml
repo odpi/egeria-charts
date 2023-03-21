@@ -5,8 +5,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: platform
@@ -29,7 +29,7 @@ spec:
       {{- end }}
   {{ end }}
   selector:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: platform
 ...
@@ -37,26 +37,25 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "myapp.name" . }}-platform
+  name: {{ include "egeria-base.name" . }}-platform
   labels:
-    app.kubernetes.io/name: {{ include "myapp.name" . }}
-    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-base.name" . }}
+    helm.sh/chart: {{ include "egeria-base.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: platform
-
 spec:
   replicas: 1
   serviceName: {{ .Release.Name }}-platform
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/name: {{ include "egeria-base.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/component: platform
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/name: {{ include "egeria-base.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: platform
     spec:
@@ -64,11 +63,11 @@ spec:
 {{ if .Values.extralibs }}
       initContainers:
         - name: init-connector
-          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.configure.name }}\
-                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
-          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           command:
             - "/bin/bash"
             - "-c"
@@ -95,10 +94,32 @@ spec:
             - configMapRef:
                 name: {{ .Release.Name }}-autostart
           env:
-            {{ if .Values.egeria.debug }}
-            - name: JAVA_DEBUG
-              value:  "true"
-            {{ end }}
+          {{- if .Values.global.kafka.security.enabled }}
+          - name: "KAFKA_SECURITY_ENABLED"
+            value: "{{ .Values.global.kafka.security.enabled }}"
+          - name: "KAFKA_SECURITY_PROTOCOL"
+            value: {{ .Values.global.kafka.security.protocol }}
+          - name: "KAFKA_SECURITY_KEYSTORE_LOCATION"
+            value: /jks/{{ .Values.global.kafka.security.keystoreLocation }}
+          - name: "KAFKA_SECURITY_TRUSTSTORE_LOCATION"
+            value: /jks/{{ .Values.global.kafka.security.truststoreLocation }}
+          - name: "KAFKA_SECURITY_KEYSTORE_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                key: {{ .Values.global.kafka.security.keystorePassword }}
+          - name: "KAFKA_SECURITY_TRUSTSTORE_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                key: {{ .Values.global.kafka.security.truststorePassword }}
+          {{- end }}
+          - name: JAVA_DEBUG
+          {{ if .Values.egeria.debug }}
+            value:  "true"
+          {{ else }}
+            value: "false"
+          {{ end }}
           ports:
             - containerPort: 9443
           {{ if .Values.egeria.debug }}
@@ -114,7 +135,7 @@ spec:
           # Is pod ready to service network requests - it will pause (for replicas, others will take the load)
           readinessProbe:
             httpGet:
-              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/origin
+              path: /open-metadata/platform-services/users/{{ .Values.global.egeria.user }}/server-platform/origin
               port: 9443
               scheme: HTTPS
             periodSeconds: 10
@@ -122,14 +143,19 @@ spec:
           # Is pod doing useful work - if not we will restart it
           livenessProbe:
             httpGet:
-              path: /open-metadata/platform-services/users/{{ .Values.egeria.user }}/server-platform/origin
+              path: /open-metadata/platform-services/users/{{ .Values.global.egeria.user }}/server-platform/origin
               port: 9443
               scheme: HTTPS
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
-          {{ if .Values.egeria.persistence }}
           volumeMounts:
+          {{- if .Values.global.kafka.security.enabled }}
+            - mountPath: /jks
+              name: jks
+              readOnly: true
+          {{- end }}
+          {{ if .Values.egeria.persistence }}
             - mountPath: "/deployments/data"
               # NO need to include release name in template - included as a SS
               name: data
@@ -146,6 +172,16 @@ spec:
             name: {{ .Release.Name }}-extlib
         - name: egeria-connector-volume
           emptyDir: {}
+        {{- if .Values.global.kafka.security.enabled }}
+        - name: jks
+          secret:
+            secretName: "jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}"
+            items:
+            - key: {{ .Values.global.kafka.security.keystoreLocation }}
+              path: {{ .Values.global.kafka.security.keystoreLocation }}
+            - key: {{ .Values.global.kafka.security.truststoreLocation }}
+              path: {{ .Values.global.kafka.security.truststoreLocation }}
+        {{- end }}
       securityContext:
         {  }
   {{ if .Values.egeria.persistence }}
@@ -159,7 +195,7 @@ spec:
         requests:
           storage: {{ .Values.egeria.storageSize}}
       {{ if .Values.egeria.storageClass }}
-      storageClassName: {{ .Values.egeria.StorageClass }}
+      storageClassName: {{ .Values.egeria.storageClass }}
       {{ end }}
   {{ end }}
 ...

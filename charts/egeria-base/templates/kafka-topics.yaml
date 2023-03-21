@@ -1,0 +1,23 @@
+{{ if not (index .Values "global" "kafka" "config" "autoCreateTopics") }}
+{{ $cohortName := $.Values.egeria.cohort }}
+{{ $omasServerName := $.Values.global.egeria.serverName }}
+{{ $kafkaCluster := include "egeria-base.KafkaClusterName" . }}
+{{ $kafkaClusterNamespace := include "egeria-base.KafkaClusterNamespace" . }}
+{{ $partitions := $.Values.strimzi.kafka.topics.spec.partitions }}
+{{ $replicas := $.Values.strimzi.kafka.topics.spec.replicas }}
+{{ $baseTopicName := $.Values.egeria.baseTopicName }}
+{{- range $topicName := $.Values.strimzi.kafka.topics.name }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: {{ $baseTopicName | lower }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName | lower }}
+  namespace: {{ $kafkaClusterNamespace | lower }}
+  labels:
+    strimzi.io/cluster: {{ $kafkaCluster | lower }}
+spec:
+  partitions: {{ $partitions }}
+  replicas: {{ $replicas }}
+  topicName: {{ $baseTopicName }}.{{ $topicName | replace "#{cohortName}#" $cohortName | replace "#{serverName}#" $omasServerName }}
+---
+{{- end}}
+{{ end }}

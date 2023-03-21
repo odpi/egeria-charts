@@ -1,0 +1,139 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+{{ if .Values.lineage.config }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "egeria-lineage.JobName" . }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ include "egeria-lineage.chart" . }}
+    app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
+{{ if .Values.options.jobs.config.usehook }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": "{{ if .Values.options.jobs.config.jobdelete }} hook-succeeded , {{ end }} before-hook-creation"
+{{ end }}
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "egeria-lineage.name" . }}
+    spec:
+      {{- include "egeria-lineage.security" . | nindent 6 }}
+      restartPolicy: OnFailure
+      initContainers:
+        - name: wait-for-egeria-base
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.lineage.version }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.lineage.version )))  }}
+          env:
+            - name: SERVICE
+              value: {{ .Release.Name }}-platform
+        - name: wait-for-egeria-lineage
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.lineage.version }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.lineage.version )))  }}
+          env:
+            - name: SERVICE
+              value: {{ include "egeria-lineage.fullname" . }}
+        - name: wait-for-egeria-base-configuration
+          image: "{{ .Values.global.image.kubectl.registry }}/{{ .Values.global.image.kubectl.name }}:{{ .Values.global.image.kubectl.tag }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.lineage.version )))  }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              printf "Checking the job \"{{ include "egeria-base.JobName" . }}\"...\n"
+              until [ "$(kubectl get job {{ include "egeria-base.JobName" . }} -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}')" = "True" ]; do
+                printf "Waiting for job \"{{ include "egeria-base.JobName" . }}\" to complete...\n"
+                sleep 10
+              done 
+        {{- if not (index .Values "global" "kafka" "config" "autoCreateTopics") }}
+        - name: wait-for-the-kafka-topic
+          image: "{{ .Values.global.image.kubectl.registry }}/{{ .Values.global.image.kubectl.name }}:{{ .Values.global.image.kubectl.tag }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.lineage.version )))  }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              printf "Checking the kafka topic \"{{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}\"\n"
+              until [ "$(kubectl get kafkatopics.kafka.strimzi.io -n {{ include "egeria-base.KafkaClusterNamespace" . | lower }} {{ .Values.lineage.topic.prefix | lower }}.{{ .Values.lineage.topic.name | lower }} -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" = "True" ]; do
+                printf "Waiting for kafka topic \"{{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}\" to get ready...\n"
+                sleep 1
+              done
+        {{- end }}
+      containers:
+        - name: initialize
+          image: "{{ if (.Values.global.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.global.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.global.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.global.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.global.image.configure.name }}\
+                  :{{ .Values.global.image.configure.tag | default .Values.lineage.version }}"
+          imagePullPolicy: {{ (.Values.global.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy) | default (ternary "Always" "IfNotPresent" ( hasSuffix "SNAPSHOT" (.Values.global.image.configure.tag | default .Values.lineage.version )))  }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "egeria-base.configMapName" . }}
+          env:
+            - name: EGERIA_LINEAGE_TOPIC_NAME
+              value: {{ .Values.lineage.topic.prefix }}.{{ .Values.lineage.topic.name }}
+            - name: EGERIA_LINEAGE_CONSUMER_ID
+              value: {{ .Values.lineage.consumerId }}
+            - name: EGERIA_LINEAGE_SERVER_NAME
+              value: {{ .Values.lineage.serverName }}
+            - name: EGERIA_LINEAGE_ENDPOINT
+              value: https://{{ .Release.Name }}-{{ .Chart.Name }}:{{ .Values.service.port }}
+            {{- if .Values.global.kafka.security.enabled }}
+            - name: "KAFKA_SECURITY_ENABLED"
+              value: "{{ .Values.global.kafka.security.enabled }}"
+            - name: "KAFKA_SECURITY_PROTOCOL"
+              value: {{ .Values.global.kafka.security.protocol }}
+            - name: "KAFKA_SECURITY_KEYSTORE_LOCATION"
+              value: /jks/{{ .Values.global.kafka.security.keystoreLocation }}
+            - name: "KAFKA_SECURITY_TRUSTSTORE_LOCATION"
+              value: /jks/{{ .Values.global.kafka.security.truststoreLocation }}
+            - name: "KAFKA_SECURITY_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                  key: {{ .Values.global.kafka.security.keystorePassword }}
+            - name: "KAFKA_SECURITY_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}
+                  key: {{ .Values.global.kafka.security.truststorePassword }}
+            {{- end }}
+          command: [ "/bin/bash" ]
+          args: [ "/scripts/config-lineage1.sh" ]
+          volumeMounts:
+          - name: scripts-vol
+            mountPath: /scripts
+          {{- if .Values.global.kafka.security.enabled }}
+          - name: jks
+            mountPath: /jks
+            readOnly: true
+          {{- end }}
+      volumes:
+        - name: scripts-vol
+          configMap:
+            name: {{ include "egeria-lineage.name" . }}-scripts-configmap
+        {{- if .Values.global.kafka.security.enabled }}
+        - name: jks
+          secret:
+            secretName: "jks-{{ .Release.Name }}-{{ .Values.global.kafka.userName }}-{{ .Values.global.kafka.security.secretTag }}"
+            items:
+            - key: {{ .Values.global.kafka.security.keystoreLocation }}
+              path: {{ .Values.global.kafka.security.keystoreLocation }}
+            - key: {{ .Values.global.kafka.security.truststoreLocation }}
+              path: {{ .Values.global.kafka.security.truststoreLocation }}
+        {{- end }}
+  # Keep trying quite a few times to aid in debugging
+  backoffLimit: {{ .Values.options.jobs.config.backOffLimit }}
+  {{ end }}

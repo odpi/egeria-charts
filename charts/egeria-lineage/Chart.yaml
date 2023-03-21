@@ -1,0 +1,24 @@
+# Copyright © 2023 Atruvia AG <opensource@atruvia.de> as contributor to the ODPi Egeria project.
+---
+apiVersion: v2
+name: egeria-lineage
+description: A Helm chart for the egeria integration lineage event driven connector sample
+type: application
+version: 4.0-prerelease.0
+appVersion: "4.0"
+icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+keywords:
+  - odpi, egeria, base, simple, event, driven, lineage, sample, atruvia
+sources:
+  - https://github.com/odpi/egeria-connector-integration-lineage-event-driven-sample
+home: https://github.com/odpi/egeria-connector-integration-lineage-event-driven-sample
+maintainers:
+  - name: Jürgen Hemelt
+    email: juergen.hemelt@atruvia.de
+  - name: Tunç Taylan Turunç
+    email: tunc_taylan.turunc@atruvia.de
+dependencies:
+  - name: egeria-base
+    version: 4.0-prerelease.0
+    repository: https://odpi.github.io/egeria-charts
+    condition: egeria-base.enabled
