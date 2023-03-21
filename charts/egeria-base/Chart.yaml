@@ -4,7 +4,7 @@
 name: egeria-base
 description: A Helm chart for Egeria simple platform deployment
 apiVersion: v2
-version: 4.0-prerelease.0
+version: 4.0-prerelease.1
 appVersion: "4.0"
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:
@@ -22,6 +22,6 @@ dependencies:
     condition: strimzi.enabled
   # TODO - reinstate dependencies after initial publish
   #- name: egeria-lineage
-  #  version: 4.0-prerelease.0
+  #  version: 4.0-prerelease.1
   #  repository: https://odpi.github.io/egeria-charts
   #  condition: egeria-lineage.enabled
