@@ -45,82 +45,88 @@ egeria:
   core:
     #jvmopts: "-Xms500m -Xmx1024m"
     #jvmopts: "-XX:MinRAMPercentage=10 -XX:MaxRAMPercentage=80"
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
     resources:
       limits:
         cpu: 2000m
-        memory: 2Gi
+        memory: 1000Mi
       requests:
-        cpu: 500m
-        memory: 2Gi
+        cpu: 200m
+        memory: 1000Mi
   datalake:
     #jvmopts: "-Xms500m -Xmx1024m"
     #jvmopts: "-XX:MinRAMPercentage=10 -XX:MaxRAMPercentage=80"
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
     resources:
       limits:
         cpu: 2000m
-        memory: 2Gi
+        memory: 1000Mi
       requests:
-        cpu: 500m
-        memory: 2Gi
+        cpu: 200m
+        memory: 1000Mi
   dev:
     #jvmopts: "-Xms500m -Xmx1024m"
     #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
     resources:
       limits:
         cpu: 2000m
-        memory: 2Gi
+        memory: 1000Mi
       requests:
-        cpu: 500m
-        memory: 2Gi
+        cpu: 200m
+        memory: 1000Mi
   factory:
     #jvmopts: "-Xms250m -Xmx512m"
     #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
     resources:
       limits:
-        cpu: 250m
-        memory: 1Gi
-      requests:
         cpu: 100m
-        memory: 1Gi
+        memory: 768Mi
+      requests:
+        cpu: 10m
+        memory: 768Mi
   ui:
     #jvmopts: "-Xms512m -Xmx1024m"
     #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
+    jvmopts: "-XX:+HeapDumpOnOutOfMemoryError"
     resources:
       limits:
         cpu: 1000m
-        memory: 1Gi
+        memory: 500Mi
       requests:
-        cpu: 200m
-        memory: 1Gi
+        cpu: 50m
+        memory: 500Mi
   uistatic:
     #jvmopts: "-Xms128m -Xmx512m"
     #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
     resources:
       limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
         cpu: 100m
-        memory: 256Mi
+        memory: 160Mi
+      requests:
+        cpu: 10m
+        memory: 160Mi
   presentation:
     #jvmopts: "-Xms250m -Xmx512m"
     #jvmopts: "-XX:MinRAMPercentage=25 -XX:MaxRAMPercentage=80"
+    jvmopts: "-XX:+HeapDumpOnOutOfMemoryError"
     resources:
       limits:
         cpu: 1000m
         memory: 768Mi
       requests:
-        cpu: 100m
+        cpu: 50m
         memory: 768Mi
 
 nginx:
   resources:
     limits:
-      cpu: 500m
-      memory: 256Mi
-    requests:
       cpu: 100m
-      memory: 256Mi
+      memory: 160Mi
+    requests:
+      cpu: 10m
+      memory: 160Mi
 
 # Additional connectors/libraries to be made available in egeria server chassis containers
 # This is just an example. You can have a list of connectors
@@ -145,10 +151,10 @@ jupyter:
   resources:
     limits:
       cpu: 1000m
-      memory: 2Gi
+      memory: 1Gi
     requests:
       cpu: 100m
-      memory: 2Gi
+      memory: 1Gi
 
 # Strimzi is used to setup an operator which will manage the custom resource we define.
 # These entries are used to define that custom resource
@@ -156,7 +162,7 @@ kafka:
   replicas: 1
   resources:
     limits:
-      cpu: 2000m
+      cpu: 1000m
       memory: 1Gi
     requests:
       cpu: 250m
