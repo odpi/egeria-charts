@@ -17,8 +17,8 @@ maintainers:
     email: juergen.hemelt@atruvia.de
   - name: Tunç Taylan Turunç
     email: tunc_taylan.turunc@atruvia.de
-dependencies:
-  - name: egeria-base
-    version: 4.0-prerelease.0
-    repository: https://odpi.github.io/egeria-charts
-    condition: egeria-base.enabled
+#dependencies:
+  #- name: egeria-base
+    #version: 4.0-prerelease.0
+    #repository: https://odpi.github.io/egeria-charts
+    #condition: egeria-base.enabled
