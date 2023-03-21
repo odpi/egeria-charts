@@ -99,8 +99,8 @@ spec:
                 name: {{ include "myapp.fullname" . }}-configmap
           env:
             {{ if .Values.debug.egeriaJVM }}
-             - name: JAVA_DEBUG
-               value:  "true"
+            - name: JAVA_DEBUG
+              value:  "true"
             {{ end }}
             - name: "LOADER_PATH"
               value: "/deployments/server/extralib,/deployments/server/lib"

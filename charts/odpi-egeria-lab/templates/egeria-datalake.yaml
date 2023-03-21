@@ -16,6 +16,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 9443
+      name: https
       targetPort: 9443
       {{- if ( eq  .Values.service.type "NodePort" ) }}
       nodePort: {{ .Values.service.nodeport.datalake }}
