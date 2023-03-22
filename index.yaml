@@ -3425,6 +3425,31 @@ entries:
   odpi-egeria-lab:
   - apiVersion: v2
     appVersion: "4.0"
+    created: "2023-03-22T22:50:01.799526231Z"
+    dependencies:
+    - condition: strimzi.enabled
+      name: strimzi-kafka-operator
+      repository: https://strimzi.io/charts/
+      version: 0.34.0
+    description: Egeria lab environment
+    digest: 6d98688eb7cbf7e1ae1b8937efbff1f74e9fcac0491f6ca0f5a1b3f90bb1e4d5
+    home: https://github.com/odpi/egeria
+    icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
+    keywords:
+    - odpi, egeria, lab, jupyter, notebook
+    maintainers:
+    - email: chris@thegrotes.net
+      name: Christopher Grote
+    - email: nigel.l.jones+git@gmail.com
+      name: Nigel Jones
+    name: odpi-egeria-lab
+    sources:
+    - https://github.com/odpi/egeria
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-4.0.0-prerelease.9/odpi-egeria-lab-4.0.0-prerelease.9.tgz
+    version: 4.0.0-prerelease.9
+  - apiVersion: v2
+    appVersion: "4.0"
     created: "2023-03-22T20:46:41.819919531Z"
     dependencies:
     - condition: strimzi.enabled
@@ -5177,4 +5202,4 @@ entries:
     urls:
     - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.0.1/odpi-egeria-lab-3.0.1.tgz
     version: 3.0.1
-generated: "2023-03-22T20:46:41.820974391Z"
+generated: "2023-03-22T22:50:01.800253624Z"
