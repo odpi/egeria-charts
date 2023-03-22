@@ -154,7 +154,7 @@ image:
     name: egeria
   presentation:
     name: egeria-react-ui
-    tag: "3.8.0"
+    tag: "3.10.0-rc.0"
 
 # Normally we install the strimzi operator as part of the Chart. However this requires admin permissions, and
 # will create cluster-scoped resources. Set to false to skip this when in a restricted environment, or needing multiple
