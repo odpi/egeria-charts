@@ -101,8 +101,10 @@ spec:
             {{ end }}
             - name: "JAVA_APP_JAR"
               value: "user-interface/ui-chassis-spring-{{ .Values.egeria.version}}.jar"
-            - name: JAVA_OPTS_APPEND
+            {{ if .Values.egeria.ui.jvmopts }}
+            - name: JAVA_OPTS
               value: {{ .Values.egeria.ui.jvmopts | quote }}
+            {{ end }}
       restartPolicy: Always
 
 ...

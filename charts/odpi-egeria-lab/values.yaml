@@ -39,94 +39,30 @@ egeria:
   egeriaui: true
 
   # Container specific -- including fine grained control of memory limits
-  # Note that by default 'jvmopts' is not set as this will be set automatically when using the Egeria base container, based off the memory limits
-  # This is done by JAVA_MAX_MEM_RATIO=80 in the templates
   # Best practice is to not overcommit, especially memory, so limits-requests set same. In some cases the request can be set lower
+  # Overriding JVM options is only supported for our egeria platforms (including ui-chassis)
+  # K8s implementations vary. Setting the max ram by percentage is better, but is very platform dependent - depending on the container
+  # environment being used - for example cgroups vs cgroups2. Therefore the default sets explicit values, so set in both places
+  # and make the max heap approx 80% of the memory limit
   core:
-    #jvmopts: "-Xms500m -Xmx1024m"
-    #jvmopts: "-XX:MinRAMPercentage=10 -XX:MaxRAMPercentage=80"
-    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
-    resources:
-      limits:
-        cpu: 2000m
-        memory: 1000Mi
-      requests:
-        cpu: 200m
-        memory: 1000Mi
+    #jvmopts:
+    resources: {}
   datalake:
-    #jvmopts: "-Xms500m -Xmx1024m"
-    #jvmopts: "-XX:MinRAMPercentage=10 -XX:MaxRAMPercentage=80"
-    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
-    resources:
-      limits:
-        cpu: 2000m
-        memory: 1000Mi
-      requests:
-        cpu: 200m
-        memory: 1000Mi
+    #jvmopts:
+    resources: {}
   dev:
-    #jvmopts: "-Xms500m -Xmx1024m"
-    #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
-    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
-    resources:
-      limits:
-        cpu: 2000m
-        memory: 1000Mi
-      requests:
-        cpu: 200m
-        memory: 1000Mi
+    #jvmopts:
+    resources: {}
   factory:
-    #jvmopts: "-Xms250m -Xmx512m"
-    #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
-    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
-    resources:
-      limits:
-        cpu: 100m
-        memory: 768Mi
-      requests:
-        cpu: 10m
-        memory: 768Mi
+    #jvmopts:
+    resources: {}
   ui:
-    #jvmopts: "-Xms512m -Xmx1024m"
-    #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
-    jvmopts: "-XX:+HeapDumpOnOutOfMemoryError"
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 500Mi
-      requests:
-        cpu: 50m
-        memory: 500Mi
-  uistatic:
-    #jvmopts: "-Xms128m -Xmx512m"
-    #jvmopts: "-XX:MinRAMPercentage=40 -XX:MaxRAMPercentage=80"
-    resources:
-      limits:
-        cpu: 100m
-        memory: 160Mi
-      requests:
-        cpu: 10m
-        memory: 160Mi
+    resources: {}
+  uistatic: {}
   presentation:
-    #jvmopts: "-Xms250m -Xmx512m"
-    #jvmopts: "-XX:MinRAMPercentage=25 -XX:MaxRAMPercentage=80"
-    jvmopts: "-XX:+HeapDumpOnOutOfMemoryError"
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 768Mi
-      requests:
-        cpu: 50m
-        memory: 768Mi
-
+    resources: {}
 nginx:
-  resources:
-    limits:
-      cpu: 100m
-      memory: 160Mi
-    requests:
-      cpu: 10m
-      memory: 160Mi
+  resources: {}
 
 # Additional connectors/libraries to be made available in egeria server chassis containers
 # This is just an example. You can have a list of connectors
@@ -148,34 +84,16 @@ jupyter:
   # ----
   # Git tag to checkout in the egeria-jupyter repo
   gitTagForNotebooks: "main"
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 1Gi
-    requests:
-      cpu: 100m
-      memory: 1Gi
+  resources: {}
 
 # Strimzi is used to setup an operator which will manage the custom resource we define.
 # These entries are used to define that custom resource
 kafka:
-  replicas: 1
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 1Gi
-    requests:
-      cpu: 250m
-      memory: 1Gi
+  replicas: 3
+  resources: {}
 zookeeper:
-  replicas: 1
-  resources:
-    limits:
-      cpu: 500m
-      memory: 750Mi
-    requests:
-      cpu: 100m
-      memory: 750Mi
+  replicas: 2
+  resources: {}
 debug:
   egeriaJVM: false
 

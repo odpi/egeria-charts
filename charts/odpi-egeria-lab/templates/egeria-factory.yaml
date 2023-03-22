@@ -103,8 +103,10 @@ spec:
             {{ end }}
             - name: "LOADER_PATH"
               value: "/deployments/server/extralib,/deployments/server/lib"
-            - name: JAVA_OPTS_APPEND
-              value: {{ .Values.egeria.factory.jvmopts | quote }}
+            {{ if .Values.egeria.core.jvmopts }}
+            - name: JAVA_OPTS
+              value: {{ .Values.egeria.core.jvmopts | quote }}
+            {{ end }}
           ports:
             - containerPort: 9443
             {{ if .Values.debug.egeriaJVM }}

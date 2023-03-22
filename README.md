@@ -65,6 +65,9 @@ helm show values egeria/odpi-egeria-lab
 
 See also the https://github.com/odpi/egeria-k8s-operator repository for development of an Operator for Egeria.
 
+## Useful tools
+
+* [K9s](https://k9scli.io) is very useful. It provides a terminal UI to view your pods, and provides a number of useful features such as tailing logs, exec into a pod, and more. It is a great tool for debugging issues with your pods. On macOS using homebrew: `brew install k9s`
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
