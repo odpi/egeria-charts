@@ -92,7 +92,7 @@ kafka:
   replicas: 3
   resources: {}
 zookeeper:
-  replicas: 1
+  replicas: 2
   resources: {}
 debug:
   egeriaJVM: false
