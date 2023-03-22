@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Sets up the lab chart so that the connectors are setup to use jdbc & IBM DB2
+
+extralibs:
+  - url: ftp://connectors:openshift@elzm2zw1e1fyh540.myfritz.net:49536/egeria-connector-resource-jdbc-3.13-SNAPSHOT.jar
+    filename: egeria-connector-resource-jdbc.jar
+  - url: ftp://connectors:openshift@elzm2zw1e1fyh540.myfritz.net:49536/egeria-connector-integration-jdbc-3.13-SNAPSHOT.jar
+    filename: egeria-connector-integration-jdbc.jar
+  - url: ftp://connectors:openshift@elzm2zw1e1fyh540.myfritz.net:49536/db2jcc4.jar
+    filename: db2jcc4.jar

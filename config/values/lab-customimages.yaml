@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Sample to get your own images rather than use the project's official ones
+# I do not override the registry here, so we will go to quay.io/planetf1 for images
+image:
+  egeria:
+    namespace: planetf1
+  configure:
+    namespace: planetf1
+  jupyter:
+    namespace: planetf1

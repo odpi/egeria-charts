@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: CC-BY-4.0
+# Copyright Contributors to the ODPi Egeria project.
+
+# Example of using xtdb alongside the lab chart, which already has appropriate configuration build in but
+# needs the jar file to be added
+extralibs:
+  - filename: egeria-connector-xtdb.jar
+    #url: "http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=org.odpi.egeria&a=egeria-connector-xtdb&v=LATEST&c=jar-with-dependencies"
+    #Awaiting correct redirect syntax, so interim direct url https://community.sonatype.com/t/retrieving-the-latest-snapshot/10311
+    url: https://oss.sonatype.org/service/local/repositories/snapshots/content/org/odpi/egeria/egeria-connector-xtdb/4.0-SNAPSHOT/egeria-connector-xtdb-4.0-20230316.072650-4-jar-with-dependencies.jar
+
+egeria:
+  repositoryType: xtdb-inmemory

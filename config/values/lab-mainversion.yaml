@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Example of showing how to use a specific version of egeria. This can include snapshots
+
+egeria:
+  version: "4.0-SNAPSHOT"
+image:
+  egeria:
+    tag: 4.0-SNAPSHOT
+    pullPolicy: Always
+imageDefaults:
+  tag: 4.0-SNAPSHOT
+jupyter:
+  gitTagForNotebooks: main

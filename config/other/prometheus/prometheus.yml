@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Sample configuration file for prometheus to monitor cloud endpoints - change the URLS!
+scrape_configs:
+  - job_name: 'Egeria monitoring'
+    tls_config:
+      insecure_skip_verify: true
+    scheme: https
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 2s
+    static_configs:
+      - targets: ['123-eu-gb.lb.appdomain.cloud:9443']
+        labels:
+          application: 'Egeria core'
+      - targets: ['456-eu-gb.lb.appdomain.cloud:9443']
+        labels:
+          application: 'Egeria datalake'
+      - targets: ['789-eu-gb.lb.appdomain.cloud']
+        labels:
+          application: 'Egeria dev'

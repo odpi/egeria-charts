@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Configures the lab chart to enable the Spring Actuator endpoint on each of our
+# egeria platform containers. This is useful for debugging and monitoring.
+#
+# Metrics can be retrieved under https://<server>:<port>/actuator/metrics
+egeria:
+  core:
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
+  datalake:
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
+  dev:
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"
+  factory:
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=*"

@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Example to set additional options to use the YourKit profiler
+# Note that this also requires a custom image (you will need to build your own) which contains the yourkit agent
+image:
+   egeria:
+     name: egeria
+     registry: quay.io
+     namespace: planetf1
+     tag: yk3
+egeria:
+  core:
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=* -agentpath:/libyjpagent.so=disablestacktelemetry,exceptions=disable,delay=10000,port=5005,listen=all,logdir=/tmp/jk,dir=/tmp/jk2"
+  datalake:
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=* -agentpath:/libyjpagent.so=disablestacktelemetry,exceptions=disable,delay=10000,port=5005,listen=all,logdir=/tmp/jk,dir=/tmp/jk2"
+  dev:
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=* -agentpath:/libyjpagent.so=disablestacktelemetry,exceptions=disable,delay=10000,port=5005,listen=all,logdir=/tmp/jk,dir=/tmp/jk2"
+  factory:
+    jvmopts: "-Dmanagement.endpoints.web.exposure.include=* -agentpath:/libyjpagent.so=disablestacktelemetry,exceptions=disable,delay=10000,port=5005,listen=all,logdir=/tmp/jk,dir=/tmp/jk2"
+# opens up java debug port 5005, so will use that 
+debug:
+  egeriaJVM: true

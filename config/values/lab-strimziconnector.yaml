@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Example of adding in the strimzi connector -- this uses a snapshot version.
+extralibs:
+  - url: https://oss.sonatype.org/service/local/repositories/snapshots/content/org/odpi/egeria/egeria-connector-integration-topic-strimzi/1.0-SNAPSHOT/egeria-connector-integration-topic-strimzi-1.0-20220822.110949-13-jar-with-dependencies.jar
+    filename: egeria-connector-integration-topic-strimzi-1.0-jar-with-dependencies.jar
