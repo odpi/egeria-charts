@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Example to enable tracing of memory usage in the container
+# We use the default garbage collector (G1), aim for a 80% ram usage, and enable spring monitoring
+
+egeria:
+  core:
+    jvmopts: "-Xlog:os+container=trace -XX:+ExitOnOutOfMemoryError -XX:+UseG1GC -Xlog:gc -Xms512m -Xmx1024m -XX:MaxRAM=1800m-Dmanagement.endpoints.web.exposure.include=*"
+  datalake:
+    jvmopts: "-Xlog:os+container=trace -XX:+ExitOnOutOfMemoryError -XX:+UseG1GC -Xlog:gc -Xms512m -Xmx1024m -XX:MaxRAM=1800m-Dmanagement.endpoints.web.exposure.include=*"
+  dev:
+    jvmopts: "-Xlog:os+container=trace -XX:+ExitOnOutOfMemoryError -XX:+UseG1GC -Xlog:gc -Xms512m -Xmx1024m -XX:MaxRAM=1800m-Dmanagement.endpoints.web.exposure.include=*"
+  factory:
+    jvmopts: "-Xlog:os+container=trace -XX:+ExitOnOutOfMemoryError -XX:+UseG1GC -Xlog:gc -Xms512m -Xmx1024m -XX:MaxRAM=1800m-Dmanagement.endpoints.web.exposure.include=*"
+
