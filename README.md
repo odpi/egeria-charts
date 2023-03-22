@@ -39,7 +39,7 @@ $ helm install lab egeria/odpi-egeria-lab
 Refer to the **charts** directory for the chart content
 ## Snippets / Configuration
 
-The *config/values* directory contains snippets of yaml that can be used to deploy Egeria in a Kubernetes environment. These are provided as examples, and commented within each file.
+The *config/values* directory contains snippets of yaml that can be used to deploy Egeria in a Kubernetes environment. These are provided as examples, and commented within each file. Review each change, and note that the content may need updating, ie with new versions.
 
 Each yaml file sets 'values' which will change the behaviour of the chart
 
