@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Example of configuring jupyter -- for example here we make use of the delay options so that we can debug startup
+
+jupyter:
+  # Sleep this long after configuring notebook environment - to aid debug
+  scriptSleepBefore: "180"
+  scriptSleepAfter: "180"
+  #image:
+  #jupyter:
+  #registry: docker.io
+  #namespace: planetf1
+  #name: jupyterlab
+  #tag: "313test"
+  #imageDefaults:
+  #pullPolicy: Always

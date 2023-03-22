@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Configures the lab chart to always pull the latest image from the registry.
+# Usually the charts will handle this automatically, setting this value when using
+# snapshots, and using caching for releases
+imageDefaults:
+    pullPolicy: Always

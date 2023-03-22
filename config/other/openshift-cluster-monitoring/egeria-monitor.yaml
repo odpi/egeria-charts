@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Sample to setup cluster monitoring on Red Hat Openshift 4.11+ for the Egeria lab deployment
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: prometheus-example-monitor
+  name: egeria-metrics-monitor
+  namespace: lab
+spec:
+  endpoints:
+  - interval: 10s
+    port: "9443"
+    scheme: https
+  selector:
+    matchLabels:
+      # Really need a unique selector for platform components
+      app.kubernetes.io/name: odpi-egeria-lab

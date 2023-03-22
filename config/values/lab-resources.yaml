@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+# Example of setting memory usage for the egeria containers
+# There are other options for UI components, kafka, zookeeper, nginx etc. Omitted here for clarity
+
+egeria:
+  core:
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 3000Mi
+      requests:
+        cpu: 200m
+        memory: 3000Mi
+  datalake:
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 3000Mi
+      requests:
+        cpu: 200m
+        memory: 3000Mi
+  dev:
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 3000Mi
+      requests:
+        cpu: 200m
+        memory: 3000Mi
+  factory:
+    resources:
+      limits:
+        cpu: 100m
+        memory: 768Mi
+      requests:
+        cpu: 10m
+        memory: 768Mi
