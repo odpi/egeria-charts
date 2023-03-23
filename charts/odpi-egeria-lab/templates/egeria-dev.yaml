@@ -131,14 +131,16 @@ spec:
       restartPolicy: Always
   {{ if .Values.persistence.enabled }}
   volumeClaimTemplates:
-    - metadata:
-        name: {{ .Release.Name }}-dev-data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 8Gi
-        #storageClassName:
+  - metadata:
+      name: {{ .Release.Name }}-dev-data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 8Gi
+      {{- if .Values.storageClassName }}
+      storageClassName: {{ .Values.storageClassName }}
+      {{- end }}
   {{ end }}
 ...

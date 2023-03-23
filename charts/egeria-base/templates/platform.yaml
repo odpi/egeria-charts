@@ -194,8 +194,8 @@ spec:
       resources:
         requests:
           storage: {{ .Values.egeria.storageSize}}
-      {{ if .Values.egeria.storageClass }}
-      storageClassName: {{ .Values.egeria.storageClass }}
-      {{ end }}
+      {{- if .Values.storageClassName }}
+      storageClassName: {{ .Values.storageClassName }}
+      {{- end }}
   {{ end }}
 ...

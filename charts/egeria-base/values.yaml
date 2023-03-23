@@ -64,8 +64,6 @@ egeria:
   viewOrg: org
   # Cohort name
   cohort: mds
-  # Set to override the k8s storage class for persistent volume claim
-  storageClass:
   # Default to 8GB
   storageSize: 8Gi
   # Whether a default configuration is performed or not. Note that the environment for
@@ -217,3 +215,6 @@ lineage:
 # These are used to override name of the egeria deployment in the helpers template
 fullnameOverride:
 nameOverride:
+
+# Set to override the k8s storage class for persistent volume claim
+storageClassName:
