@@ -26,12 +26,12 @@ spec:
       initialDelaySeconds: 15
       timeoutSeconds: 5
     storage:
-      type: jbod
-      volumes:
-        - id: 0
-          type: persistent-claim
-          size: 5Gi
-          deleteClaim: true
+      type: persistent-claim
+      size: 5Gi
+      deleteClaim: true
+      {{- if .Values.storageClassName }}
+      class: {{ .Values.storageClassName }}
+      {{- end }}
     resources: {{ .Values.kafka.resources | toYaml | nindent 6 }}
   zookeeper:
     replicas: {{ .Values.zookeeper.replicas }}
@@ -39,6 +39,9 @@ spec:
       type: persistent-claim
       size: 1Gi
       deleteClaim: true
+      {{- if .Values.storageClassName }}
+      class: {{ .Values.storageClassName }}
+      {{- end }}
     resources: {{ .Values.zookeeper.resources | toYaml | nindent 6 }}
   entityOperator:
     topicOperator:

@@ -138,6 +138,8 @@ spec:
       resources:
         requests:
           storage: 8Gi
-      #storageClassName:
+      {{ if .Values.storageClassName }}
+      storageClassName: {{ .Values.storageClassName }}
+      {{ end }}
   {{ end }}
 ...

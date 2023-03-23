@@ -151,7 +151,7 @@ spec:
   resources:
     requests:
       storage: {{ .Values.jupyter.storageSize | default "1Gi" }}
-{{ if .Values.egeria.storageClass }}
-  storageClassName: {{ .Values.jupyter.StorageClass }}
-{{ end }}
+  {{- if .Values.storageClassName }}
+  storageClassName: {{ .Values.storageClassName }}
+  {{- end }}
 ...
