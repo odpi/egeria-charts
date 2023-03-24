@@ -74,8 +74,19 @@ resources:
 imageDefaults:
   registry: quay.io
   namespace: odpi
-  tag: "4.0-SNAPSHOT"
+  tag: "4.0"
   pullPolicy: IfNotPresent
+
+# The following section defines all DOCKER images being used by this chart. Normally they should be left as is,
+# but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
+# these can be individually overridden for each image, if desired, by providing a subkey for 'namespace', 'tag' or
+# 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
+# 'docker.io/library' as the registry override, and set namespace to be your user or organization id).
+image:
+  egeria:
+    name: egeria
+  configure:
+    name: egeria-configure
 
 # Normally we install the strimzi operator as part of the Chart. However this requires admin permissions, and
 # will create cluster-scoped resources. Set to false to skip this when in a restricted environment, or needing multiple

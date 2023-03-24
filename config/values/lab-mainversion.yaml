@@ -4,12 +4,12 @@
 # Example of showing how to use a specific version of egeria. This can include snapshots
 
 egeria:
-  version: "4.0-SNAPSHOT"
+  version: "4.0"
 image:
   egeria:
-    tag: 4.0-SNAPSHOT
+    tag: 4.0
     pullPolicy: Always
 imageDefaults:
-  tag: 4.0-SNAPSHOT
+  tag: 4.0
 jupyter:
   gitTagForNotebooks: main
