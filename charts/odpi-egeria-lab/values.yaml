@@ -130,7 +130,7 @@ image:
     tag: "lab-3.5.2"
   uistatic:
     name: egeria-ui
-    tag: "4.1.1"
+    tag: "4.1.2"
   nginx:
     registry: public.ecr.aws
     name: nginx/nginx

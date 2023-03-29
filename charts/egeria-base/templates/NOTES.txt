@@ -11,6 +11,11 @@ By default a single platform is created using the latest release of Egeria, with
 metadata server 'mds1' and a view server 'view1'. The UI organization name is 'org'.
 A job is started to perform this configuration and may take up to 10 minutes to complete.
 
+Refer to https://egeria-project.org/guides/operations/kubernetes/k8s/?h=nodeport#accessing-applications-in-your-cluster to setup access to the services you need to access in your cluster.
+
+If you experience problems, check memory consumption on your nodes. A minimum of
+8GB free is recommended. Dashboards, or the command line tool k9s ( https://k9scli.io ) are useful for this.
+
 Please provide any feeback via a github issue at https://github.com/odpi/egeria-charts or
 join us on slack via https://slack.lfaidata.foundation
 
