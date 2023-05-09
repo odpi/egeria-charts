@@ -89,10 +89,10 @@ jupyter:
 # Strimzi is used to setup an operator which will manage the custom resource we define.
 # These entries are used to define that custom resource
 kafka:
-  replicas: 3
+  replicas: 1
   resources: {}
 zookeeper:
-  replicas: 2
+  replicas: 1
   resources: {}
 debug:
   egeriaJVM: false
