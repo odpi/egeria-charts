@@ -31,7 +31,7 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: "4.0"
+  version: "4.1-SNAPSHOT"
   #repositoryType: "local-graph-repository"
   repositoryType: "in-memory-repository"
   # See https://github.com/odpi/egeria-charts/issues/56 for status of the Egeria UI (polymer) in this environment
