@@ -7,7 +7,7 @@ metadata:
   name: {{ .Release.Name }}-strimzi
 spec:
   kafka:
-    version: 3.4.0
+    version: {{ .Values.kafka.version }}
     replicas: {{ .Values.kafka.replicas }}
     listeners:
       - name: plain

@@ -83,12 +83,13 @@ jupyter:
   # tokenPlain:
   # ----
   # Git tag to checkout in the egeria-jupyter repo
-  gitTagForNotebooks: "main"
+  gitTagForNotebooks: "V4.1"
   resources: {}
 
 # Strimzi is used to setup an operator which will manage the custom resource we define.
 # These entries are used to define that custom resource
 kafka:
+  version: 3.4.0
   replicas: 1
   resources: {}
 zookeeper:
@@ -127,7 +128,7 @@ image:
     #registry: docker.io
     #namespace: jupyter
     name: jupyter
-    tag: "lab-3.5.2"
+    tag: "lab-4.0.0"
   uistatic:
     name: egeria-ui
     tag: "4.1.2"

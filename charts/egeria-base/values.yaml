@@ -164,6 +164,7 @@ image:
 strimzi:
   enabled: true
   kafka:
+    version: 3.4.0
     listeners:
       external:
         enabled: true
