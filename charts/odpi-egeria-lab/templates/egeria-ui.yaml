@@ -85,8 +85,10 @@ spec:
             failureThreshold: 6
           resources: {{ toYaml .Values.egeria.ui.resources | nindent 12 }}
           env:
-            - name: "SERVER_PORT"
-              value: "8443"
+            - name: "SPRING_CONFIG_LOCATION"
+              value: "classpath:application.properties,classpath:application.yml"
+            - name: "LOADER_PATH"
+              value: "user-interface/lib"
             - name: "OMAS_SERVER_NAME"
               value: "cocoMDS1"
             - name: "OMAS_SERVER_URL"
