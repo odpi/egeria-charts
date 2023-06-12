@@ -58,8 +58,22 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-env
+          env:
+            - name: "LOADER_PATH"
+              value: "/opt/egeria/connectors,/deployments/server/lib"
+            {{ if .Values.debug.egeriaJVM }}
+            - name: JAVA_DEBUG
+              value:  "true"
+            {{ end }}
+            {{ if .Values.debug.jvmopts }}
+            - name: JAVA_OPTS
+              value: {{ .Values.egeria.core.jvmopts | quote }}
+            {{ end }}
           ports:
             - containerPort: 9443
+            {{ if .Values.debug.egeriaJVM }}
+            - containerPort: 5005
+            {{ end }}
           readinessProbe:
             tcpSocket:
               port: 9443

@@ -88,3 +88,10 @@ image:
 # installed on the cluster by an admin, or a prior install
 strimzi:
   enabled: true
+
+# Debugging support
+debug:
+  # Set to true to attach enable the java agent for IDE debugging. Also makes port 5005 available from container
+  egeriaJVM: false
+  # Override jvm parameters - for example memory, logging etc
+  jvmOpts:
