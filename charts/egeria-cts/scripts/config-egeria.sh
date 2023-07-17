@@ -30,6 +30,18 @@ curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X POST \
   "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/conformance-suite-workbenches/repository-workbench/repositories" \
   --data '{"class":"RepositoryConformanceWorkbenchConfig","tutRepositoryServerName":"'"${TUT_SERVER}"'","maxSearchResults":'${CTS_FACTOR}' }' || exit $?
 
+# Custom audit log configuration to help troubleshooting errors and exceptions for CTS server #
+# Remove all audit log destinations (removes default) #
+curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X DELETE \
+  --header "Content-Type: application/json" \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/audit-log-destinations" \
+  --data ''|| exit $?
+# Add the custom console destination using only Error and Exception severities #
+curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X POST \
+  --header "Content-Type: application/json" \
+  "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/audit-log-destinations/console" \
+  --data '["Error","Exception"]'|| exit $?
+
 echo -e '\n > Configuring technology under test:\n'
 
 curl -f -k -w "\n   (%{http_code} - %{url_effective})\n" --silent -X POST \
