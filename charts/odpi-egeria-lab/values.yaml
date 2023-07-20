@@ -31,7 +31,7 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: "4.2-SNAPSHOT"
+  version: "4.2"
   #repositoryType: "local-graph-repository"
   repositoryType: "in-memory-repository"
   # See https://github.com/odpi/egeria-charts/issues/56 for status of the Egeria UI (polymer) in this environment
@@ -83,7 +83,7 @@ jupyter:
   # tokenPlain:
   # ----
   # Git tag to checkout in the egeria-jupyter repo
-  gitTagForNotebooks: "V4.1"
+  gitTagForNotebooks: "V4.2"
   resources: {}
 
 # Strimzi is used to setup an operator which will manage the custom resource we define.
@@ -128,10 +128,10 @@ image:
     #registry: docker.io
     #namespace: jupyter
     name: jupyter
-    tag: "lab-4.0.0"
+    tag: "lab-4.0.3"
   uistatic:
     name: egeria-ui
-    tag: "4.1.2"
+    tag: "4.1.8"
   nginx:
     registry: public.ecr.aws
     name: nginx/nginx
