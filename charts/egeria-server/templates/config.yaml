@@ -2,16 +2,6 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "egeria-server.fullname" . }}-conf
-  labels:
-    {{- include "egeria-server.labels" . | nindent 4 }}
-data:
-{{ (.Files.Glob "files/*.json").AsConfig | indent 2 }}
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
   name: {{ include "egeria-server.fullname" . }}-env
   labels:
     {{- include "egeria-server.labels" . | nindent 4 }}
@@ -21,3 +11,13 @@ data:
   JAVA_APP_JAR: "{{ .Values.app.jarPath }}/{{ .Values.app.jarName }}-{{ .Chart.AppVersion }}.jar"
   LOADER_PATH: "{{ .Values.app.loaderPath }}"
   OMAG_SERVER-CONFIG: "file:{{ .Values.app.configPath }}/{{ .Values.app.configName }}"
+  DEBUG: "false"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "egeria-server.fullname" . }}-conf
+  labels:
+    {{- include "egeria-server.labels" . | nindent 4 }}
+data:
+{{ (.Files.Glob "files/*.json").AsConfig | indent 2 }}
