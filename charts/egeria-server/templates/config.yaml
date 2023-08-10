@@ -10,7 +10,7 @@ data:
   SERVER_SSL_ENABLED: "false"
   JAVA_APP_JAR: "{{ .Values.app.jarPath }}/{{ .Values.app.jarName }}-{{ .Chart.AppVersion }}.jar"
   LOADER_PATH: "{{ .Values.app.loaderPath }}"
-  OMAG_SERVER-CONFIG: "file:{{ .Values.app.configPath }}/{{ .Values.app.configName }}"
+  OMAG_SERVERCONFIG: "file:{{ .Values.app.configPath }}/{{ .Values.app.configName }}"
   DEBUG: "false"
 ---
 apiVersion: v1
