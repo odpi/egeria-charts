@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+# This helm chart was generated using helm create https://helm.sh/docs/helm/helm_create/
+# Only part of the resources such as deployment and service are relevant, the rest are kept as placeholder templates.
+apiVersion: v2
+name: egeria-server
+description: A Helm chart used to demonstrate Egeria stand-alone OMAG server deployment 
+type: application
+version: 4.3-prerelease.1
+appVersion: "4.3"

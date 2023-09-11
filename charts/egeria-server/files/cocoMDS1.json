@@ -1,0 +1,134 @@
+{
+  "class": "OMAGServerConfig",
+  "versionId": "V2.0",
+  "localServerName": "cocoMDS1",
+  "localServerUserId": "OMAGServer",
+  "maxPageSize": 1000,
+  "accessServicesConfig": [
+    {
+      "class": "AccessServiceConfig",
+      "accessServiceId": 200,
+      "accessServiceDevelopmentStatus": "IN_DEVELOPMENT",
+      "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogAdmin",
+      "accessServiceName": "Asset Catalog",
+      "accessServiceFullName": "Asset Catalog OMAS",
+      "accessServiceURLMarker": "asset-catalog",
+      "accessServiceDescription": "Search and understand your assets",
+      "accessServiceWiki": "https://egeria-project.org/services/omas/asset-catalog/overview/",
+      "accessServiceOperationalStatus": "ENABLED",
+      "accessServiceOptions": {
+        "SupportedTypesForSearch": [
+          "RelationalTable",
+          "TabularColumn",
+          "TabularFileColumn",
+          "RelationalColumn",
+          "GlossaryTerm",
+          "GlossaryCategory",
+          "Process",
+          "DataFile",
+          "Asset",
+          "Application",
+          "SoftwareServerCapability"
+        ]
+      }
+    },
+    {
+      "class": "AccessServiceConfig",
+      "accessServiceId": 204,
+      "accessServiceDevelopmentStatus": "IN_DEVELOPMENT",
+      "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.assetmanager.admin.AssetManagerAdmin",
+      "accessServiceName": "Asset Manager",
+      "accessServiceFullName": "Asset Manager OMAS",
+      "accessServiceURLMarker": "asset-manager",
+      "accessServiceDescription": "Manage metadata from a third party asset manager",
+      "accessServiceWiki": "https://egeria-project.org/services/omas/asset-manager/overview/",
+      "accessServiceOperationalStatus": "ENABLED"
+    },
+    {
+      "class": "AccessServiceConfig",
+      "accessServiceId": 210,
+      "accessServiceDevelopmentStatus": "TECHNICAL_PREVIEW",
+      "accessServiceAdminClass": "org.odpi.openmetadata.accessservices.datamanager.admin.DataManagerAdmin",
+      "accessServiceName": "Data Manager",
+      "accessServiceFullName": "Data Manager OMAS",
+      "accessServiceURLMarker": "data-manager",
+      "accessServiceDescription": "Capture changes to the data stores and data set managed by a data manager such as a database server, content manager or file system.",
+      "accessServiceWiki": "https://egeria-project.org/services/omas/data-manager/overview/",
+      "accessServiceOperationalStatus": "ENABLED"
+    }
+  ],
+  "repositoryServicesConfig": {
+    "class": "RepositoryServicesConfig",
+    "auditLogConnections": [
+      {
+        "class": "Connection",
+        "connectorType": {
+          "class": "ConnectorType",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider"
+        },
+        "configurationProperties": {
+          "supportedSeverities": [
+            "Information",
+            "Startup",
+            "Shutdown"
+          ]
+        }
+      }
+    ],
+    "localRepositoryConfig": {
+      "class": "LocalRepositoryConfig",
+      "metadataCollectionId": "838005fc-e09f-4688-af89-58254a155cc6",
+      "localRepositoryLocalConnection": {
+        "class": "Connection",
+        "connectorType": {
+          "class": "ConnectorType",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider"
+        }
+      },
+      "localRepositoryRemoteConnection": {
+        "class": "Connection",
+        "connectorType": {
+          "class": "ConnectorType",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider"
+        },
+        "endpoint": {
+          "class": "Endpoint",
+          "address": "https://localhost:9443/servers/cocoMDS1"
+        }
+      },
+      "eventsToSaveRule": "ALL",
+      "eventsToSendRule": "ALL"
+    },
+    "enterpriseAccessConfig": {
+      "class": "EnterpriseAccessConfig",
+      "enterpriseMetadataCollectionId": "df77a8e6-ef88-48a6-9462-ce5e9697c347",
+      "enterpriseOMRSTopicConnection": {
+        "class": "VirtualConnection",
+        "connectorType": {
+          "class": "ConnectorType",
+          "connectorProviderClassName": "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider"
+        },
+        "embeddedConnections": [
+          {
+            "class": "EmbeddedConnection",
+            "embeddedConnection": {
+              "class": "Connection",
+              "connectorType": {
+                "class": "ConnectorType",
+                "connectorProviderClassName": "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider"
+              },
+              "endpoint": {
+                "class": "Endpoint",
+                "address": "cocoMDS1.openmetadata.repositoryservices.enterprise.cocoMDS1.OMRSTopic"
+              },
+              "configurationProperties": {
+                "local.server.id": "996892b6-7299-4046-8928-b6687a7818ee"
+              }
+            }
+          }
+        ]
+      },
+      "enterpriseOMRSTopicProtocolVersion": "V1"
+    }
+  }
+}
