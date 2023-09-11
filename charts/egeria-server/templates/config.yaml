@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -10,7 +12,7 @@ data:
   SERVER_SSL_ENABLED: "false"
   JAVA_APP_JAR: "{{ .Values.app.jarPath }}/{{ .Values.app.jarName }}-{{ .Chart.AppVersion }}.jar"
   LOADER_PATH: "{{ .Values.app.loaderPath }}"
-  OMAG_SERVERCONFIG: "file:{{ .Values.app.configPath }}/{{ .Values.app.configName }}"
+  OMAG_SERVERCONFIGFILE: "file:{{ .Values.app.configPath }}/{{ .Values.app.configName }}"
   DEBUG: "false"
 ---
 apiVersion: v1
@@ -20,4 +22,4 @@ metadata:
   labels:
     {{- include "egeria-server.labels" . | nindent 4 }}
 data:
-{{ (.Files.Glob "files/*.json").AsConfig | indent 2 }}
+{{ (.Files.Glob "files/*").AsConfig | indent 2 }}
