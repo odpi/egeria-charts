@@ -3899,6 +3899,17 @@ entries:
     urls:
     - https://github.com/odpi/egeria-charts/releases/download/egeria-pts-3.3-prerelease.0/egeria-pts-3.3-prerelease.0.tgz
     version: 3.3-prerelease.0
+  egeria-server:
+  - apiVersion: v2
+    appVersion: "4.3"
+    created: "2023-09-11T21:02:23.314946874Z"
+    description: A Helm chart used to demonstrate Egeria stand-alone OMAG server deployment
+    digest: 0169702c2c8dc363694f04fc2c614a08cad29151b41ef948cea332a8706838bf
+    name: egeria-server
+    type: application
+    urls:
+    - https://github.com/odpi/egeria-charts/releases/download/egeria-server-4.3-prerelease.1/egeria-server-4.3-prerelease.1.tgz
+    version: 4.3-prerelease.1
   odpi-egeria-lab:
   - apiVersion: v2
     appVersion: "4.2"
@@ -5954,4 +5965,4 @@ entries:
     urls:
     - https://github.com/odpi/egeria-charts/releases/download/odpi-egeria-lab-3.0.1/odpi-egeria-lab-3.0.1.tgz
     version: 3.0.1
-generated: "2023-07-20T08:27:22.522364004Z"
+generated: "2023-09-11T21:02:23.315713577Z"
