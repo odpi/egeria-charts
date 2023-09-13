@@ -87,6 +87,8 @@ image:
 # installs of egeria charts in the same cluster. Requires the strimzi operator to be
 # installed on the cluster by an admin, or a prior install
 strimzi:
+  kafka:
+    version: 3.5.1
   enabled: true
 
 # Debugging support
