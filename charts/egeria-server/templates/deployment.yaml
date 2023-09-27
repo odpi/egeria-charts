@@ -71,5 +71,7 @@ spec:
       {{- end }}
       volumes:
         - name: {{ include "egeria-server.fullname" . }}-conf-volume
-          configMap:
-            name: {{ include "egeria-server.fullname" . }}-conf
+          # configMap:
+          #   name: {{ include "egeria-server.fullname" . }}-conf
+          secret:
+            secretName: {{ include "egeria-server.fullname" . }}-secret

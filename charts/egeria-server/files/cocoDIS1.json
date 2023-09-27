@@ -1,0 +1,85 @@
+{
+  "class": "OMAGServerConfig",
+  "versionId": "V2.0",
+  "localServerId": "0aac3308-bae9-43e9-8743-2cac4350fe3f",
+  "localServerName": "cocoDIS1",
+  "localServerType": "Open Metadata and Governance Server",
+  "localServerURL": "https://localhost:9444",
+  "localServerUserId": "OMAGServer",
+  "maxPageSize": 1000,
+  "repositoryServicesConfig": {
+    "class": "RepositoryServicesConfig",
+    "auditLogConnections": [
+      {
+        "class": "Connection",
+        "headerVersion": 0,
+        "qualifiedName": "SLF4J- [<Unknown>, Information, Event, Decision, Action, Error, Exception, Security, Startup, Shutdown, Asset, Types, Cohort]",
+        "displayName": "SLF4J",
+        "connectorType": {
+          "class": "ConnectorType",
+          "qualifiedName": "Egeria:AuditLogDestinationConnector:SLF4J",
+          "displayName": "SLF4J Audit Log Destination Connector",
+          "description": "Connector supports logging of audit log messages to the slf4j logger ecosystem.",
+          "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider"
+        },
+        "configurationProperties": {
+          "supportedSeverities": [
+            "<Unknown>",
+            "Information",
+            "Event",
+            "Decision",
+            "Action",
+            "Error",
+            "Exception",
+            "Security",
+            "Startup",
+            "Shutdown",
+            "Asset",
+            "Types",
+            "Cohort"
+          ]
+        }
+      }
+    ]
+  },
+  "integrationServicesConfig": [
+    {
+      "class": "IntegrationServiceConfig",
+      "integrationServiceContextManagerClass": "org.odpi.openmetadata.integrationservices.topic.contextmanager.TopicIntegratorContextManager",
+      "integrationServiceName": "DataSkopIntegrator",
+      "integrationServiceFullName": "DataSkopIntegrator",
+      "integrationServiceURLMarker": "data-skop-integrator",
+      "integrationServiceDescription": "Extract information from egeria to data skop",
+      "defaultPermittedSynchronization": "FROM_THIRD_PARTY",
+      "integrationConnectorConfigs": [
+        {
+          "class": "IntegrationConnectorConfig",
+          "connectorName": "DataSkopIntegrator",
+          "typeName": "EBI DataSkop Integration Connector",
+          "connection": {
+            "class": "Connection",
+            "connectorType": {
+              "class": "ConnectorType",
+              "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.integration.ebi.dataskop.DataSkopIntegrationProvider"
+            },
+            "configurationProperties": {
+              "authorisation": "xxx",
+              "performDataSkopPublishing": "true",
+              "xapi_validate": "true",
+              "xapi_cleanScope": "false"
+            },
+            "endpoint": {
+              "class": "Endpoint",
+              "address": "xxx"
+            }
+          },
+          "metadataSourceQualifiedName": "TestMetadataSourceQualifiedName",
+          "refreshTimeInterval": "1",
+          "permittedSynchronization": "TO_THIRD_PARTY"
+        }
+      ],
+      "omagserverName": "cocoMDS1",
+      "omagserverPlatformRootURL": "https://event-catalog-platform:9443"
+    }
+  ]
+}
