@@ -90,6 +90,6 @@ app:
   jarName: "omag-server"
   loaderPath: "/deployments/server/lib"
   configPath: "/deployments/server/conf"
-  configName: "cocoMDS1.yml"
+  configName: "cocoDIS1.json"
   livenessProbe: "/actuator/health/livenessState"
   readinessProbe: "/actuator/health/readinessState"
