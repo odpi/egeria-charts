@@ -54,7 +54,7 @@ global:
 egeria:
   # Set to INFO, WARNING, DEBUG if needed
   logging: 
-  version: "4.2"
+  version: "4.3"
   # repositoryType: "local-graph-repository"
   repositoryType: "in-memory-repository"
   debug: false
@@ -164,7 +164,7 @@ image:
 strimzi:
   enabled: true
   kafka:
-    version: 3.4.0
+    version: 3.5.1
     listeners:
       external:
         enabled: true
